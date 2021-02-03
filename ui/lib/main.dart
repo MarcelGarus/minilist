@@ -92,10 +92,28 @@ class TodoList extends StatelessWidget {
             ),
             if (list.items.isEmpty)
               SliverToBoxAdapter(
+                child: Center(
+                  child: Text(
+                    'Your list is empty.',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              )
+            else
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (_, i) => TodoItem(item: list.items[i].value),
+                  childCount: list.items.length,
+                ),
+              ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   children: [
+                    SizedBox(height: 16),
                     Text(
-                      'You have no items on your list.\nHow about some of these?',
+                      'How about adding some of these?',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 20),
                     ),
