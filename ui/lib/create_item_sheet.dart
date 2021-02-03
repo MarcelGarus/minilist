@@ -1,6 +1,8 @@
 import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:flutter/material.dart';
 
+import 'data.dart';
+
 extension ShowCreateItemSheet on BuildContext {
   Future<String?> showCreateItemSheet() {
     return this.showModalBottomSheet(
@@ -42,9 +44,17 @@ class _CreateItemSheetState extends State<CreateItemSheet> {
               ),
             ),
           ),
-          FlatButton(
-            child: Text('Add'),
-            onPressed: () => context.navigator.pop(_controller.text),
+          ValueListenableBuilder(
+            valueListenable: _controller,
+            builder: (context, _, __) {
+              final text = _controller.text;
+              return FlatButton(
+                child: Text('Add'),
+                onPressed: list.items.value.contains(text)
+                    ? null
+                    : () => context.navigator.pop(_controller.text),
+              );
+            },
           ),
         ],
       ),
