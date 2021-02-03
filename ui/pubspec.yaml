@@ -7,9 +7,10 @@ environment:
   sdk: ">=2.12.0-0 <3.0.0"
 
 dependencies:
+  basics: any
   black_hole_flutter: any
   chest_flutter:
-    path: ../chestdb/chest_flutter
+    path: ../../chestdb/chest_flutter
   cupertino_icons: ^1.0.1
   flutter:
     sdk: flutter
@@ -20,11 +21,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   tapegen:
-    path: ../chestdb/tapegen
+    path: ../../chestdb/tapegen
 
 dependency_overrides:
   analyzer: ^0.41.1
-    
+
 flutter:
   uses-material-design: true
 

@@ -29,6 +29,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.5.0-nullsafety.3"
+  basics:
+    dependency: "direct main"
+    description:
+      name: basics
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0+1"
   black_hole_flutter:
     dependency: "direct main"
     description:
@@ -123,14 +130,14 @@ packages:
   chest:
     dependency: transitive
     description:
-      path: "../chestdb/chest"
+      path: "../../chestdb/chest"
       relative: true
     source: path
     version: "0.0.4-0"
   chest_flutter:
     dependency: "direct main"
     description:
-      path: "../chestdb/chest_flutter"
+      path: "../../chestdb/chest_flutter"
       relative: true
     source: path
     version: "1.0.0+1"
@@ -233,7 +240,7 @@ packages:
   flutter_tapers:
     dependency: transitive
     description:
-      path: "../chestdb/tapers/flutter_tapers"
+      path: "../../chestdb/tapers/flutter_tapers"
       relative: true
     source: path
     version: "0.0.0"
@@ -509,7 +516,7 @@ packages:
   tapegen:
     dependency: "direct dev"
     description:
-      path: "../chestdb/tapegen"
+      path: "../../chestdb/tapegen"
       relative: true
     source: path
     version: "0.0.2"
