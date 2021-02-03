@@ -1,3 +1,4 @@
+import 'package:basics/basics.dart';
 import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:chest_flutter/chest_flutter.dart';
 import 'package:flutter/material.dart';
@@ -39,25 +40,7 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(child: TodoList()),
-          Positioned(
-            bottom: 0,
-            child: Row(
-              children: [
-                // FloatingActionButton.extended(
-                //   label: Text('Milch'),
-                //   onPressed: () => list.items.add('Milch'),
-                // ),
-                // Material(
-                //   child: Text('Milch'),
-                // ),
-              ],
-            ),
-          ),
-        ],
-      ),
+      body: TodoList(),
       floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.add),
         label: Text('Add item'),
@@ -73,14 +56,14 @@ class TodoList extends StatelessWidget {
     return ReferenceBuilder(
       reference: list.items,
       builder: (_) {
+        final hasManyItems = list.items.length >= 5;
         return CustomScrollView(
           slivers: [
             ListAppBar(
               title: 'Shopping List',
-              subtitle:
-                  list.items.length >= 5 ? '${list.items.length} items' : '',
+              subtitle: hasManyItems ? '${list.items.length} items' : '',
               actions: [
-                if (list.items.length >= 5)
+                if (hasManyItems)
                   IconButton(icon: Icon(Icons.search), onPressed: () {}),
                 // IconButton(icon: Icon(Icons.view_agenda_outlined)),
                 // IconButton(icon: Icon(Icons.list)),
@@ -91,18 +74,23 @@ class TodoList extends StatelessWidget {
               child: ReferencesBuilder(
                 references: [list.inTheCart, list.notAvailable],
                 builder: (context) {
-                  if (list.inTheCart.length == 0 &&
-                      list.notAvailable.length == 0) {
-                    return SizedBox(height: 16);
-                  }
-                  return Padding(
-                    padding: EdgeInsets.all(16),
-                    child: CompletedSection(),
+                  final show =
+                      list.inTheCart.isNotEmpty || list.notAvailable.isNotEmpty;
+                  return AnimatedCrossFade(
+                    duration: 200.milliseconds,
+                    crossFadeState: show
+                        ? CrossFadeState.showSecond
+                        : CrossFadeState.showFirst,
+                    firstChild: SizedBox(height: 16),
+                    secondChild: Padding(
+                      padding: EdgeInsets.all(16),
+                      child: CompletedSection(),
+                    ),
                   );
                 },
               ),
             ),
-            if (list.items.length == 0)
+            if (list.items.isEmpty)
               SliverToBoxAdapter(
                 child: Column(
                   children: [
@@ -113,6 +101,8 @@ class TodoList extends StatelessWidget {
                     ),
                     SizedBox(height: 16),
                     Wrap(
+                      spacing: 16,
+                      alignment: WrapAlignment.center,
                       children: [
                         ActionChip(
                           label: Text('Milch', style: TextStyle(fontSize: 20)),
