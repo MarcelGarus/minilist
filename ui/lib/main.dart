@@ -7,6 +7,8 @@ import 'package:flutter/rendering.dart';
 import 'app_bar.dart';
 import 'create_item_sheet.dart';
 import 'data.dart';
+import 'suggestion_chip.dart';
+import 'suggestion_engine.dart' as suggestionEngine;
 
 void main() async {
   await initializeChest();
@@ -14,9 +16,12 @@ void main() async {
     ...tapers.forDartCore,
     0: taper.forList<String>(),
     1: taper.forShoppingList().v0,
+    2: taper.forRememberState().v0,
+    3: taper.forMap<String, double>(),
   });
   await list.delete();
   await list.open();
+  await suggestionEngine.initialize();
   runApp(ShoppingListApp());
 }
 
@@ -34,7 +39,10 @@ class ShoppingListApp extends StatelessWidget {
 class MainPage extends StatelessWidget {
   void _addItem(BuildContext context) async {
     final item = await context.showCreateItemSheet();
-    if (item != null) list.items.add(item);
+    if (item != null) {
+      list.items.add(item);
+      suggestionEngine.add(item);
+    }
   }
 
   @override
@@ -122,15 +130,9 @@ class TodoList extends StatelessWidget {
                       spacing: 16,
                       alignment: WrapAlignment.center,
                       children: [
-                        ActionChip(
-                          label: Text('Milch', style: TextStyle(fontSize: 20)),
-                          backgroundColor:
-                              context.theme.scaffoldBackgroundColor,
-                          shape: StadiumBorder(
-                            side: BorderSide(color: Colors.black12),
-                          ),
-                          onPressed: () => list.items.add('Milch'),
-                        ),
+                        for (final suggestion
+                            in suggestionEngine.relevantSuggestions)
+                          SuggestionChip(item: suggestion),
                       ],
                     ),
                   ],
