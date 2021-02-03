@@ -7,8 +7,6 @@ import 'app_bar.dart';
 import 'create_item_sheet.dart';
 import 'data.dart';
 
-final list = Chest<ShoppingList>('list', ifNew: () => ShoppingList.empty());
-
 void main() async {
   await initializeChest();
   tape.register({

@@ -3,6 +3,8 @@ import 'package:meta/meta.dart';
 
 part 'data.g.dart';
 
+final list = Chest<ShoppingList>('list', ifNew: () => ShoppingList.empty());
+
 @sealed
 @tape({
   v0: {#items, #inTheCart, #notAvailable},
