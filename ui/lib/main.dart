@@ -3,6 +3,7 @@ import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:chest_flutter/chest_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:reorderables/reorderables.dart';
 
 import 'app_bar.dart';
 import 'completed_section.dart';
@@ -70,9 +71,9 @@ class TodoList extends StatelessWidget {
           slivers: [
             ListAppBar(
               title: 'Shopping List',
-              subtitle: hasManyItems ? '${list.items.length} items' : '',
+              subtitle: hasManyItems ? '${list.items.length} items left' : '',
               actions: [
-                if (hasManyItems)
+                if (hasManyItems && false)
                   IconButton(icon: Icon(Icons.search), onPressed: () {}),
                 // IconButton(icon: Icon(Icons.view_agenda_outlined)),
                 // IconButton(icon: Icon(Icons.list)),
@@ -109,8 +110,14 @@ class TodoList extends StatelessWidget {
                 ),
               )
             else
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
+              ReorderableSliverList(
+                onReorder: (oldIndex, newIndex) {
+                  final items = list.items.value;
+                  final item = items.removeAt(oldIndex);
+                  items.insert(newIndex, item);
+                  list.items.value = items;
+                },
+                delegate: ReorderableSliverChildBuilderDelegate(
                   (_, i) => TodoItem(item: list.items[i].value),
                   childCount: list.items.length,
                 ),
@@ -132,7 +139,7 @@ class TodoList extends StatelessWidget {
                       alignment: WrapAlignment.center,
                       children: [
                         for (final suggestion
-                            in suggestionEngine.relevantSuggestions)
+                            in suggestionEngine.relevantSuggestions.take(5))
                           SuggestionChip(item: suggestion),
                       ],
                     ),
