@@ -12,7 +12,7 @@ class ListAppBar extends StatelessWidget {
   });
 
   final String title;
-  final String subtitle;
+  final Widget subtitle;
   final List<Widget> actions;
 
   @override
@@ -68,7 +68,7 @@ class ListAppBar extends StatelessWidget {
       alignment: Alignment(0, 0.4),
       child: Opacity(
         opacity: (-1 + 2 * expansion).clamp(0.0, 1.0),
-        child: Text(subtitle, style: TextStyle(fontSize: 20)),
+        child: subtitle,
       ),
     );
   }

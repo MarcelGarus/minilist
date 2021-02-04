@@ -64,14 +64,22 @@ class TodoList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReferenceBuilder(
-      reference: list.items,
+      reference: list,
       builder: (_) {
         final hasManyItems = list.items.length >= 5;
         return CustomScrollView(
           slivers: [
             ListAppBar(
               title: 'Shopping List',
-              subtitle: hasManyItems ? '${list.items.length} items left' : '',
+              subtitle: () {
+                if (!hasManyItems) return Container();
+                return Text(
+                  list.inTheCart.isEmpty && list.notAvailable.isEmpty
+                      ? '${list.items.length} items'
+                      : '${list.items.length} items left',
+                  style: TextStyle(fontSize: 20),
+                );
+              }(),
               actions: [
                 if (hasManyItems && false)
                   IconButton(icon: Icon(Icons.search), onPressed: () {}),
@@ -81,23 +89,17 @@ class TodoList extends StatelessWidget {
               ],
             ),
             SliverToBoxAdapter(
-              child: ReferencesBuilder(
-                references: [list.inTheCart, list.notAvailable],
-                builder: (context) {
-                  final show =
-                      list.inTheCart.isNotEmpty || list.notAvailable.isNotEmpty;
-                  return AnimatedCrossFade(
-                    duration: 200.milliseconds,
-                    crossFadeState: show
+              child: AnimatedCrossFade(
+                duration: 200.milliseconds,
+                crossFadeState:
+                    list.inTheCart.isNotEmpty || list.notAvailable.isNotEmpty
                         ? CrossFadeState.showSecond
                         : CrossFadeState.showFirst,
-                    firstChild: SizedBox(height: 16),
-                    secondChild: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: CompletedSection(),
-                    ),
-                  );
-                },
+                firstChild: SizedBox(height: 16),
+                secondChild: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: CompletedSection(),
+                ),
               ),
             ),
             if (list.items.isEmpty)
@@ -160,9 +162,7 @@ class TodoList extends StatelessWidget {
                 ),
               ),
             ),
-            SliverToBoxAdapter(
-              child: Container(height: 100),
-            ),
+            SliverToBoxAdapter(child: Container(height: 100)),
           ],
         );
       },
