@@ -46,9 +46,11 @@ class ListAppBar extends StatelessWidget {
 
   Widget _buildTitle(double expansion) {
     return Align(
-      alignment: expansion.lerpAlignment(
-        collapsed: Alignment.centerLeft,
-        expanded: Alignment.center,
+      alignment: Alignment(
+        Curves.easeInCubic.flipped
+            .transform(expansion)
+            .lerpDouble(collapsed: -1, expanded: 0),
+        0,
       ),
       child: Padding(
         padding: EdgeInsets.only(
@@ -67,7 +69,7 @@ class ListAppBar extends StatelessWidget {
     return Align(
       alignment: Alignment(0, 0.4),
       child: Opacity(
-        opacity: (-1 + 2 * expansion).clamp(0.0, 1.0),
+        opacity: (-3 + 4 * expansion).clamp(0.0, 1.0),
         child: subtitle,
       ),
     );
@@ -75,16 +77,17 @@ class ListAppBar extends StatelessWidget {
 
   Widget _buildActions(double expansion) {
     return Align(
-      alignment: expansion.lerpAlignment(
-        collapsed: Alignment.centerRight,
-        expanded: Alignment.bottomRight,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ...actions,
-          SizedBox(width: expansion.lerpDouble(collapsed: 0, expanded: 16)),
-        ],
+      alignment: Alignment.bottomRight,
+      child: Container(
+        height: 56,
+        alignment: Alignment.centerRight,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ...actions,
+            SizedBox(width: expansion.lerpDouble(collapsed: 0, expanded: 16)),
+          ],
+        ),
       ),
     );
   }
