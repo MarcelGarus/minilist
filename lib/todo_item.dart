@@ -2,11 +2,15 @@ import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:flutter/material.dart';
 
 class TodoItem extends StatelessWidget {
-  const TodoItem({required this.item, this.onSwipeRight, this.onSwipeLeft});
+  const TodoItem({
+    required this.item,
+    this.onPrimarySwipe,
+    this.onSecondarySwipe,
+  });
 
   final String item;
-  final VoidCallback? onSwipeRight;
-  final VoidCallback? onSwipeLeft;
+  final VoidCallback? onPrimarySwipe;
+  final VoidCallback? onSecondarySwipe;
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +43,9 @@ class TodoItem extends StatelessWidget {
       ),
       onDismissed: (direction) {
         if (direction == DismissDirection.startToEnd) {
-          onSwipeRight?.call();
+          onPrimarySwipe?.call();
         } else {
-          onSwipeLeft?.call();
+          onSecondarySwipe?.call();
         }
       },
       child: ListTile(
