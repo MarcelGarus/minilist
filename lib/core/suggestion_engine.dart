@@ -62,7 +62,7 @@ class _SuggestionEngine {
     }
   }
 
-  List<String> get relevantSuggestions {
+  List<String> get items {
     final items = list.items.value.toSet();
     return _state.scores.value.entries
         .where((it) => !items.contains(it.key))

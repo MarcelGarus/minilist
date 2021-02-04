@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 class TodoItem extends StatelessWidget {
   const TodoItem({
     required this.item,
+    this.onTap,
     this.onPrimarySwipe,
     this.onSecondarySwipe,
   });
 
   final String item;
+  final VoidCallback? onTap;
   final VoidCallback? onPrimarySwipe;
   final VoidCallback? onSecondarySwipe;
 
@@ -49,6 +51,7 @@ class TodoItem extends StatelessWidget {
         }
       },
       child: ListTile(
+        onTap: onTap,
         contentPadding: EdgeInsets.symmetric(horizontal: 16),
         title: Text(item, style: TextStyle(fontSize: 20)),
       ),

@@ -1,13 +1,11 @@
 import 'package:black_hole_flutter/black_hole_flutter.dart';
-import 'package:chest_flutter/chest_flutter.dart';
 import 'package:flutter/material.dart';
 
-import 'core/core.dart';
-
 class SuggestionChip extends StatelessWidget {
-  const SuggestionChip({required this.item});
+  const SuggestionChip({required this.item, required this.onTap});
 
   final String item;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +14,7 @@ class SuggestionChip extends StatelessWidget {
       backgroundColor: context.theme.scaffoldBackgroundColor,
       shape: StadiumBorder(side: BorderSide(color: Colors.black12)),
       pressElevation: 4,
-      onPressed: () => list.items.add(item),
+      onPressed: onTap,
     );
   }
 }

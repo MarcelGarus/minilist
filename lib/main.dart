@@ -8,7 +8,7 @@ import 'package:reorderables/reorderables.dart';
 import 'app_bar.dart';
 import 'completed_section.dart';
 import 'core/core.dart';
-import 'create_item_sheet.dart';
+import 'item_sheet.dart';
 import 'suggestion_chip.dart';
 import 'todo_item.dart';
 
@@ -39,14 +39,6 @@ class ShoppingListApp extends StatelessWidget {
 }
 
 class MainPage extends StatelessWidget {
-  void _addItem(BuildContext context) async {
-    final item = await context.showCreateItemSheet();
-    if (item != null) {
-      list.items.add(item);
-      suggestionEngine.add(item);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +46,7 @@ class MainPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.add),
         label: Text('Add item'),
-        onPressed: () => _addItem(context),
+        onPressed: context.showCreateItemSheet,
       ),
     );
   }
@@ -124,6 +116,7 @@ class TodoList extends StatelessWidget {
                     final item = list.items[i].value;
                     return TodoItem(
                       item: item,
+                      onTap: () => context.showEditItemSheet(item),
                       onPrimarySwipe: () {
                         list.items.value = list.items.value..remove(item);
                         list.inTheCart.add(item);
@@ -153,9 +146,14 @@ class TodoList extends StatelessWidget {
                       spacing: 16,
                       alignment: WrapAlignment.center,
                       children: [
-                        for (final suggestion
-                            in suggestionEngine.relevantSuggestions.take(5))
-                          SuggestionChip(item: suggestion),
+                        for (final item in suggestionEngine.items.take(5))
+                          SuggestionChip(
+                            item: item,
+                            onTap: () {
+                              list.items.add(item);
+                              suggestionEngine.add(item);
+                            },
+                          ),
                       ],
                     ),
                   ],
