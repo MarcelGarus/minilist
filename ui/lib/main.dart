@@ -7,10 +7,9 @@ import 'package:reorderables/reorderables.dart';
 
 import 'app_bar.dart';
 import 'completed_section.dart';
+import 'core/core.dart';
 import 'create_item_sheet.dart';
-import 'data.dart';
 import 'suggestion_chip.dart';
-import 'suggestion_engine.dart' as suggestionEngine;
 
 void main() async {
   await initializeChest();

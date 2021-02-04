@@ -1,7 +1,7 @@
 import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:flutter/material.dart';
 
-import 'data.dart';
+import 'core/core.dart';
 
 extension ShowCreateItemSheet on BuildContext {
   Future<String?> showCreateItemSheet() {

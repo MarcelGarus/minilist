@@ -1,7 +1,7 @@
 import 'package:chest_flutter/chest_flutter.dart';
 import 'package:meta/meta.dart';
 
-part 'data.g.dart';
+part 'list.g.dart';
 
 final list = Chest<ShoppingList>('list', ifNew: () => ShoppingList.empty());
 

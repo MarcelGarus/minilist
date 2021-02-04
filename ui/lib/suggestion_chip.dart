@@ -2,7 +2,7 @@ import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:chest_flutter/chest_flutter.dart';
 import 'package:flutter/material.dart';
 
-import 'data.dart';
+import 'core/core.dart';
 
 class SuggestionChip extends StatelessWidget {
   const SuggestionChip({required this.item});
