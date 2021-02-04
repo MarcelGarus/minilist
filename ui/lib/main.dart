@@ -10,6 +10,7 @@ import 'completed_section.dart';
 import 'core/core.dart';
 import 'create_item_sheet.dart';
 import 'suggestion_chip.dart';
+import 'todo_item.dart';
 
 void main() async {
   await initializeChest();
@@ -117,7 +118,20 @@ class TodoList extends StatelessWidget {
                   list.items.value = items;
                 },
                 delegate: ReorderableSliverChildBuilderDelegate(
-                  (_, i) => TodoItem(item: list.items[i].value),
+                  (_, i) {
+                    final item = list.items[i].value;
+                    return TodoItem(
+                      item: item,
+                      onPrimarySwipe: () {
+                        list.items.value = list.items.value..remove(item);
+                        list.inTheCart.add(item);
+                      },
+                      onSecondarySwipe: () {
+                        list.items.value = list.items.value..remove(item);
+                        list.notAvailable.add(item);
+                      },
+                    );
+                  },
                   childCount: list.items.length,
                 ),
               ),
@@ -152,56 +166,6 @@ class TodoList extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-class TodoItem extends StatelessWidget {
-  const TodoItem({required this.item});
-
-  final String item;
-
-  @override
-  Widget build(BuildContext context) {
-    return Dismissible(
-      key: Key(item),
-      background: Container(
-        color: context.theme.primaryColor,
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: Row(
-          children: [
-            Icon(Icons.check, color: Colors.white),
-            SizedBox(width: 16),
-            Text('Got it', style: TextStyle(color: Colors.white, fontSize: 20)),
-            Spacer(),
-          ],
-        ),
-      ),
-      secondaryBackground: Container(
-        color: Colors.grey,
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        child: Row(
-          children: [
-            Spacer(),
-            Text('Not available',
-                style: TextStyle(color: Colors.white, fontSize: 20)),
-            SizedBox(width: 16),
-            Icon(Icons.not_interested, color: Colors.white),
-          ],
-        ),
-      ),
-      onDismissed: (direction) {
-        list.items.value = list.items.value..remove(item);
-        if (direction == DismissDirection.startToEnd) {
-          list.inTheCart.add(item);
-        } else {
-          list.notAvailable.add(item);
-        }
-      },
-      child: ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        title: Text(item, style: TextStyle(fontSize: 20)),
-      ),
     );
   }
 }
