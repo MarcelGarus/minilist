@@ -34,7 +34,7 @@ class TodoItem extends StatelessWidget {
         ),
       ),
       secondaryBackground: Container(
-        color: Colors.grey,
+        color: theme.notAvailableColor,
         padding: EdgeInsets.symmetric(horizontal: theme.outerPadding),
         child: Row(
           children: [

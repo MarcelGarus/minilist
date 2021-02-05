@@ -97,16 +97,25 @@ class TodoList extends StatelessWidget {
                 : CrossFadeState.showSecond,
             firstChild: SizedBox(height: theme.innerPadding),
             secondChild: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: theme.outerPadding,
-                vertical: theme.innerPadding,
+              padding: EdgeInsets.only(
+                left: theme.outerPadding,
+                right: theme.outerPadding,
+                top: theme.innerPadding,
+                bottom: 2 * theme.innerPadding,
               ),
               child: CompletedSection(),
             ),
           ),
         ),
         if (list.items.isEmpty)
-          SliverToBoxAdapter(child: Center(child: Text('Your list is empty.')))
+          SliverToBoxAdapter(
+            child: Center(
+              child: Text(
+                'A fresh start',
+                textAlign: TextAlign.center,
+              ),
+            ),
+          )
         else
           ReorderableSliverList(
             onReorder: (oldIndex, newIndex) {
@@ -173,21 +182,24 @@ class TodoList extends StatelessWidget {
               children: [
                 SizedBox(height: theme.innerPadding),
                 Text(
-                  'How about adding some of these?',
+                  'How about some of these?',
                   textAlign: TextAlign.center,
                   style: theme.suggestionTextStyle,
                 ),
                 SizedBox(height: theme.innerPadding),
                 Wrap(
-                  spacing: theme.innerPadding,
+                  // spacing: theme.innerPadding,
                   alignment: WrapAlignment.center,
                   children: [
                     for (final item in suggestionEngine.items.take(6))
                       SuggestionChip(
                         item: item,
-                        onTap: () {
+                        onPressed: () {
                           list.items.add(item);
                           suggestionEngine.add(item);
+                        },
+                        onLongPressed: () {
+                          // TODO: Show context dialog.
                         },
                       ),
                   ],

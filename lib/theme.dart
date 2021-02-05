@@ -67,7 +67,7 @@ class AppThemeData {
           fabTextStyle: TextStyle(color: Colors.white),
           inTheCartColor: Colors.teal,
           onInTheCartColor: Colors.white,
-          notAvailableColor: Colors.grey.shade300,
+          notAvailableColor: Colors.grey.shade800,
           onNotAvailableColor: Colors.white,
           suggestionTextStyle: TextStyle(color: Colors.white70, fontSize: 16),
           suggestionBorder: BorderSide(color: Colors.white12),
