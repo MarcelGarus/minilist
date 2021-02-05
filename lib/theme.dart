@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme extends StatelessWidget {
   AppTheme({required this.data, required this.child});
@@ -105,6 +106,11 @@ class AppThemeData {
     final invalidColor = Colors.pink;
     final invalidTextStyle = TextStyle(color: invalidColor);
     final invalidBrightness = Brightness.light;
+    final accentTextStyle = GoogleFonts.didactGothic(
+      fontSize: textStyle.fontSize,
+      fontWeight: FontWeight.bold,
+      color: textStyle.color,
+    );
 
     return ThemeData(
       scaffoldBackgroundColor: backgroundColor,
@@ -131,9 +137,9 @@ class AppThemeData {
       textTheme: TextTheme(
         bodyText1: textStyle,
         bodyText2: textStyle,
-        button: textStyle,
+        button: accentTextStyle,
         caption: invalidTextStyle,
-        headline1: invalidTextStyle,
+        headline1: accentTextStyle,
         headline2: invalidTextStyle,
         headline3: invalidTextStyle,
         headline4: invalidTextStyle,

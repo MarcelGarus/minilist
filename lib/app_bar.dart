@@ -34,7 +34,7 @@ class ListAppBar extends StatelessWidget {
             padding: context.mediaQuery.padding,
             child: Stack(
               children: [
-                _buildTitle(expansion),
+                _buildTitle(context, expansion),
                 _buildSubtitle(expansion),
                 _buildActions(expansion),
               ],
@@ -45,7 +45,7 @@ class ListAppBar extends StatelessWidget {
     );
   }
 
-  Widget _buildTitle(double expansion) {
+  Widget _buildTitle(BuildContext context, double expansion) {
     return Align(
       alignment: Alignment(
         Curves.easeInCubic.flipped
@@ -60,7 +60,8 @@ class ListAppBar extends StatelessWidget {
         child: Text(
           title,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 20.0 + 20 * expansion),
+          style: context.theme.textTheme.headline1!
+              .copyWith(fontSize: 20.0 + 20 * expansion),
         ),
       ),
     );
