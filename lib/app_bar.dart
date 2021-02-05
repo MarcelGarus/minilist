@@ -4,6 +4,8 @@ import 'dart:ui' as ui;
 import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:flutter/material.dart';
 
+import 'theme.dart';
+
 class ListAppBar extends StatelessWidget {
   const ListAppBar({
     required this.title,
@@ -20,9 +22,8 @@ class ListAppBar extends StatelessWidget {
     final collapsedHeight = 56.0 + context.mediaQuery.padding.top;
     final expandedHeight = context.mediaQuery.size.height * 0.3967;
     return SliverAppBar(
-      // collapsedHeight: collapsedHeight,
       expandedHeight: expandedHeight,
-      backgroundColor: context.theme.scaffoldBackgroundColor,
+      backgroundColor: context.appTheme.backgroundColor,
       pinned: true,
       flexibleSpace: LayoutBuilder(
         builder: (context, constraints) {
@@ -96,17 +97,6 @@ class ListAppBar extends StatelessWidget {
 extension _LerpFromExpansion on double {
   T _lerp<T>(T collapsed, T expanded, T Function(T, T, double) lerper) =>
       lerper(collapsed, expanded, this);
-
-  Alignment lerpAlignment({
-    required Alignment collapsed,
-    required Alignment expanded,
-  }) {
-    return _lerp<Alignment>(
-      collapsed,
-      expanded,
-      (a, b, t) => Alignment.lerp(a, b, t)!,
-    );
-  }
 
   double lerpDouble({
     required double collapsed,

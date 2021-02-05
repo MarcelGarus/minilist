@@ -3,6 +3,7 @@ import 'package:chest_flutter/chest_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'core/core.dart';
+import 'theme.dart';
 
 extension ShowItemSheet on BuildContext {
   Future<void> showCreateItemSheet() => _showRoundedSheet(_ItemSheet());
@@ -11,7 +12,6 @@ extension ShowItemSheet on BuildContext {
 
   Future<void> _showRoundedSheet(Widget sheet) {
     return this.showModalBottomSheet(
-      backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16),
@@ -52,27 +52,28 @@ class _ItemSheetState extends State<_ItemSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.all(16),
+    return Padding(
+      padding: EdgeInsets.all(context.appTheme.outerPadding),
+      child: Row(
+        children: [
+          Expanded(
             child: TextField(
               autofocus: true,
+              maxLines: null,
               controller: _controller,
-              style: TextStyle(fontSize: 20),
               decoration: InputDecoration(
                 hintText: _isEditingExisting ? widget.editedItem : 'New item',
+                hintStyle: context.appTheme.hintStyle,
                 border: InputBorder.none,
               ),
             ),
           ),
-        ),
-        ValueListenableBuilder(
-          valueListenable: _controller,
-          builder: (_, __, ___) => _buildButton(),
-        ),
-      ],
+          ValueListenableBuilder(
+            valueListenable: _controller,
+            builder: (_, __, ___) => _buildButton(),
+          ),
+        ],
+      ),
     );
   }
 
@@ -82,14 +83,14 @@ class _ItemSheetState extends State<_ItemSheet> {
         mainAxisSize: MainAxisSize.min,
         children: [
           FlatButton(
-            child: Text('Delete', style: TextStyle(fontSize: 20)),
+            child: Text('Delete'),
             onPressed: () {
               list.items.value = list.items.value..remove(_editedItem);
               context.navigator.pop();
             },
           ),
           FlatButton(
-            child: Text('Save', style: TextStyle(fontSize: 20)),
+            child: Text('Save'),
             onPressed: _alreadyExists
                 ? null
                 : () {
@@ -104,13 +105,13 @@ class _ItemSheetState extends State<_ItemSheet> {
 
     if (_alreadyExists) {
       return FlatButton(
-        child: Text('Edit existing', style: TextStyle(fontSize: 20)),
+        child: Text('Edit existing'),
         onPressed: () => setState(() => _editedItem = _item),
       );
     }
 
     return FlatButton(
-      child: Text('Add', style: TextStyle(fontSize: 20)),
+      child: Text('Add'),
       onPressed: () {
         list.items.add(_item);
         suggestionEngine.add(_item);

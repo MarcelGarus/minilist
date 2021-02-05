@@ -3,6 +3,7 @@ import 'package:chest_flutter/chest_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'core/core.dart';
+import 'theme.dart';
 
 class CompletedSection extends StatelessWidget {
   @override
@@ -16,7 +17,7 @@ class CompletedSection extends StatelessWidget {
               child: CompletedBucket(
                 primaryText: list.inTheCart.length.toString(),
                 secondaryText: 'in the cart',
-                color: context.theme.primaryColor.withOpacity(0.2),
+                color: context.appTheme.inTheCartColor.withOpacity(0.2),
               ),
             ),
             SizedBox(width: 16),
@@ -24,7 +25,7 @@ class CompletedSection extends StatelessWidget {
               child: CompletedBucket(
                 primaryText: list.notAvailable.length.toString(),
                 secondaryText: 'not available',
-                color: Colors.grey.withOpacity(0.2),
+                color: context.appTheme.notAvailableColor.withOpacity(0.2),
               ),
             ),
           ],
@@ -54,8 +55,9 @@ class CompletedBucket extends StatelessWidget {
         padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            Text(primaryText, style: TextStyle(fontSize: 24)),
-            Text(secondaryText),
+            Text(primaryText, style: TextStyle(fontSize: 20)),
+            SizedBox(height: 4),
+            Text(secondaryText, style: TextStyle(fontSize: 16)),
           ],
         ),
       ),

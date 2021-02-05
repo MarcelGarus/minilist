@@ -21,3 +21,7 @@ class ShoppingList {
   final List<String> inTheCart;
   final List<String> notAvailable;
 }
+
+extension ListHelpers on Reference<ShoppingList> {
+  bool get areAllItemsInMainList => inTheCart.isEmpty && notAvailable.isEmpty;
+}

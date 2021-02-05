@@ -1,6 +1,8 @@
 import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:flutter/material.dart';
 
+import 'theme.dart';
+
 class TodoItem extends StatelessWidget {
   const TodoItem({
     required this.item,
@@ -16,30 +18,33 @@ class TodoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.appTheme;
     return Dismissible(
       key: Key(item),
       background: Container(
-        color: context.theme.primaryColor,
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        color: theme.inTheCartColor,
+        padding: EdgeInsets.symmetric(horizontal: theme.outerPadding),
         child: Row(
           children: [
-            Icon(Icons.check, color: Colors.white),
-            SizedBox(width: 16),
-            Text('Got it', style: TextStyle(color: Colors.white, fontSize: 20)),
+            Icon(Icons.check, color: theme.onInTheCartColor),
+            SizedBox(width: theme.innerPadding),
+            Text('Got it', style: TextStyle(color: theme.onInTheCartColor)),
             Spacer(),
           ],
         ),
       ),
       secondaryBackground: Container(
         color: Colors.grey,
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: theme.outerPadding),
         child: Row(
           children: [
             Spacer(),
-            Text('Not available',
-                style: TextStyle(color: Colors.white, fontSize: 20)),
-            SizedBox(width: 16),
-            Icon(Icons.not_interested, color: Colors.white),
+            Text(
+              'Not available',
+              style: TextStyle(color: theme.onNotAvailableColor),
+            ),
+            SizedBox(width: theme.innerPadding),
+            Icon(Icons.not_interested, color: theme.onNotAvailableColor),
           ],
         ),
       ),
@@ -50,10 +55,17 @@ class TodoItem extends StatelessWidget {
           onSecondarySwipe?.call();
         }
       },
-      child: ListTile(
-        onTap: onTap,
-        contentPadding: EdgeInsets.symmetric(horizontal: 16),
-        title: Text(item, style: TextStyle(fontSize: 20)),
+      child: Material(
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: theme.outerPadding,
+              vertical: theme.innerPadding,
+            ),
+            child: Container(width: double.infinity, child: Text(item)),
+          ),
+        ),
       ),
     );
   }

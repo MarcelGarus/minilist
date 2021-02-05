@@ -10,9 +10,8 @@ class SuggestionChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ActionChip(
-      label: Text(item, style: TextStyle(fontSize: 20)),
+      label: Text(item),
       backgroundColor: context.theme.scaffoldBackgroundColor,
-      shape: StadiumBorder(side: BorderSide(color: Colors.black12)),
       pressElevation: 4,
       onPressed: onTap,
     );
