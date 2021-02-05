@@ -62,13 +62,23 @@ class _SuggestionEngine {
     }
   }
 
-  List<String> get items {
-    final items = list.items.value.toSet();
+  Iterable<String> get _recommendations {
     return _state.scores.value.entries
-        .where((it) => !items.contains(it.key))
         .toList()
-        .sortedCopyBy((entry) => -entry.value)
-        .map((entry) => entry.key)
-        .toList();
+        .sortedCopyBy((it) => it.value)
+        .map((it) => it.key);
+  }
+
+  Iterable<String> get items {
+    final items = list.items.value.toSet();
+    return _recommendations.where((it) => !items.contains(it));
+  }
+
+  String? suggestionFor(String prefix) {
+    if (prefix.isEmpty) return null;
+    return items
+        .where((it) => it.startsWith(prefix) && it.length > prefix.length)
+        .cast<String?>()
+        .firstWhere((_) => true, orElse: () => null);
   }
 }

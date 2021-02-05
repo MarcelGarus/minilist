@@ -54,25 +54,20 @@ class _ItemSheetState extends State<_ItemSheet> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(context.appTheme.outerPadding),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              autofocus: true,
-              maxLines: null,
-              controller: _controller,
-              decoration: InputDecoration(
+      child: ValueListenableBuilder(
+        valueListenable: _controller,
+        builder: (_, __, ___) => Row(
+          children: [
+            Expanded(
+              child: SmartComposingTextField(
+                controller: _controller,
                 hintText: _isEditingExisting ? widget.editedItem : 'New item',
-                hintStyle: context.appTheme.hintStyle,
-                border: InputBorder.none,
+                smartComposer: suggestionEngine.suggestionFor,
               ),
             ),
-          ),
-          ValueListenableBuilder(
-            valueListenable: _controller,
-            builder: (_, __, ___) => _buildButton(),
-          ),
-        ],
+            _buildButton(),
+          ],
+        ),
       ),
     );
   }
@@ -117,6 +112,104 @@ class _ItemSheetState extends State<_ItemSheet> {
         suggestionEngine.add(_item);
         context.navigator.pop();
       },
+    );
+  }
+}
+
+class SmartComposingTextField extends StatefulWidget {
+  const SmartComposingTextField({
+    Key? key,
+    required this.controller,
+    required this.hintText,
+    required this.smartComposer,
+  }) : super(key: key);
+
+  final TextEditingController controller;
+  final String? hintText;
+  final String? Function(String prefix) smartComposer;
+
+  @override
+  _SmartComposingTextFieldState createState() =>
+      _SmartComposingTextFieldState();
+}
+
+class _SmartComposingTextFieldState extends State<SmartComposingTextField> {
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: widget.controller,
+      builder: (context, _, __) {
+        final suggestion = widget.smartComposer(widget.controller.text);
+        return GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onHorizontalDragStart: (startInfo) {},
+          // _dragStart = startInfo.localPosition.dx,
+          onHorizontalDragEnd: (endInfo) {
+            if (suggestion != null) {
+              widget.controller
+                ..text = suggestion
+                ..selection = TextSelection.fromPosition(
+                  TextPosition(offset: suggestion.length),
+                );
+            }
+          },
+          child: Stack(
+            children: [
+              if (suggestion != null)
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12),
+                  child: Text.rich(
+                    TextSpan(
+                      style: context.appTheme.hintStyle,
+                      children: <InlineSpan>[
+                        TextSpan(text: '$suggestion '),
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.bottom,
+                          baseline: TextBaseline.alphabetic,
+                          child: SwipeRightIndicator(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  //Text('Some text.', style: context.appTheme.hintStyle),
+                ),
+              TextField(
+                autofocus: true,
+                maxLines: null,
+                controller: widget.controller,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.zero,
+                  hintText: widget.hintText,
+                  hintStyle: context.appTheme.hintStyle,
+                  border: InputBorder.none,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class SwipeRightIndicator extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final color = context.appTheme.hintStyle.color!;
+    return Container(
+      height: 22,
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      decoration: BoxDecoration(
+        border: Border.all(color: color),
+        borderRadius: BorderRadius.circular(2),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text('swipe ', style: TextStyle(fontSize: 12, color: color)),
+          Icon(Icons.arrow_right_alt, size: 16, color: color),
+        ],
+      ),
     );
   }
 }
