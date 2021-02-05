@@ -122,12 +122,44 @@ class TodoList extends StatelessWidget {
                   item: item,
                   onTap: () => context.showEditItemSheet(item),
                   onPrimarySwipe: () {
-                    list.items.value = list.items.value..remove(item);
+                    final items = list.items.value;
+                    final index = items.indexOf(item);
+                    list.items.value = items..removeAt(index);
                     list.inTheCart.add(item);
+                    context.scaffoldMessenger.showSnackBar(
+                      SnackBar(
+                        content: Text('$item is in the cart.'),
+                        action: SnackBarAction(
+                          label: 'Undo',
+                          onPressed: () {
+                            list.inTheCart.value = list.inTheCart.value
+                              ..removeLast();
+                            list.items.value = list.items.value
+                              ..insert(index, item);
+                          },
+                        ),
+                      ),
+                    );
                   },
                   onSecondarySwipe: () {
-                    list.items.value = list.items.value..remove(item);
+                    final items = list.items.value;
+                    final index = items.indexOf(item);
+                    list.items.value = items..removeAt(index);
                     list.notAvailable.add(item);
+                    context.scaffoldMessenger.showSnackBar(
+                      SnackBar(
+                        content: Text('$item is not available.'),
+                        action: SnackBarAction(
+                          label: 'Undo',
+                          onPressed: () {
+                            list.notAvailable.value = list.notAvailable.value
+                              ..removeLast();
+                            list.items.value = list.items.value
+                              ..insert(index, item);
+                          },
+                        ),
+                      ),
+                    );
                   },
                 );
               },

@@ -28,6 +28,8 @@ class AppThemeData {
     required this.onNotAvailableColor,
     required this.suggestionTextStyle,
     required this.suggestionBorder,
+    required this.snackBarColor,
+    required this.snackBarTextColor,
     required this.sheetColor,
     required this.sheetButtonStyle,
     required this.hintStyle,
@@ -47,6 +49,8 @@ class AppThemeData {
           onNotAvailableColor: Colors.white,
           suggestionTextStyle: TextStyle(color: Colors.white),
           suggestionBorder: BorderSide(color: Colors.black12),
+          snackBarColor: Colors.grey.shade900,
+          snackBarTextColor: Colors.white,
           sheetColor: Colors.white,
           sheetButtonStyle: TextStyle(color: Colors.teal),
           hintStyle: TextStyle(color: Colors.black45),
@@ -66,6 +70,8 @@ class AppThemeData {
           onNotAvailableColor: Colors.white,
           suggestionTextStyle: TextStyle(color: Colors.white70, fontSize: 16),
           suggestionBorder: BorderSide(color: Colors.white12),
+          snackBarColor: Colors.white,
+          snackBarTextColor: Colors.black,
           sheetColor: Colors.grey.shade900,
           sheetButtonStyle: TextStyle(color: Colors.teal),
           hintStyle: TextStyle(color: Colors.white54),
@@ -87,6 +93,9 @@ class AppThemeData {
 
   final TextStyle suggestionTextStyle;
   final BorderSide suggestionBorder;
+
+  final Color snackBarColor;
+  final Color snackBarTextColor;
 
   final Color sheetColor;
   final TextStyle sheetButtonStyle;
@@ -140,6 +149,11 @@ class AppThemeData {
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: primaryColor,
         splashColor: Colors.white12,
+      ),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: snackBarColor,
+        contentTextStyle: textStyle.copyWith(color: snackBarTextColor),
+        actionTextColor: primaryColor,
       ),
       chipTheme: ChipThemeData(
         backgroundColor: backgroundColor,
