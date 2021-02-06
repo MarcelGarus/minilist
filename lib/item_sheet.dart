@@ -169,7 +169,7 @@ class SmartComposingTextField extends StatelessWidget {
             children: [
               if (suggestion != null)
                 Transform.translate(
-                  offset: Offset(0, -1), // This has been carefully aligned.
+                  offset: Offset(0, -2), // This has been carefully aligned.
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 14),
                     child: Text.rich(
@@ -189,17 +189,19 @@ class SmartComposingTextField extends StatelessWidget {
                     //Text('Some text.', style: context.appTheme.hintStyle),
                   ),
                 ),
-              TextField(
-                autofocus: true,
-                maxLines: null,
-                controller: controller,
-                style: context.itemStyle,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.zero,
-                  hintText: hintText,
-                  hintStyle: context.itemStyle
-                      .copyWith(color: context.color.secondary),
-                  border: InputBorder.none,
+              Padding(
+                padding: EdgeInsets.only(bottom: 4),
+                child: TextField(
+                  autofocus: true,
+                  maxLines: null,
+                  controller: controller,
+                  style: context.itemStyle,
+                  decoration: InputDecoration(
+                    hintText: hintText,
+                    hintStyle: context.itemStyle
+                        .copyWith(color: context.color.secondary),
+                    border: InputBorder.none,
+                  ),
                 ),
               ),
             ],
