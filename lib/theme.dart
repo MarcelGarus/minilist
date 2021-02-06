@@ -13,174 +13,142 @@ class AppTheme extends StatelessWidget {
 
 extension GetAppTheme on BuildContext {
   AppThemeData get appTheme => findAncestorWidgetOfExactType<AppTheme>()!.data;
+  Brightness get brightness => appTheme.brightness;
+  PaddingThemeData get padding => appTheme.padding;
+  TextStyleThemeData get _style => appTheme.style;
+  ColorThemeData get color => appTheme.color;
+
+  // Computed properties.
+  TextStyle get standardStyle =>
+      _style.standard.copyWith(color: color.onBackground);
+  TextStyle get accentStyle =>
+      _style.accent.copyWith(color: color.onBackground);
+  TextStyle get itemStyle => _style.item.copyWith(color: color.onBackground);
+  TextStyle get appBarStyle =>
+      _style.accent.copyWith(color: color.onBackground, fontSize: 20);
+  TextStyle get secondaryStyle =>
+      _style.standard.copyWith(color: color.secondary);
+  TextStyle get suggestionStyle => secondaryStyle;
 }
 
 class AppThemeData {
   AppThemeData({
-    required this.backgroundColor,
-    required this.primaryColor,
-    required this.textStyle,
-    required this.outerPadding,
-    required this.innerPadding,
-    required this.fabTextStyle,
-    required this.inTheCartColor,
-    required this.onInTheCartColor,
-    required this.notAvailableColor,
-    required this.onNotAvailableColor,
-    required this.suggestionTextStyle,
-    required this.suggestionBorder,
-    required this.snackBarColor,
-    required this.snackBarTextColor,
-    required this.sheetColor,
-    required this.sheetButtonStyle,
-    required this.hintStyle,
+    required this.brightness,
+    required this.padding,
+    required this.style,
+    required this.color,
   });
-
   AppThemeData.light()
       : this(
-          backgroundColor: Colors.white,
-          primaryColor: Colors.teal,
-          textStyle: TextStyle(color: Colors.black, fontSize: 20),
-          outerPadding: 24,
-          innerPadding: 16,
-          fabTextStyle: TextStyle(color: Colors.white),
-          inTheCartColor: Colors.teal,
-          onInTheCartColor: Colors.white,
-          notAvailableColor: Colors.grey,
-          onNotAvailableColor: Colors.white,
-          suggestionTextStyle: TextStyle(color: Colors.white),
-          suggestionBorder: BorderSide(color: Colors.black12),
-          snackBarColor: Colors.grey.shade900,
-          snackBarTextColor: Colors.white,
-          sheetColor: Colors.white,
-          sheetButtonStyle: TextStyle(color: Colors.teal),
-          hintStyle: TextStyle(color: Colors.black45),
+          brightness: Brightness.light,
+          padding: PaddingThemeData.standard(),
+          style: TextStyleThemeData.standard(),
+          color: ColorThemeData(
+            background: Colors.white,
+            onBackground: Colors.black,
+            primary: Colors.teal,
+            onPrimary: Colors.white,
+            secondary: Colors.black54,
+            canvas: Colors.white,
+            contrast: Colors.grey.shade900,
+            onContrast: Colors.white,
+            inTheCart: Colors.teal,
+            onInTheCart: Colors.white,
+            inTheCartTint: Colors.teal.withOpacity(0.2),
+            notAvailable: Colors.grey,
+            onNotAvailable: Colors.white,
+            notAvailableTint: Colors.grey.withOpacity(0.2),
+          ),
         );
-
   AppThemeData.black()
       : this(
-          backgroundColor: Colors.black,
-          primaryColor: Colors.teal,
-          textStyle: TextStyle(color: Colors.white, fontSize: 20),
-          outerPadding: 24,
-          innerPadding: 16,
-          fabTextStyle: TextStyle(color: Colors.white),
-          inTheCartColor: Colors.teal,
-          onInTheCartColor: Colors.white,
-          notAvailableColor: Colors.grey.shade800,
-          onNotAvailableColor: Colors.white,
-          suggestionTextStyle: TextStyle(color: Colors.white70, fontSize: 16),
-          suggestionBorder: BorderSide(color: Colors.white12),
-          snackBarColor: Colors.white,
-          snackBarTextColor: Colors.black,
-          sheetColor: Colors.grey.shade900,
-          sheetButtonStyle: TextStyle(color: Colors.teal),
-          hintStyle: TextStyle(color: Colors.white54),
+          brightness: Brightness.dark,
+          padding: PaddingThemeData.standard(),
+          style: TextStyleThemeData.standard(),
+          color: ColorThemeData(
+            background: Colors.black,
+            onBackground: Colors.white,
+            primary: Colors.teal,
+            onPrimary: Colors.white,
+            secondary: Colors.white54,
+            canvas: Colors.grey.shade900,
+            contrast: Colors.white,
+            onContrast: Colors.black,
+            inTheCart: Colors.teal,
+            onInTheCart: Colors.white,
+            inTheCartTint: Colors.teal.withOpacity(0.2),
+            notAvailable: Colors.grey.shade900,
+            onNotAvailable: Colors.white,
+            notAvailableTint: Colors.grey.shade900,
+          ),
         );
 
-  final Color backgroundColor;
-  final Color primaryColor;
-  final TextStyle textStyle;
+  final Brightness brightness;
+  final PaddingThemeData padding;
+  final TextStyleThemeData style;
+  final ColorThemeData color;
+}
 
-  final double outerPadding;
-  final double innerPadding;
+class PaddingThemeData {
+  PaddingThemeData({required this.outer, required this.inner});
+  PaddingThemeData.standard() : this(outer: 24, inner: 16);
 
-  final TextStyle fabTextStyle;
+  final double outer; // Padding on the sides of the screen.
+  final double inner; // Padding between elements.
+}
 
-  final Color inTheCartColor;
-  final Color onInTheCartColor;
-  final Color notAvailableColor;
-  final Color onNotAvailableColor;
-
-  final TextStyle suggestionTextStyle;
-  final BorderSide suggestionBorder;
-
-  final Color snackBarColor;
-  final Color snackBarTextColor;
-
-  final Color sheetColor;
-  final TextStyle sheetButtonStyle;
-  final TextStyle hintStyle;
-
-  ThemeData toMaterialThemeData() {
-    final invalidColor = Colors.pink;
-    final invalidTextStyle = TextStyle(color: invalidColor);
-    final invalidBrightness = Brightness.light;
-    final accentTextStyle = GoogleFonts.didactGothic(
-      fontSize: textStyle.fontSize,
-      fontWeight: FontWeight.bold,
-      color: textStyle.color,
-    );
-
-    return ThemeData(
-      scaffoldBackgroundColor: backgroundColor,
-      primaryColor: primaryColor,
-      accentColor: primaryColor,
-      cardColor: backgroundColor,
-      canvasColor: backgroundColor,
-      colorScheme: ColorScheme(
-        primary: primaryColor,
-        primaryVariant: primaryColor,
-        onPrimary: textStyle.color!,
-        secondary: primaryColor,
-        secondaryVariant: primaryColor,
-        onSecondary: textStyle.color!,
-        error: invalidColor,
-        onError: invalidTextStyle.color!,
-        background: backgroundColor,
-        onBackground: textStyle.color!,
-        surface: backgroundColor,
-        onSurface: textStyle.color!,
-        brightness: Brightness.light,
+class TextStyleThemeData {
+  TextStyleThemeData({
+    required this.standard,
+    required this.accent,
+    required this.item,
+  });
+  factory TextStyleThemeData.standard() {
+    return TextStyleThemeData(
+      standard: GoogleFonts.roboto(fontSize: 16),
+      accent: GoogleFonts.didactGothic(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
       ),
-      accentColorBrightness: invalidBrightness,
-      textTheme: TextTheme(
-        bodyText1: textStyle,
-        bodyText2: textStyle,
-        button: accentTextStyle,
-        caption: invalidTextStyle,
-        headline1: accentTextStyle,
-        headline2: invalidTextStyle,
-        headline3: invalidTextStyle,
-        headline4: invalidTextStyle,
-        headline5: invalidTextStyle,
-        headline6: invalidTextStyle,
-        overline: invalidTextStyle,
-        subtitle1: textStyle, // used by ListTiles
-        subtitle2: invalidTextStyle,
-      ),
-      iconTheme: IconThemeData(
-        color: textStyle.color!,
-      ),
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: primaryColor,
-        splashColor: Colors.white12,
-      ),
-      snackBarTheme: SnackBarThemeData(
-        backgroundColor: snackBarColor,
-        contentTextStyle: textStyle.copyWith(color: snackBarTextColor),
-        actionTextColor: primaryColor,
-      ),
-      chipTheme: ChipThemeData(
-        backgroundColor: backgroundColor,
-        labelStyle: suggestionTextStyle,
-        padding: EdgeInsets.all(4),
-        side: suggestionBorder,
-        brightness: invalidBrightness,
-        selectedColor: invalidColor,
-        secondaryLabelStyle: invalidTextStyle,
-        secondarySelectedColor: invalidColor,
-        disabledColor: invalidColor,
-      ),
-      bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: sheetColor,
-      ),
-      buttonTheme: ButtonThemeData(
-        buttonColor: primaryColor,
-        textTheme: ButtonTextTheme.primary,
-        padding: EdgeInsets.all(16),
-        minWidth: 0,
-      ),
+      item: GoogleFonts.roboto(fontSize: 20),
     );
   }
+
+  final TextStyle standard; // Used by default.
+  final TextStyle accent; // Used in titles, buttons, etc.
+  final TextStyle item; // Used for the items.
+}
+
+class ColorThemeData {
+  ColorThemeData({
+    required this.background,
+    required this.onBackground,
+    required this.primary,
+    required this.onPrimary,
+    required this.secondary,
+    required this.canvas,
+    required this.contrast,
+    required this.onContrast,
+    required this.inTheCart,
+    required this.onInTheCart,
+    required this.inTheCartTint,
+    required this.notAvailable,
+    required this.onNotAvailable,
+    required this.notAvailableTint,
+  });
+
+  final Color background;
+  final Color onBackground;
+  final Color primary; // Used by FABs, buttons, and action texts.
+  final Color secondary; // Used by secondary elements like suggestions.
+  final Color onPrimary; // Color readable on the primary color (used on FABs).
+  final Color canvas; // Used by sheets, dialogs, popups.
+  final Color contrast; // Used by toasts, snack bars, etc.
+  final Color onContrast; // Used by text on contrast elements.
+  final Color inTheCart;
+  final Color onInTheCart;
+  final Color inTheCartTint;
+  final Color notAvailable;
+  final Color onNotAvailable;
+  final Color notAvailableTint;
 }

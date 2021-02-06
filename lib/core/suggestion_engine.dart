@@ -32,40 +32,47 @@ final suggestionEngine = _SuggestionEngine();
 
 class _SuggestionEngine {
   /// Map from items to scores.
-  final _state = Chest<RememberState>(
+  final state = Chest<RememberState>(
     'rememberState',
     ifNew: () => RememberState.reset(),
   );
 
   Future<void> initialize() async {
-    await _state.open();
-    final durationSinceDecay = DateTime.now() - _state.lastDecay.value;
+    await state.open();
+    final durationSinceDecay = DateTime.now() - state.lastDecay.value;
     if (durationSinceDecay > 1.hours) {
       final daysSinceDecay =
           durationSinceDecay.inMilliseconds / 1000 / 60 / 60 / 24;
-      _state.scores.value = _state.scores.value.map((item, score) {
+      state.scores.value = state.scores.value.map((item, score) {
         return MapEntry(item, score * pow(0.95, daysSinceDecay));
       });
     }
   }
 
+  double scoreOf(String item) =>
+      state.scores[item].exists ? state.scores[item].value : 0;
+
   void add(String item) {
-    if (_state.scores[item].exists) {
-      _state.scores[item].value += 1;
+    if (state.scores[item].exists) {
+      state.scores[item].value += 1;
     } else {
-      _state.scores[item].value = 1;
-      final scores = _state.scores.value;
+      state.scores[item].value = 1;
+      final scores = state.scores.value;
       if (scores.length > 100) {
-        _state.scores.value = scores
+        state.scores.value = scores
           ..remove(scores.entries.minBy((entry) => entry.value).orNull.key);
       }
     }
   }
 
+  void remove(String item) {
+    state.scores.value = state.scores.value..remove(item);
+  }
+
   Iterable<String> get _recommendations {
-    return _state.scores.value.entries
+    return state.scores.value.entries
         .toList()
-        .sortedCopyBy((it) => it.value)
+        .sortedCopyBy((it) => -it.value)
         .map((it) => it.key);
   }
 

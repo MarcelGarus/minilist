@@ -18,33 +18,39 @@ class TodoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.appTheme;
     return Dismissible(
       key: Key(item),
       background: Container(
-        color: theme.inTheCartColor,
-        padding: EdgeInsets.symmetric(horizontal: theme.outerPadding),
+        color: context.color.inTheCart,
+        padding: EdgeInsets.symmetric(horizontal: context.padding.outer),
         child: Row(
           children: [
-            Icon(Icons.check, color: theme.onInTheCartColor),
-            SizedBox(width: theme.innerPadding),
-            Text('Got it', style: TextStyle(color: theme.onInTheCartColor)),
+            Icon(Icons.check, color: context.color.onInTheCart),
+            SizedBox(width: context.padding.inner),
+            Text(
+              'Got it',
+              style: context.standardStyle.copyWith(
+                color: context.color.onInTheCart,
+              ),
+            ),
             Spacer(),
           ],
         ),
       ),
       secondaryBackground: Container(
-        color: theme.notAvailableColor,
-        padding: EdgeInsets.symmetric(horizontal: theme.outerPadding),
+        color: context.color.notAvailable,
+        padding: EdgeInsets.symmetric(horizontal: context.padding.outer),
         child: Row(
           children: [
             Spacer(),
             Text(
               'Not available',
-              style: TextStyle(color: theme.onNotAvailableColor),
+              style: context.standardStyle.copyWith(
+                color: context.color.onNotAvailable,
+              ),
             ),
-            SizedBox(width: theme.innerPadding),
-            Icon(Icons.not_interested, color: theme.onNotAvailableColor),
+            SizedBox(width: context.padding.inner),
+            Icon(Icons.not_interested, color: context.color.onNotAvailable),
           ],
         ),
       ),
@@ -56,14 +62,18 @@ class TodoItem extends StatelessWidget {
         }
       },
       child: Material(
+        color: context.color.background,
         child: InkWell(
           onTap: onTap,
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: theme.outerPadding,
-              vertical: theme.innerPadding,
+              horizontal: context.padding.outer,
+              vertical: context.padding.inner,
             ),
-            child: Container(width: double.infinity, child: Text(item)),
+            child: Container(
+              width: double.infinity,
+              child: Text(item, style: context.itemStyle),
+            ),
           ),
         ),
       ),

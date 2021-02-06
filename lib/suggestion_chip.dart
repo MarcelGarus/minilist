@@ -16,34 +16,26 @@ class SuggestionChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return ActionChip(
-    //   label: Text(item),
-    //   onPressed: onTap,
-    //   pressElevation: 4,
-    //   backgroundColor: context.appTheme.backgroundColor,
-    // );
-
     return CustomPaint(
       foregroundPainter: StadiumPainter(
         padding: EdgeInsets.all(8),
-        backgroundColor: context.appTheme.backgroundColor,
-        borderColor: context.appTheme.hintStyle.color!,
+        backgroundColor: context.color.background,
+        borderColor: context.color.secondary,
       ),
       child: Material(
-        color: context.appTheme.backgroundColor,
+        color: context.color.background,
         shape: StadiumBorder(),
         child: InkWell(
           onTap: onPressed,
           onLongPress: onLongPressed,
           borderRadius: BorderRadius.circular(24),
-          child: Container(
-            padding: EdgeInsets.all(8),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              child: Text(
-                item,
-                style: context.appTheme.hintStyle.copyWith(fontSize: 16),
-              ),
+          child: Padding(
+            padding: EdgeInsets.all(8) +
+                EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Text(
+              item,
+              textAlign: TextAlign.center,
+              style: context.suggestionStyle,
             ),
           ),
         ),

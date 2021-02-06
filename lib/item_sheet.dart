@@ -12,6 +12,7 @@ extension ShowItemSheet on BuildContext {
 
   Future<void> _showRoundedSheet(Widget sheet) {
     return this.showModalBottomSheet(
+      backgroundColor: color.canvas,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16),
@@ -53,7 +54,7 @@ class _ItemSheetState extends State<_ItemSheet> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(context.appTheme.outerPadding),
+      padding: EdgeInsets.all(context.padding.outer),
       child: ValueListenableBuilder(
         valueListenable: _controller,
         builder: (_, __, ___) => Row(
@@ -77,15 +78,15 @@ class _ItemSheetState extends State<_ItemSheet> {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FlatButton(
-            child: Text('Delete'),
+          FancyFlatButton(
+            text: 'Delete',
             onPressed: () {
               list.items.value = list.items.value..remove(_editedItem);
               context.navigator.pop();
             },
           ),
-          FlatButton(
-            child: Text('Save'),
+          FancyFlatButton(
+            text: 'Save',
             onPressed: _alreadyExists
                 ? null
                 : () {
@@ -99,14 +100,14 @@ class _ItemSheetState extends State<_ItemSheet> {
     }
 
     if (_alreadyExists) {
-      return FlatButton(
-        child: Text('Edit existing'),
+      return FancyFlatButton(
+        text: 'Edit existing',
         onPressed: () => setState(() => _editedItem = _item),
       );
     }
 
-    return FlatButton(
-      child: Text('Add'),
+    return FancyFlatButton(
+      text: 'Add',
       onPressed: () {
         list.items.add(_item);
         suggestionEngine.add(_item);
@@ -116,7 +117,25 @@ class _ItemSheetState extends State<_ItemSheet> {
   }
 }
 
-class SmartComposingTextField extends StatefulWidget {
+class FancyFlatButton extends StatelessWidget {
+  const FancyFlatButton({required this.text, required this.onPressed});
+
+  final String text;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      child: Text(
+        text,
+        style: context.accentStyle.copyWith(color: context.color.primary),
+      ),
+      onPressed: onPressed,
+    );
+  }
+}
+
+class SmartComposingTextField extends StatelessWidget {
   const SmartComposingTextField({
     Key? key,
     required this.controller,
@@ -129,24 +148,17 @@ class SmartComposingTextField extends StatefulWidget {
   final String? Function(String prefix) smartComposer;
 
   @override
-  _SmartComposingTextFieldState createState() =>
-      _SmartComposingTextFieldState();
-}
-
-class _SmartComposingTextFieldState extends State<SmartComposingTextField> {
-  @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: widget.controller,
+      valueListenable: controller,
       builder: (context, _, __) {
-        final suggestion = widget.smartComposer(widget.controller.text);
+        final suggestion = smartComposer(controller.text);
         return GestureDetector(
           behavior: HitTestBehavior.translucent,
           onHorizontalDragStart: (startInfo) {},
-          // _dragStart = startInfo.localPosition.dx,
           onHorizontalDragEnd: (endInfo) {
             if (suggestion != null) {
-              widget.controller
+              controller
                 ..text = suggestion
                 ..selection = TextSelection.fromPosition(
                   TextPosition(offset: suggestion.length),
@@ -156,31 +168,37 @@ class _SmartComposingTextFieldState extends State<SmartComposingTextField> {
           child: Stack(
             children: [
               if (suggestion != null)
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                  child: Text.rich(
-                    TextSpan(
-                      style: context.appTheme.hintStyle,
-                      children: <InlineSpan>[
-                        TextSpan(text: '$suggestion '),
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.bottom,
-                          baseline: TextBaseline.alphabetic,
-                          child: SwipeRightIndicator(),
-                        ),
-                      ],
+                Transform.translate(
+                  offset: Offset(0, -1), // This has been carefully aligned.
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 14),
+                    child: Text.rich(
+                      TextSpan(
+                        style: context.itemStyle
+                            .copyWith(color: context.color.secondary),
+                        children: <InlineSpan>[
+                          TextSpan(text: '$suggestion '),
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.bottom,
+                            baseline: TextBaseline.alphabetic,
+                            child: SwipeRightIndicator(),
+                          ),
+                        ],
+                      ),
                     ),
+                    //Text('Some text.', style: context.appTheme.hintStyle),
                   ),
-                  //Text('Some text.', style: context.appTheme.hintStyle),
                 ),
               TextField(
                 autofocus: true,
                 maxLines: null,
-                controller: widget.controller,
+                controller: controller,
+                style: context.itemStyle,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.zero,
-                  hintText: widget.hintText,
-                  hintStyle: context.appTheme.hintStyle,
+                  hintText: hintText,
+                  hintStyle: context.itemStyle
+                      .copyWith(color: context.color.secondary),
                   border: InputBorder.none,
                 ),
               ),
@@ -195,10 +213,10 @@ class _SmartComposingTextFieldState extends State<SmartComposingTextField> {
 class SwipeRightIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final color = context.appTheme.hintStyle.color!;
+    final color = context.color.secondary;
     return Container(
-      height: 22,
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      height: 19,
+      padding: EdgeInsets.only(left: 4, top: 2, right: 2, bottom: 2),
       decoration: BoxDecoration(
         border: Border.all(color: color),
         borderRadius: BorderRadius.circular(2),
@@ -206,8 +224,8 @@ class SwipeRightIndicator extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('swipe ', style: TextStyle(fontSize: 12, color: color)),
-          Icon(Icons.arrow_right_alt, size: 16, color: color),
+          Text('swipe ', style: TextStyle(fontSize: 12, color: color)),
+          Icon(Icons.arrow_right_alt, size: 12, color: color),
         ],
       ),
     );

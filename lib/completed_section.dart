@@ -17,7 +17,7 @@ class CompletedSection extends StatelessWidget {
               child: CompletedBucket(
                 primaryText: list.inTheCart.length.toString(),
                 secondaryText: 'in the cart',
-                color: context.appTheme.inTheCartColor.withOpacity(0.2),
+                color: context.color.inTheCartTint,
               ),
             ),
             SizedBox(width: 16),
@@ -25,7 +25,7 @@ class CompletedSection extends StatelessWidget {
               child: CompletedBucket(
                 primaryText: list.notAvailable.length.toString(),
                 secondaryText: 'not available',
-                color: context.appTheme.notAvailableColor.withOpacity(0.2),
+                color: context.color.notAvailableTint,
               ),
             ),
           ],
@@ -55,9 +55,12 @@ class CompletedBucket extends StatelessWidget {
         padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            Text(primaryText, style: TextStyle(fontSize: 20)),
+            Text(
+              primaryText,
+              style: context.accentStyle.copyWith(fontSize: 20),
+            ),
             SizedBox(height: 4),
-            Text(secondaryText, style: TextStyle(fontSize: 16)),
+            Text(secondaryText, style: context.standardStyle),
           ],
         ),
       ),

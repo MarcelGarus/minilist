@@ -9,6 +9,7 @@ import 'app_bar.dart';
 import 'completed_section.dart';
 import 'core/core.dart';
 import 'item_sheet.dart';
+import 'settings.dart';
 import 'suggestion_chip.dart';
 import 'theme.dart';
 import 'todo_item.dart';
@@ -22,7 +23,6 @@ void main() async {
     2: taper.forRememberState().v0,
     3: taper.forMap<String, double>(),
   });
-  await list.delete();
   await list.open();
   await suggestionEngine.initialize();
   runApp(ShoppingListApp());
@@ -37,8 +37,7 @@ class ShoppingListApp extends StatelessWidget {
         builder: (context) {
           return MaterialApp(
             title: 'Shopping List',
-            theme: context.appTheme.toMaterialThemeData(),
-            themeMode: ThemeMode.light,
+            theme: ThemeData(accentColor: context.color.primary),
             home: MainPage(),
           );
         },
@@ -51,10 +50,15 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: context.color.background,
       body: TodoList(),
       floatingActionButton: FloatingActionButton.extended(
-        icon: Icon(Icons.add),
-        label: Text('Add item', style: TextStyle(fontSize: 16)),
+        backgroundColor: context.color.primary,
+        icon: Icon(Icons.add, color: context.color.onPrimary),
+        label: Text(
+          'Add item',
+          style: context.accentStyle.copyWith(color: context.color.onPrimary),
+        ),
         onPressed: context.showCreateItemSheet,
       ),
     );
@@ -68,7 +72,6 @@ class TodoList extends StatelessWidget {
   }
 
   Widget _buildList(BuildContext context) {
-    final theme = context.appTheme;
     final hasManyItems = list.items.length >= 5;
     return CustomScrollView(
       slivers: [
@@ -80,13 +83,30 @@ class TodoList extends StatelessWidget {
               list.areAllItemsInMainList
                   ? '${list.items.length} items'
                   : '${list.items.length} items left',
+              style: context.standardStyle,
             );
           }(),
           actions: [
             if (hasManyItems && false)
               IconButton(icon: Icon(Icons.search), onPressed: () {}),
             // IconButton(icon: Icon(Icons.view_agenda_outlined)),
-            IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
+            OverflowBar(),
+            PopupMenuButton<String>(
+              icon: Icon(Icons.more_vert, color: context.color.onBackground),
+              color: context.color.canvas,
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 'settings',
+                  child: Text('Settings', style: context.standardStyle),
+                ),
+              ],
+              onSelected: (String value) {
+                if (value == 'settings')
+                  context.navigator.push(MaterialPageRoute(
+                    builder: (_) => SettingsPage(),
+                  ));
+              },
+            ),
           ],
         ),
         SliverToBoxAdapter(
@@ -95,13 +115,13 @@ class TodoList extends StatelessWidget {
             crossFadeState: list.areAllItemsInMainList
                 ? CrossFadeState.showFirst
                 : CrossFadeState.showSecond,
-            firstChild: SizedBox(height: theme.innerPadding),
+            firstChild: SizedBox(height: context.padding.inner),
             secondChild: Padding(
               padding: EdgeInsets.only(
-                left: theme.outerPadding,
-                right: theme.outerPadding,
-                top: theme.innerPadding,
-                bottom: 2 * theme.innerPadding,
+                left: context.padding.outer,
+                right: context.padding.outer,
+                top: context.padding.inner,
+                bottom: 2 * context.padding.inner,
               ),
               child: CompletedSection(),
             ),
@@ -113,6 +133,7 @@ class TodoList extends StatelessWidget {
               child: Text(
                 'A fresh start',
                 textAlign: TextAlign.center,
+                style: context.accentStyle,
               ),
             ),
           )
@@ -177,18 +198,17 @@ class TodoList extends StatelessWidget {
           ),
         SliverToBoxAdapter(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: theme.outerPadding),
+            padding: EdgeInsets.symmetric(horizontal: context.padding.outer),
             child: Column(
               children: [
-                SizedBox(height: theme.innerPadding),
+                SizedBox(height: context.padding.inner),
                 Text(
                   'How about some of these?',
                   textAlign: TextAlign.center,
-                  style: theme.suggestionTextStyle,
+                  style: context.suggestionStyle,
                 ),
-                SizedBox(height: theme.innerPadding),
+                SizedBox(height: context.padding.inner),
                 Wrap(
-                  // spacing: theme.innerPadding,
                   alignment: WrapAlignment.center,
                   children: [
                     for (final item in suggestionEngine.items.take(6))
@@ -200,6 +220,23 @@ class TodoList extends StatelessWidget {
                         },
                         onLongPressed: () {
                           // TODO: Show context dialog.
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Remove suggestion?'),
+                              content: Text(
+                                  'This will cause "$item" to no longer appear in your suggestions.'),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text('Yes'),
+                                  onPressed: () {
+                                    suggestionEngine.remove(item);
+                                    context.navigator.pop();
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
                         },
                       ),
                   ],

@@ -23,7 +23,7 @@ class ListAppBar extends StatelessWidget {
     final expandedHeight = context.mediaQuery.size.height * 0.3967;
     return SliverAppBar(
       expandedHeight: expandedHeight,
-      backgroundColor: context.appTheme.backgroundColor,
+      backgroundColor: context.color.background,
       pinned: true,
       flexibleSpace: LayoutBuilder(
         builder: (context, constraints) {
@@ -60,8 +60,7 @@ class ListAppBar extends StatelessWidget {
         child: Text(
           title,
           textAlign: TextAlign.center,
-          style: context.theme.textTheme.headline1!
-              .copyWith(fontSize: 20.0 + 20 * expansion),
+          style: context.accentStyle.copyWith(fontSize: 20.0 + 20 * expansion),
         ),
       ),
     );
