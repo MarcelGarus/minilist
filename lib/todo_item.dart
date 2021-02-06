@@ -62,7 +62,7 @@ class TodoItem extends StatelessWidget {
         }
       },
       child: Material(
-        color: context.color.background,
+        color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
           child: Padding(

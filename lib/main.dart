@@ -151,6 +151,16 @@ class TodoList extends StatelessWidget {
               items.insert(newIndex, item);
               list.items.value = items;
             },
+            buildDraggableFeedback: (context, constraints, child) {
+              return Material(
+                elevation: 1,
+                color: context.color.canvas,
+                child: SizedBox.fromSize(
+                  size: constraints.biggest,
+                  child: child,
+                ),
+              );
+            },
             delegate: ReorderableSliverChildBuilderDelegate(
               (_, i) {
                 final item = list.items[i].value;
