@@ -14,10 +14,10 @@ class SettingsPage extends StatelessWidget {
       body: ListView(
         children: [
           ReferenceBuilder(
-            reference: settings,
+            reference: settings.theme,
             builder: (context) => SettingsListTile(
               title: 'Theme',
-              subtitle: 'Black',
+              subtitle: settings.theme.value.toBeautifulString(),
               onTap: () => showDialog(
                 context: context,
                 builder: (_) => ThemeModeChooserDialog(),

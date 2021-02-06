@@ -1,4 +1,6 @@
+import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:flutter/material.dart' hide ThemeMode;
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'core/core.dart';
@@ -33,6 +35,9 @@ extension GetAppTheme on BuildContext {
   TextStyle get suggestionStyle => secondaryStyle;
 }
 
+Brightness get _platformBrightness =>
+    SchedulerBinding.instance!.window.platformBrightness;
+
 class AppThemeData {
   AppThemeData({
     required this.brightness,
@@ -49,9 +54,13 @@ class AppThemeData {
       case ThemeMode.black:
         return AppThemeData.black();
       case ThemeMode.systemLightDark:
-        return AppThemeData.dark();
+        return _platformBrightness == Brightness.light
+            ? AppThemeData.light()
+            : AppThemeData.dark();
       case ThemeMode.systemLightBlack:
-        return AppThemeData.black();
+        return _platformBrightness == Brightness.light
+            ? AppThemeData.light()
+            : AppThemeData.black();
     }
   }
   AppThemeData.light()
@@ -109,7 +118,7 @@ class AppThemeData {
             primary: Colors.teal,
             onPrimary: Colors.black,
             secondary: Colors.white54,
-            canvas: Colors.grey.shade900,
+            canvas: Color(0xff121212),
             contrast: Colors.white,
             onContrast: Colors.black,
             inTheCart: Colors.teal,
