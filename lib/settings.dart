@@ -58,24 +58,32 @@ class SettingsPage extends StatelessWidget {
 class ThemeModeChooserDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SimpleDialog(
-      backgroundColor: context.color.canvas,
-      title: Text('Choose theme', style: context.accentStyle),
-      children: [
-        for (final mode in ThemeMode.values)
-          RadioListTile(
-            activeColor: context.color.primary,
-            title: Text(mode.toBeautifulString(), style: context.standardStyle),
-            value: mode,
-            groupValue: settings.theme.value,
-            selected: settings.theme.value == mode,
-            dense: true,
-            onChanged: (value) {
-              settings.theme.value = mode;
-              context.navigator.pop();
-            },
-          ),
-      ],
+    return Theme(
+      data: ThemeData(
+        radioTheme: RadioThemeData(
+          fillColor: MaterialStateProperty.all(context.color.secondary),
+        ),
+      ),
+      child: SimpleDialog(
+        backgroundColor: context.color.canvas,
+        title: Text('Choose theme', style: context.accentStyle),
+        children: [
+          for (final mode in ThemeMode.values)
+            RadioListTile(
+              activeColor: context.color.primary,
+              title:
+                  Text(mode.toBeautifulString(), style: context.standardStyle),
+              value: mode,
+              groupValue: settings.theme.value,
+              selected: settings.theme.value == mode,
+              dense: true,
+              onChanged: (value) {
+                settings.theme.value = mode;
+                context.navigator.pop();
+              },
+            ),
+        ],
+      ),
     );
   }
 }
