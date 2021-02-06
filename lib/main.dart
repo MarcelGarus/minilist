@@ -1,6 +1,6 @@
 import 'package:basics/basics.dart';
 import 'package:black_hole_flutter/black_hole_flutter.dart';
-import 'package:chest_flutter/chest_flutter.dart';
+import 'package:chest_flutter/chest_flutter.dart' hide TaperForThemeMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:reorderables/reorderables.dart';
@@ -22,7 +22,10 @@ void main() async {
     1: taper.forShoppingList().v0,
     2: taper.forRememberState().v0,
     3: taper.forMap<String, double>(),
+    4: taper.forSettings().v0,
+    5: taper.forThemeMode().v0,
   });
+  await settings.open();
   await list.open();
   await suggestionEngine.initialize();
   runApp(ShoppingListApp());
@@ -31,16 +34,19 @@ void main() async {
 class ShoppingListApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return AppTheme(
-      data: AppThemeData.black(),
-      child: Builder(
-        builder: (context) {
-          return MaterialApp(
-            title: 'Shopping List',
-            theme: ThemeData(accentColor: context.color.primary),
-            home: MainPage(),
-          );
-        },
+    return ReferenceBuilder(
+      reference: settings,
+      builder: (_) => AppTheme(
+        data: AppThemeData.fromThemeMode(settings.theme.value),
+        child: Builder(
+          builder: (context) {
+            return MaterialApp(
+              title: 'Shopping List',
+              theme: ThemeData(accentColor: context.color.primary),
+              home: MainPage(),
+            );
+          },
+        ),
       ),
     );
   }

@@ -6,7 +6,7 @@ part of 'list.dart';
 // TapeGenerator
 // **************************************************************************
 
-extension TaperForShoppingListExtension on TaperNamespace {
+extension TaperForShoppingList on TaperNamespace {
   _VersionedTapersForShoppingList forShoppingList() =>
       _VersionedTapersForShoppingList();
 }

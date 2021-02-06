@@ -6,7 +6,7 @@ part of 'suggestion_engine.dart';
 // TapeGenerator
 // **************************************************************************
 
-extension TaperForRememberStateExtension on TaperNamespace {
+extension TaperForRememberState on TaperNamespace {
   _VersionedTapersForRememberState forRememberState() =>
       _VersionedTapersForRememberState();
 }

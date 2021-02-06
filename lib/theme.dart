@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide ThemeMode;
 import 'package:google_fonts/google_fonts.dart';
+
+import 'core/core.dart';
 
 class AppTheme extends StatelessWidget {
   AppTheme({required this.data, required this.child});
@@ -38,6 +40,20 @@ class AppThemeData {
     required this.style,
     required this.color,
   });
+  factory AppThemeData.fromThemeMode(ThemeMode theme) {
+    switch (theme) {
+      case ThemeMode.light:
+        return AppThemeData.light();
+      case ThemeMode.dark:
+        return AppThemeData.dark();
+      case ThemeMode.black:
+        return AppThemeData.black();
+      case ThemeMode.systemLightDark:
+        return AppThemeData.dark();
+      case ThemeMode.systemLightBlack:
+        return AppThemeData.black();
+    }
+  }
   AppThemeData.light()
       : this(
           brightness: Brightness.light,
@@ -60,6 +76,28 @@ class AppThemeData {
             notAvailableTint: Colors.grey.withOpacity(0.2),
           ),
         );
+  AppThemeData.dark()
+      : this(
+          brightness: Brightness.dark,
+          padding: PaddingThemeData.standard(),
+          style: TextStyleThemeData.standard(),
+          color: ColorThemeData(
+            background: Color(0xff121212),
+            onBackground: Colors.white,
+            primary: Colors.teal,
+            onPrimary: Colors.black,
+            secondary: Colors.white54,
+            canvas: Colors.grey.shade900,
+            contrast: Colors.white,
+            onContrast: Colors.black,
+            inTheCart: Colors.teal,
+            onInTheCart: Colors.white,
+            inTheCartTint: Colors.teal.withOpacity(0.2),
+            notAvailable: Colors.grey.shade900,
+            onNotAvailable: Colors.white,
+            notAvailableTint: Colors.grey.shade900,
+          ),
+        );
   AppThemeData.black()
       : this(
           brightness: Brightness.dark,
@@ -69,7 +107,7 @@ class AppThemeData {
             background: Colors.black,
             onBackground: Colors.white,
             primary: Colors.teal,
-            onPrimary: Colors.white,
+            onPrimary: Colors.black,
             secondary: Colors.white54,
             canvas: Colors.grey.shade900,
             contrast: Colors.white,

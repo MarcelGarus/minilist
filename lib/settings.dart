@@ -1,6 +1,6 @@
 import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:chest_flutter/chest_flutter.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide ThemeMode;
 
 import 'core/core.dart';
 import 'theme.dart';
@@ -10,56 +10,72 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.color.background,
-      appBar: AppBar(
-        backgroundColor: context.color.canvas,
-        title: Text(
-          'Settings',
-          style: context.accentStyle.copyWith(fontSize: 20),
-        ),
-      ),
+      appBar: SettingsAppBar(title: 'Settings'),
       body: ListView(
         children: [
-          ListTile(
-            title: Text('Theme', style: context.accentStyle),
-            subtitle: Text('Black', style: context.secondaryStyle),
+          ReferenceBuilder(
+            reference: settings,
+            builder: (context) => SettingsListTile(
+              title: 'Theme',
+              subtitle: 'Black',
+              onTap: () => showDialog(
+                context: context,
+                builder: (_) => ThemeModeChooserDialog(),
+              ),
+            ),
           ),
           ReferenceBuilder(
             reference: suggestionEngine.state,
-            builder: (context) {
-              return ListTile(
-                title: Text('Suggestions', style: context.accentStyle),
-                subtitle: Text(
-                  '${suggestionEngine.items.length} suggestions exist.',
-                  style: context.secondaryStyle,
-                ),
-                onTap: () => context.navigator.push(MaterialPageRoute(
-                  builder: (_) => SuggestionsPage(),
-                )),
-              );
-            },
-          ),
-          ListTile(
-            title: Text('Reset', style: context.accentStyle),
-            subtitle: Text('Reset the list.', style: context.secondaryStyle),
-          ),
-          ListTile(
-            title: Text('Analytics', style: context.accentStyle),
-            subtitle: Text(
-              'Your data is protected via differential privacy.',
-              style: context.secondaryStyle,
+            builder: (context) => SettingsListTile(
+              title: 'Suggestions',
+              subtitle: '${suggestionEngine.items.length} suggestions exist.',
+              onTap: () => context.navigator.push(MaterialPageRoute(
+                builder: (_) => SuggestionsPage(),
+              )),
             ),
           ),
-          ListTile(
-            title: Text('Privacy Policy', style: context.accentStyle),
+          SettingsListTile(title: 'Reset', subtitle: 'Reset the list.'),
+          SettingsListTile(title: 'Analytics', subtitle: 'Disabled'),
+          SettingsListTile(
+            title: 'Privacy Policy',
+            subtitle: "Don't worry, it's an easy-to-read Google Doc.",
+            trailing: Icon(Icons.open_in_new, color: context.color.secondary),
           ),
-          ListTile(
-            title: Text('Open Source Licenses', style: context.accentStyle),
+          SettingsListTile(
+            title: 'Open Source Licenses',
+            trailing: Icon(Icons.open_in_new, color: context.color.secondary),
           ),
-          ListTile(
-            title: Text('Help & Feedback', style: context.accentStyle),
+          SettingsListTile(
+            title: 'Help & Feedback',
+            trailing: Icon(Icons.open_in_new, color: context.color.secondary),
           ),
         ],
       ),
+    );
+  }
+}
+
+class ThemeModeChooserDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialog(
+      backgroundColor: context.color.canvas,
+      title: Text('Choose theme', style: context.accentStyle),
+      children: [
+        for (final mode in ThemeMode.values)
+          RadioListTile(
+            activeColor: context.color.primary,
+            title: Text(mode.toBeautifulString(), style: context.standardStyle),
+            value: mode,
+            groupValue: settings.theme.value,
+            selected: settings.theme.value == mode,
+            dense: true,
+            onChanged: (value) {
+              settings.theme.value = mode;
+              context.navigator.pop();
+            },
+          ),
+      ],
     );
   }
 }
@@ -68,7 +84,8 @@ class SuggestionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Suggestions')),
+      backgroundColor: context.color.background,
+      appBar: SettingsAppBar(title: 'Suggestions'),
       body: ReferenceBuilder(
         reference: suggestionEngine.state,
         builder: (context) {
@@ -77,8 +94,8 @@ class SuggestionsPage extends StatelessWidget {
             itemCount: suggestions.length,
             itemBuilder: (context, index) {
               final suggestion = suggestions[index];
-              return ListTile(
-                title: Text(suggestion, style: context.accentStyle),
+              return SettingsListTile(
+                title: suggestion,
                 trailing: Text(
                   suggestionEngine.scoreOf(suggestion).toStringAsFixed(2),
                   style: context.standardStyle
@@ -89,6 +106,50 @@ class SuggestionsPage extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class SettingsAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const SettingsAppBar({required this.title});
+
+  final String title;
+
+  @override
+  Size get preferredSize => AppBar().preferredSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      iconTheme: IconThemeData(color: context.color.onBackground),
+      backgroundColor: context.color.canvas,
+      title: Text(title, style: context.accentStyle.copyWith(fontSize: 20)),
+    );
+  }
+}
+
+class SettingsListTile extends StatelessWidget {
+  const SettingsListTile({
+    required this.title,
+    this.subtitle,
+    this.onTap,
+    this.trailing,
+  });
+
+  final String title;
+  final String? subtitle;
+  final VoidCallback? onTap;
+  final Widget? trailing;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(title, style: context.accentStyle),
+      subtitle: subtitle == null
+          ? null
+          : Text(subtitle!, style: context.secondaryStyle),
+      onTap: onTap,
+      trailing: trailing,
     );
   }
 }
