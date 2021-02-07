@@ -18,11 +18,11 @@ class RememberState {
   RememberState.reset()
       : this(
           scores: <String, double>{
-            'Milk': 1.1,
-            'Bread': 1.1,
-            'Cheese': 1.1,
-            'Honey': 1,
-            'Beer': 1,
+            'Milk': 0.9,
+            'Bread': 0.9,
+            'Cheese': 0.9,
+            'Honey': 0.9,
+            'Beer': 0.9,
           },
           lastDecay: DateTime.now(),
         );
