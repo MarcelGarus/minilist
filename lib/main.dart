@@ -13,6 +13,7 @@ import 'settings.dart';
 import 'suggestion_chip.dart';
 import 'theme.dart';
 import 'todo_item.dart';
+import 'utils.dart';
 
 void main() async {
   await initializeChest();
@@ -24,10 +25,15 @@ void main() async {
     3: taper.forMap<String, double>(),
     4: taper.forSettings().v0,
     5: taper.forThemeMode().v0,
+    6: taper.forOnboardingState().v0,
+    7: taper.forOnboardingCountdown().v0,
   });
-  await settings.open();
-  await list.open();
-  await suggestionEngine.initialize();
+  await Future.wait([
+    settings.open(),
+    list.open(),
+    onboarding.open(),
+    suggestionEngine.initialize(),
+  ]);
   runApp(ShoppingListApp());
 }
 
@@ -153,7 +159,7 @@ class TodoList extends StatelessWidget {
             },
             buildDraggableFeedback: (context, constraints, child) {
               return Material(
-                elevation: 1,
+                elevation: 2,
                 color: context.color.canvas,
                 child: SizedBox.fromSize(
                   size: constraints.biggest,
@@ -172,6 +178,7 @@ class TodoList extends StatelessWidget {
                     final index = items.indexOf(item);
                     list.items.value = items..removeAt(index);
                     list.inTheCart.add(item);
+                    onboarding.swipeToPutInCart.used();
                     context.scaffoldMessenger.showSnackBar(
                       SnackBar(
                         content: Text('$item is in the cart.'),
@@ -207,6 +214,8 @@ class TodoList extends StatelessWidget {
                       ),
                     );
                   },
+                  showSwipeIndicator:
+                      onboarding.swipeToPutInCart.showExplanation && i == 0,
                 );
               },
               childCount: list.items.length,
@@ -239,12 +248,22 @@ class TodoList extends StatelessWidget {
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: Text('Remove suggestion?'),
+                              backgroundColor: context.color.canvas,
+                              title: Text(
+                                'Remove suggestion?',
+                                style: context.accentStyle,
+                              ),
                               content: Text(
-                                  'This will cause "$item" to no longer appear in your suggestions.'),
+                                'This will cause "$item" to no longer appear in suggestion chips or Smart Compose.',
+                                style: context.standardStyle,
+                              ),
                               actions: <Widget>[
-                                TextButton(
-                                  child: Text('Yes'),
+                                MyTextButton(
+                                  text: 'No',
+                                  onPressed: () => context.navigator.pop(),
+                                ),
+                                MyTextButton(
+                                  text: 'Yes',
                                   onPressed: () {
                                     suggestionEngine.remove(item);
                                     context.navigator.pop();

@@ -2,6 +2,7 @@ import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'theme.dart';
+import 'utils.dart';
 
 class TodoItem extends StatelessWidget {
   const TodoItem({
@@ -9,12 +10,14 @@ class TodoItem extends StatelessWidget {
     this.onTap,
     this.onPrimarySwipe,
     this.onSecondarySwipe,
+    this.showSwipeIndicator = false,
   });
 
   final String item;
   final VoidCallback? onTap;
   final VoidCallback? onPrimarySwipe;
   final VoidCallback? onSecondarySwipe;
+  final bool showSwipeIndicator;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +75,25 @@ class TodoItem extends StatelessWidget {
             ),
             child: Container(
               width: double.infinity,
-              child: Text(item, style: context.itemStyle),
+              child: Text.rich(
+                TextSpan(
+                  text: item,
+                  style: context.itemStyle,
+                  children: [
+                    if (showSwipeIndicator)
+                      WidgetSpan(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: context.padding.inner),
+                          child: SwipeRightIndicator(
+                            text: 'swipe',
+                            color: context.color.inTheCart,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              // Text(item, style: context.itemStyle),
             ),
           ),
         ),

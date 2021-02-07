@@ -28,17 +28,17 @@ class SettingsPage extends StatelessWidget {
             reference: suggestionEngine.state,
             builder: (context) => SettingsListTile(
               title: 'Suggestions',
-              subtitle: '${suggestionEngine.items.length} suggestions exist.',
+              subtitle: '${suggestionEngine.items.length} items',
               onTap: () => context.navigator.push(MaterialPageRoute(
                 builder: (_) => SuggestionsPage(),
               )),
             ),
           ),
-          SettingsListTile(title: 'Reset', subtitle: 'Reset the list.'),
+          SettingsListTile(title: 'Reset', subtitle: 'Removes all items'),
           SettingsListTile(title: 'Analytics', subtitle: 'Disabled'),
           SettingsListTile(
             title: 'Privacy Policy',
-            subtitle: "Don't worry, it's an easy-to-read Google Doc.",
+            subtitle: "An easy-to-read Google Doc",
             trailing: Icon(Icons.open_in_new, color: context.color.secondary),
           ),
           SettingsListTile(
@@ -99,20 +99,48 @@ class SuggestionsPage extends StatelessWidget {
         builder: (context) {
           final suggestions = suggestionEngine.items.toList();
           return ListView.builder(
-            itemCount: suggestions.length,
+            itemCount: suggestions.length + 1,
             itemBuilder: (context, index) {
-              final suggestion = suggestions[index];
-              return SettingsListTile(
-                title: suggestion,
+              if (index == 0) {
+                return _buildInfoBox(context);
+              }
+              final suggestion = suggestions[index - 1];
+              return ListTile(
+                title: Text(suggestion, style: context.itemStyle),
                 trailing: Text(
                   suggestionEngine.scoreOf(suggestion).toStringAsFixed(2),
                   style: context.standardStyle
                       .copyWith(color: context.color.secondary),
                 ),
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: context.padding.outer,
+                ),
               );
             },
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildInfoBox(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.symmetric(
+        horizontal: context.padding.outer,
+        vertical: context.padding.inner,
+      ),
+      color: context.color.canvas,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Text(
+          'Items you enter into this app are recorded here. '
+          'Each items has a score. '
+          'Items with higher scores are suggested more frequently. '
+          'If you use an item, its score increases by 1. '
+          'Over time, the scores automatically decrease exponentially.',
+          style: context.standardStyle,
+        ),
       ),
     );
   }

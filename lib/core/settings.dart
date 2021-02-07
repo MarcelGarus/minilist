@@ -8,7 +8,9 @@ final settings = Chest<Settings>('settings', ifNew: () => Settings());
   v0: {#theme},
 })
 class Settings {
-  Settings({this.theme = ThemeMode.systemLightBlack});
+  Settings({
+    this.theme = ThemeMode.systemLightBlack,
+  });
 
   final ThemeMode theme;
 }

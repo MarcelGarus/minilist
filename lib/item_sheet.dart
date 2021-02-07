@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'core/core.dart';
 import 'theme.dart';
+import 'utils.dart';
 
 extension ShowItemSheet on BuildContext {
   Future<void> showCreateItemSheet() => _showRoundedSheet(_ItemSheet());
@@ -78,14 +79,14 @@ class _ItemSheetState extends State<_ItemSheet> {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FancyFlatButton(
+          MyTextButton(
             text: 'Delete',
             onPressed: () {
               list.items.value = list.items.value..remove(_editedItem);
               context.navigator.pop();
             },
           ),
-          FancyFlatButton(
+          MyTextButton(
             text: 'Save',
             onPressed: _alreadyExists
                 ? null
@@ -100,37 +101,19 @@ class _ItemSheetState extends State<_ItemSheet> {
     }
 
     if (_alreadyExists) {
-      return FancyFlatButton(
+      return MyTextButton(
         text: 'Edit existing',
         onPressed: () => setState(() => _editedItem = _item),
       );
     }
 
-    return FancyFlatButton(
+    return MyTextButton(
       text: 'Add',
       onPressed: () {
         list.items.add(_item);
         suggestionEngine.add(_item);
         context.navigator.pop();
       },
-    );
-  }
-}
-
-class FancyFlatButton extends StatelessWidget {
-  const FancyFlatButton({required this.text, required this.onPressed});
-
-  final String text;
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return FlatButton(
-      child: Text(
-        text,
-        style: context.accentStyle.copyWith(color: context.color.primary),
-      ),
-      onPressed: onPressed,
     );
   }
 }
@@ -163,6 +146,7 @@ class SmartComposingTextField extends StatelessWidget {
                 ..selection = TextSelection.fromPosition(
                   TextPosition(offset: suggestion.length),
                 );
+              onboarding.swipeToSmartCompose.used();
             }
           },
           child: Stack(
@@ -178,11 +162,15 @@ class SmartComposingTextField extends StatelessWidget {
                             .copyWith(color: context.color.secondary),
                         children: <InlineSpan>[
                           TextSpan(text: '$suggestion '),
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.bottom,
-                            baseline: TextBaseline.alphabetic,
-                            child: SwipeRightIndicator(),
-                          ),
+                          if (onboarding.swipeToSmartCompose.showExplanation)
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.bottom,
+                              baseline: TextBaseline.alphabetic,
+                              child: SwipeRightIndicator(
+                                text: 'swipe',
+                                color: context.color.secondary,
+                              ),
+                            ),
                         ],
                       ),
                     ),
@@ -208,28 +196,6 @@ class SmartComposingTextField extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class SwipeRightIndicator extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final color = context.color.secondary;
-    return Container(
-      height: 19,
-      padding: EdgeInsets.only(left: 4, top: 2, right: 2, bottom: 2),
-      decoration: BoxDecoration(
-        border: Border.all(color: color),
-        borderRadius: BorderRadius.circular(2),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text('swipe ', style: TextStyle(fontSize: 12, color: color)),
-          Icon(Icons.arrow_right_alt, size: 12, color: color),
-        ],
-      ),
     );
   }
 }
