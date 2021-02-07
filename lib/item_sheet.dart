@@ -110,7 +110,8 @@ class _ItemSheetState extends State<_ItemSheet> {
     return MyTextButton(
       text: 'Add',
       onPressed: () {
-        list.items.add(_item);
+        list.items.value = list.items.value
+          ..insert(history.whereToInsert(_item), _item);
         suggestionEngine.add(_item);
         context.navigator.pop();
       },

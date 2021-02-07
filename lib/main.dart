@@ -27,11 +27,14 @@ void main() async {
     5: taper.forThemeMode().v0,
     6: taper.forOnboardingState().v0,
     7: taper.forOnboardingCountdown().v0,
+    8: taper.forHistoryItem().v0,
+    9: taper.forList<HistoryItem>(),
   });
   await Future.wait([
-    settings.open(),
+    history.open(),
     list.open(),
     onboarding.open(),
+    settings.open(),
     suggestionEngine.initialize(),
   ]);
   runApp(ShoppingListApp());
@@ -179,6 +182,7 @@ class TodoList extends StatelessWidget {
                     list.items.value = items..removeAt(index);
                     list.inTheCart.add(item);
                     onboarding.swipeToPutInCart.used();
+                    history.checkedItem(item);
                     context.scaffoldMessenger.showSnackBar(
                       SnackBar(
                         content: Text('$item is in the cart.'),
