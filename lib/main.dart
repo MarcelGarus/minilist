@@ -11,7 +11,7 @@ import 'completed_section.dart';
 import 'core/core.dart';
 import 'item_sheet.dart';
 import 'settings.dart';
-import 'suggestion_chip.dart';
+import 'suggestions.dart';
 import 'theme.dart';
 import 'todo_item.dart';
 import 'utils.dart';
@@ -52,6 +52,12 @@ class ShoppingListApp extends StatelessWidget {
         data: AppThemeData.fromThemeMode(settings.theme.value),
         child: Builder(
           builder: (context) {
+            // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+            //   statusBarColor: Colors.grey,
+            //   // statusBarIconBrightness: Brightness.light,
+            //   // statusBarBrightness: Brightness.light,
+            // ));
+            print('Set system UI overlay style.');
             return MaterialApp(
               title: 'Shopping List',
               theme: ThemeData(accentColor: context.color.primary),
