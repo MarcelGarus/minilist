@@ -17,6 +17,7 @@ dependencies:
   google_fonts: any
   meta: any
   reorderables: ^0.3.2
+  url_launcher: any
 
 dev_dependencies:
   build_runner: any

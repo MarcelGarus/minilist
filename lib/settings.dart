@@ -1,9 +1,13 @@
 import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:chest_flutter/chest_flutter.dart';
 import 'package:flutter/material.dart' hide ThemeMode;
+import 'package:url_launcher/url_launcher.dart';
 
 import 'core/core.dart';
 import 'theme.dart';
+
+const privacyPolicy =
+    'https://docs.google.com/document/d/1oIG3r8gZex-23seHeXSGrk0cC4eptV8vf96-_UqSM4Y';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -68,6 +72,7 @@ class SettingsPage extends StatelessWidget {
             title: 'Privacy Policy',
             subtitle: "An easy-to-read Google Doc",
             trailing: Icon(Icons.open_in_new, color: context.color.secondary),
+            onTap: () => launch(privacyPolicy),
           ),
           SettingsListTile(
             title: 'Open Source Licenses',
