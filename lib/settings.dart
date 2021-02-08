@@ -167,8 +167,8 @@ class SuggestionsPage extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(16),
         child: Text(
-          'Items you enter into this app are recorded here. '
-          'Each items has a score. '
+          'Items you add to the list are recorded here. '
+          'Each item has a score. '
           'Items with higher scores are suggested more frequently. '
           'If you use an item, its score increases by 1. '
           'Over time, the scores automatically decrease exponentially.',
