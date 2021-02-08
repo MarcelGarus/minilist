@@ -67,9 +67,13 @@ extension TaperForSettings on TaperNamespace {
 
 class _VersionedTapersForSettings {
   Taper<Settings> get v0 => _TaperForV0Settings();
+  Taper<Settings> get v1 => _TaperForV1Settings();
 }
 
 class _TaperForV0Settings extends MapTaper<Settings> {
+  @override
+  bool get isLegacy => true;
+
   @override
   Map<Object?, Object?> toMap(Settings settings) {
     return {
@@ -81,6 +85,30 @@ class _TaperForV0Settings extends MapTaper<Settings> {
   Settings fromMap(Map<Object?, Object?> map) {
     return Settings(
       theme: map['theme'] as ThemeMode,
+    );
+  }
+}
+
+class _TaperForV1Settings extends MapTaper<Settings> {
+  @override
+  Map<Object?, Object?> toMap(Settings settings) {
+    return {
+      'theme': settings.theme,
+      'showSuggestions': settings.showSuggestions,
+      'showSmartCompose': settings.showSmartCompose,
+      'useSmartInsertion': settings.useSmartInsertion,
+      'defaultInsertion': settings.defaultInsertion,
+    };
+  }
+
+  @override
+  Settings fromMap(Map<Object?, Object?> map) {
+    return Settings(
+      theme: map['theme'] as ThemeMode,
+      showSuggestions: map['showSuggestions'] as bool,
+      showSmartCompose: map['showSmartCompose'] as bool,
+      useSmartInsertion: map['useSmartInsertion'] as bool,
+      defaultInsertion: map['defaultInsertion'] as Insertion,
     );
   }
 }

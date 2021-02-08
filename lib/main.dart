@@ -25,11 +25,13 @@ void main() async {
     2: taper.forRememberState().v0,
     3: taper.forMap<String, double>(),
     4: taper.forSettings().v0,
+    10: taper.forSettings().v1,
     5: taper.forThemeMode().v0,
     6: taper.forOnboardingState().v0,
     7: taper.forOnboardingCountdown().v0,
     8: taper.forHistoryItem().v0,
     9: taper.forList<HistoryItem>(),
+    11: taper.forInsertion().v0,
   });
   await Future.wait([
     history.open(),
@@ -45,7 +47,7 @@ class ShoppingListApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReferenceBuilder(
-      reference: settings,
+      reference: settings.theme,
       builder: (_) => AppTheme(
         data: AppThemeData.fromThemeMode(settings.theme.value),
         child: Builder(
@@ -236,7 +238,7 @@ class TodoList extends StatelessWidget {
                       SuggestionChip(
                         item: item,
                         onPressed: () {
-                          list.items.add(item);
+                          list.add(item);
                           suggestionEngine.add(item);
                         },
                         onLongPressed: () {

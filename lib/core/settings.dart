@@ -6,6 +6,13 @@ final settings = Chest<Settings>('settings', ifNew: () => Settings());
 
 @tape({
   v0: {#theme},
+  v1: {
+    #theme,
+    #showSuggestions,
+    #showSmartCompose,
+    #useSmartInsertion,
+    #defaultInsertion
+  },
 })
 class Settings {
   Settings({

@@ -226,7 +226,7 @@ class ReferenceSwitch extends StatelessWidget {
     return ReferenceBuilder(
       reference: reference,
       builder: (_) => Switch(
-        value: reference.value ?? false,
+        value: reference.value,
         onChanged: (_) => reference.toggle(),
       ),
     );

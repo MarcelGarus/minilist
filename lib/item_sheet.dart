@@ -64,7 +64,11 @@ class _ItemSheetState extends State<_ItemSheet> {
               child: SmartComposingTextField(
                 controller: _controller,
                 hintText: _isEditingExisting ? widget.editedItem : 'New item',
-                smartComposer: suggestionEngine.suggestionFor,
+                smartComposer: (prefix) {
+                  return settings.showSmartCompose.value
+                      ? suggestionEngine.suggestionFor(prefix)
+                      : null;
+                },
               ),
             ),
             _buildButton(),
@@ -112,9 +116,7 @@ class _ItemSheetState extends State<_ItemSheet> {
     return MyTextButton(
       text: 'Add',
       onPressed: () {
-        list.items.mutate((items) {
-          items.insert(history.whereToInsert(_item), _item);
-        });
+        list.add(_item);
         suggestionEngine.add(_item);
         context.navigator.pop();
       },

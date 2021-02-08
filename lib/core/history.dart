@@ -4,6 +4,7 @@ import 'package:basics/basics.dart';
 import 'package:chest_flutter/chest_flutter.dart';
 
 import 'list.dart';
+import 'settings.dart';
 
 part 'history.g.dart';
 
@@ -31,21 +32,34 @@ extension HistoryFunctionality on Reference<List<HistoryItem>> {
   int whereToInsert(String item) {
     final other = _otherItems;
     return 0.to(other.length + 1).minBy((index) {
+      final itemsBefore = other.sublist(0, index).toSet();
       final itemsAfter = other.sublist(index).toSet();
       print(
-          'Index $index has score ${_errorScoreIfInsertedBefore(item, itemsAfter)}.');
-      return _errorScoreIfInsertedBefore(item, itemsAfter);
-    }).or(0);
+          'Inserting at $index would have score ${_errorScoreIfInsertedBetween(item, itemsBefore, itemsAfter)}.');
+      return _errorScoreIfInsertedBetween(item, itemsBefore, itemsAfter);
+    }).or(
+      settings.defaultInsertion.value == Insertion.atTheBeginning
+          ? 0
+          : list.items.length,
+    );
   }
 
-  double _errorScoreIfInsertedBefore(String item, Set<String> other) {
+  double _errorScoreIfInsertedBetween(
+    String item,
+    Set<String> before,
+    Set<String> after,
+  ) {
     var score = 0.0;
     for (var i = 0; i < history.length; i++) {
+      final importance =
+          pow(0.95, i); // Events that date back longer are not as important.
       final historyItem = history[i].value;
-      if (other.contains(historyItem.item) &&
-          historyItem.otherItems.contains(item)) {
+      if (after.contains(historyItem.item) &&
+              historyItem.otherItems.contains(item) ||
+          historyItem.item == item &&
+              before.union(historyItem.otherItems.toSet()).isNotEmpty) {
         // The history item was preferred the other way around.
-        score += pow(0.95, i);
+        score += importance;
       }
     }
     return score;
