@@ -76,11 +76,11 @@ class SettingsPage extends StatelessWidget {
           ),
           SettingsListTile(
             title: 'Open Source Licenses',
-            trailing: Icon(Icons.open_in_new, color: context.color.secondary),
-          ),
-          SettingsListTile(
-            title: 'Help & Feedback',
-            trailing: Icon(Icons.open_in_new, color: context.color.secondary),
+            onTap: () => showLicensePage(
+              context: context,
+              applicationName: 'MiniList',
+              applicationVersion: '0.0.1',
+            ),
           ),
         ],
       ),
