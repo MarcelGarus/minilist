@@ -1,6 +1,18 @@
+import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'theme.dart';
+
+extension UndoAction on BuildContext {
+  void showSnackBarWithUndo(String text, VoidCallback undo) {
+    scaffoldMessenger.showSnackBar(
+      SnackBar(
+        content: Text(text),
+        action: SnackBarAction(label: 'Undo', onPressed: undo),
+      ),
+    );
+  }
+}
 
 class MyTextButton extends StatelessWidget {
   const MyTextButton({required this.text, required this.onPressed});

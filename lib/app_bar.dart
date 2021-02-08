@@ -2,12 +2,63 @@ import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:black_hole_flutter/black_hole_flutter.dart';
+import 'package:chest_flutter/chest_flutter.dart';
 import 'package:flutter/material.dart';
 
+import 'core/core.dart';
+import 'settings.dart';
 import 'theme.dart';
 
 class ListAppBar extends StatelessWidget {
-  const ListAppBar({
+  @override
+  Widget build(BuildContext context) {
+    return FlexibleAppBar(
+      title: 'Shopping List',
+      subtitle: ReferenceBuilder(
+        reference: list.items,
+        builder: (context) {
+          final hasManyItems = list.items.length >= 5;
+          if (!hasManyItems) return Container();
+          return Text(
+            list.areAllItemsInMainList
+                ? '${list.items.length} items'
+                : '${list.items.length} items left',
+            style: context.standardStyle,
+          );
+        },
+      ),
+      actions: [
+        ReferenceBuilder(
+          reference: list.items,
+          builder: (context) {
+            if (list.items.length < 5) return Container();
+            return IconButton(icon: Icon(Icons.search), onPressed: () {});
+          },
+        ),
+        // IconButton(icon: Icon(Icons.view_agenda_outlined)),
+        PopupMenuButton<String>(
+          icon: Icon(Icons.more_vert, color: context.color.onBackground),
+          color: context.color.canvas,
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              value: 'settings',
+              child: Text('Settings', style: context.standardStyle),
+            ),
+          ],
+          onSelected: (String value) {
+            if (value == 'settings')
+              context.navigator.push(MaterialPageRoute(
+                builder: (_) => SettingsPage(),
+              ));
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class FlexibleAppBar extends StatelessWidget {
+  const FlexibleAppBar({
     required this.title,
     required this.subtitle,
     required this.actions,

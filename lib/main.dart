@@ -90,43 +90,9 @@ class TodoList extends StatelessWidget {
   }
 
   Widget _buildList(BuildContext context) {
-    final hasManyItems = list.items.length >= 5;
     return CustomScrollView(
       slivers: [
-        ListAppBar(
-          title: 'Shopping List',
-          subtitle: () {
-            if (!hasManyItems) return Container();
-            return Text(
-              list.areAllItemsInMainList
-                  ? '${list.items.length} items'
-                  : '${list.items.length} items left',
-              style: context.standardStyle,
-            );
-          }(),
-          actions: [
-            if (hasManyItems && false)
-              IconButton(icon: Icon(Icons.search), onPressed: () {}),
-            // IconButton(icon: Icon(Icons.view_agenda_outlined)),
-            OverflowBar(),
-            PopupMenuButton<String>(
-              icon: Icon(Icons.more_vert, color: context.color.onBackground),
-              color: context.color.canvas,
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                  value: 'settings',
-                  child: Text('Settings', style: context.standardStyle),
-                ),
-              ],
-              onSelected: (String value) {
-                if (value == 'settings')
-                  context.navigator.push(MaterialPageRoute(
-                    builder: (_) => SettingsPage(),
-                  ));
-              },
-            ),
-          ],
-        ),
+        ListAppBar(),
         SliverToBoxAdapter(
           child: AnimatedCrossFade(
             duration: 200.milliseconds,
@@ -146,141 +112,94 @@ class TodoList extends StatelessWidget {
           ),
         ),
         if (list.items.isEmpty)
-          SliverToBoxAdapter(
-            child: Center(
-              child: Text(
-                'A fresh start',
-                textAlign: TextAlign.center,
-                style: context.accentStyle,
-              ),
-            ),
-          )
+          SliverToBoxAdapter(child: _EmptyState())
         else
-          ReorderableSliverList(
-            onReorder: (oldIndex, newIndex) => list.items.mutate((items) {
-              final item = items.removeAt(oldIndex);
-              items.insert(newIndex, item);
-            }),
-            buildDraggableFeedback: (context, constraints, child) {
-              return Material(
-                elevation: 2,
-                color: context.color.canvas,
-                child: SizedBox.fromSize(
-                  size: constraints.biggest,
-                  child: child,
-                ),
-              );
-            },
-            delegate: ReorderableSliverChildBuilderDelegate(
-              (_, index) {
-                final item = list.items[index].value;
-                return TodoItem(
-                  item: item,
-                  onTap: () => context.showEditItemSheet(item),
-                  onPrimarySwipe: () {
-                    list.items.mutate((it) => it.removeAt(index));
-                    list.inTheCart.add(item);
-                    onboarding.swipeToPutInCart.used();
-                    history.checkedItem(item);
-                    context.scaffoldMessenger.showSnackBar(
-                      SnackBar(
-                        content: Text('$item is in the cart.'),
-                        action: SnackBarAction(
-                          label: 'Undo',
-                          onPressed: () {
-                            list.inTheCart.mutate((it) => it.removeLast());
-                            list.items.mutate((it) => it.insert(index, item));
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                  onSecondarySwipe: () {
-                    list.items.mutate((it) => it.removeAt(index));
-                    list.notAvailable.add(item);
-                    context.scaffoldMessenger.showSnackBar(
-                      SnackBar(
-                        content: Text('$item is not available.'),
-                        action: SnackBarAction(
-                          label: 'Undo',
-                          onPressed: () {
-                            list.notAvailable.mutate((it) => it.removeLast());
-                            list.items.mutate((it) => it.insert(index, item));
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                  showSwipeIndicator:
-                      onboarding.swipeToPutInCart.showExplanation && index == 0,
-                );
-              },
-              childCount: list.items.length,
-            ),
-          ),
+          _SliverMainList(),
         SliverToBoxAdapter(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: context.padding.outer),
-            child: Column(
-              children: [
-                SizedBox(height: context.padding.inner),
-                Text(
-                  'How about some of these?',
-                  textAlign: TextAlign.center,
-                  style: context.suggestionStyle,
-                ),
-                SizedBox(height: context.padding.inner),
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  children: [
-                    for (final item
-                        in suggestionEngine.suggestionsNotInList.take(6))
-                      SuggestionChip(
-                        item: item,
-                        onPressed: () {
-                          list.add(item);
-                          suggestionEngine.add(item);
-                        },
-                        onLongPressed: () {
-                          // TODO: Show context dialog.
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              backgroundColor: context.color.canvas,
-                              title: Text(
-                                'Remove suggestion?',
-                                style: context.accentStyle,
-                              ),
-                              content: Text(
-                                'This will cause "$item" to no longer appear in suggestion chips or Smart Compose.',
-                                style: context.standardStyle,
-                              ),
-                              actions: <Widget>[
-                                MyTextButton(
-                                  text: 'No',
-                                  onPressed: () => context.navigator.pop(),
-                                ),
-                                MyTextButton(
-                                  text: 'Yes',
-                                  onPressed: () {
-                                    suggestionEngine.remove(item);
-                                    context.navigator.pop();
-                                  },
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                  ],
-                ),
-              ],
-            ),
+            padding: EdgeInsets.symmetric(horizontal: context.padding.outer) +
+                EdgeInsets.only(top: context.padding.inner),
+            child: Suggestions(),
           ),
         ),
         // This makes sure that nothing is hidden behin the FAB.
         SliverToBoxAdapter(child: Container(height: 100)),
       ],
+    );
+  }
+}
+
+class _EmptyState extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        'A fresh start',
+        textAlign: TextAlign.center,
+        style: context.accentStyle,
+      ),
+    );
+  }
+}
+
+class _SliverMainList extends StatelessWidget {
+  void _onReorder(int oldIndex, int newIndex) {
+    list.items.mutate((items) {
+      final item = items.removeAt(oldIndex);
+      items.insert(newIndex, item);
+    });
+  }
+
+  void _putInCart(BuildContext context, String item) {
+    final index = list.items.value.indexOf(item);
+    list.items.mutate((it) => it.removeAt(index));
+    list.inTheCart.add(item);
+    onboarding.swipeToPutInCart.used();
+    history.checkedItem(item);
+    context.showSnackBarWithUndo('Put $item in the cart.', () {
+      list.inTheCart.mutate((it) => it.removeLast());
+      list.items.mutate((it) => it.insert(index, item));
+    });
+  }
+
+  void _markAsNotAvailable(BuildContext context, String item) {
+    final index = list.items.value.indexOf(item);
+    list.items.mutate((it) => it.removeAt(index));
+    list.notAvailable.add(item);
+    context.showSnackBarWithUndo('Marked $item as not available.', () {
+      list.notAvailable.mutate((it) => it.removeLast());
+      list.items.mutate((it) => it.insert(index, item));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ReferenceBuilder(
+      reference: list.items,
+      builder: (context) => ReorderableSliverList(
+        onReorder: _onReorder,
+        buildDraggableFeedback: (context, constraints, child) {
+          return Material(
+            elevation: 2,
+            color: context.color.canvas,
+            child: SizedBox.fromSize(size: constraints.biggest, child: child),
+          );
+        },
+        delegate: ReorderableSliverChildBuilderDelegate(
+          (_, index) {
+            final item = list.items[index].value;
+            return TodoItem(
+              item: item,
+              onTap: () => context.showEditItemSheet(item),
+              onPrimarySwipe: () => _putInCart(context, item),
+              onSecondarySwipe: () => _markAsNotAvailable(context, item),
+              showSwipeIndicator:
+                  onboarding.swipeToPutInCart.showExplanation && index == 0,
+            );
+          },
+          childCount: list.items.length,
+        ),
+      ),
     );
   }
 }

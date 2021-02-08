@@ -1,7 +1,69 @@
 import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:flutter/material.dart';
 
+import 'core/core.dart';
 import 'theme.dart';
+import 'utils.dart';
+
+class Suggestions extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          'How about some of these?',
+          textAlign: TextAlign.center,
+          style: context.suggestionStyle,
+        ),
+        SizedBox(height: context.padding.inner),
+        Wrap(
+          alignment: WrapAlignment.center,
+          children: [
+            for (final item in suggestionEngine.suggestionsNotInList.take(6))
+              SuggestionChip(
+                item: item,
+                onPressed: () {
+                  list.add(item);
+                  suggestionEngine.add(item);
+                },
+                onLongPressed: () => _offerRemovingSuggestion(context, item),
+              ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  void _offerRemovingSuggestion(BuildContext context, String item) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: context.color.canvas,
+        title: Text(
+          'Remove suggestion?',
+          style: context.accentStyle,
+        ),
+        content: Text(
+          'This will cause "$item" to no longer appear in suggestion chips or Smart Compose.',
+          style: context.standardStyle,
+        ),
+        actions: <Widget>[
+          MyTextButton(
+            text: 'No',
+            onPressed: () => context.navigator.pop(),
+          ),
+          MyTextButton(
+            text: 'Yes',
+            onPressed: () {
+              suggestionEngine.remove(item);
+              context.navigator.pop();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 class SuggestionChip extends StatelessWidget {
   const SuggestionChip({
