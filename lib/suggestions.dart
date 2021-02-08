@@ -21,10 +21,9 @@ class Suggestions extends StatelessWidget {
         }
         return Column(
           children: [
-            Text(
-              'How about some of these?',
-              textAlign: TextAlign.center,
-              style: context.suggestionStyle,
+            _buildIntroductoryText(
+              context,
+              suggestionEngine.suggestionsNotInList.length,
             ),
             SizedBox(height: context.padding.inner),
             Wrap(
@@ -46,6 +45,17 @@ class Suggestions extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+
+  Widget _buildIntroductoryText(BuildContext context, int numberOfSuggestions) {
+    if (numberOfSuggestions == 0) return Container();
+    return Text(
+      numberOfSuggestions == 1
+          ? 'How about this one?'
+          : 'How about some of these?',
+      textAlign: TextAlign.center,
+      style: context.suggestionStyle,
     );
   }
 
