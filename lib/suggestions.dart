@@ -1,4 +1,5 @@
 import 'package:black_hole_flutter/black_hole_flutter.dart';
+import 'package:chest_flutter/chest_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'core/core.dart';
@@ -8,29 +9,43 @@ import 'utils.dart';
 class Suggestions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          'How about some of these?',
-          textAlign: TextAlign.center,
-          style: context.suggestionStyle,
-        ),
-        SizedBox(height: context.padding.inner),
-        Wrap(
-          alignment: WrapAlignment.center,
-          children: [
-            for (final item in suggestionEngine.suggestionsNotInList.take(6))
-              SuggestionChip(
-                item: item,
-                onPressed: () {
-                  list.add(item);
-                  suggestionEngine.add(item);
-                },
-                onLongPressed: () => _offerRemovingSuggestion(context, item),
-              ),
-          ],
-        ),
+    return ReferencesBuilder(
+      references: [
+        suggestionEngine.state,
+        list.items,
+        settings.showSuggestions,
       ],
+      builder: (context) {
+        if (!settings.showSuggestions.value) {
+          return Container();
+        }
+        return Column(
+          children: [
+            Text(
+              'How about some of these?',
+              textAlign: TextAlign.center,
+              style: context.suggestionStyle,
+            ),
+            SizedBox(height: context.padding.inner),
+            Wrap(
+              alignment: WrapAlignment.center,
+              children: [
+                for (final item
+                    in suggestionEngine.suggestionsNotInList.take(6))
+                  SuggestionChip(
+                    item: item,
+                    onPressed: () {
+                      list.add(item);
+                      suggestionEngine.add(item);
+                    },
+                    onLongPressed: () =>
+                        _offerRemovingSuggestion(context, item),
+                  ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 
