@@ -82,7 +82,7 @@ class _ItemSheetState extends State<_ItemSheet> {
           MyTextButton(
             text: 'Delete',
             onPressed: () {
-              list.items.value = list.items.value..remove(_editedItem);
+              list.items.mutate((items) => items.remove(_editedItem));
               context.navigator.pop();
             },
           ),
@@ -91,8 +91,10 @@ class _ItemSheetState extends State<_ItemSheet> {
             onPressed: _alreadyExists
                 ? null
                 : () {
-                    final index = list.items.value.indexOf(_editedItem!);
-                    list.items[index].value = _item;
+                    list.items.mutate((items) {
+                      final index = items.indexOf(_editedItem!);
+                      items[index] = _item;
+                    });
                     context.navigator.pop();
                   },
           ),
@@ -110,8 +112,9 @@ class _ItemSheetState extends State<_ItemSheet> {
     return MyTextButton(
       text: 'Add',
       onPressed: () {
-        list.items.value = list.items.value
-          ..insert(history.whereToInsert(_item), _item);
+        list.items.mutate((items) {
+          items.insert(history.whereToInsert(_item), _item);
+        });
         suggestionEngine.add(_item);
         context.navigator.pop();
       },
@@ -185,6 +188,7 @@ class SmartComposingTextField extends StatelessWidget {
                   maxLines: null,
                   controller: controller,
                   style: context.itemStyle,
+                  cursorColor: context.color.primary,
                   decoration: InputDecoration(
                     hintText: hintText,
                     hintStyle: context.itemStyle

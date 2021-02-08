@@ -43,8 +43,10 @@ class _SuggestionEngine {
     if (durationSinceDecay > 1.hours) {
       final daysSinceDecay =
           durationSinceDecay.inMilliseconds / 1000 / 60 / 60 / 24;
-      state.scores.value = state.scores.value.map((item, score) {
-        return MapEntry(item, score * pow(0.95, daysSinceDecay));
+      state.scores.update((it) {
+        return it.map((item, score) {
+          return MapEntry(item, score * pow(0.95, daysSinceDecay));
+        });
       });
     }
   }
@@ -59,31 +61,32 @@ class _SuggestionEngine {
       state.scores[item].value = 1;
       final scores = state.scores.value;
       if (scores.length > 100) {
-        state.scores.value = scores
-          ..remove(scores.entries.minBy((entry) => entry.value).orNull.key);
+        state.scores.mutate((it) {
+          it.remove(scores.entries.minBy((entry) => entry.value).orNull.key);
+        });
       }
     }
   }
 
   void remove(String item) {
-    state.scores.value = state.scores.value..remove(item);
+    state.scores.mutate((it) => it.remove(item));
   }
 
-  Iterable<String> get _recommendations {
+  Iterable<String> get allSuggestions {
     return state.scores.value.entries
         .toList()
         .sortedCopyBy((it) => -it.value)
         .map((it) => it.key);
   }
 
-  Iterable<String> get items {
+  Iterable<String> get suggestionsNotInList {
     final items = list.items.value.toSet();
-    return _recommendations.where((it) => !items.contains(it));
+    return allSuggestions.where((it) => !items.contains(it));
   }
 
   String? suggestionFor(String prefix) {
     if (prefix.isEmpty) return null;
-    return items
+    return suggestionsNotInList
         .where((it) => it.startsWith(prefix) && it.length > prefix.length)
         .cast<String?>()
         .firstWhere((_) => true, orElse: () => null);

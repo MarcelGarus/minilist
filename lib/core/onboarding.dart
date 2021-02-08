@@ -35,7 +35,7 @@ extension FancyOnboardingCountdown on Reference<OnboardingCountdown> {
   bool get showExplanation => counter.value > 0;
   void used() {
     if (counter.value > 0) {
-      counter.value = counter.value - 1;
+      counter.value--;
     }
   }
 }

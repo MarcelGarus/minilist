@@ -39,6 +39,28 @@ class _TaperForV0ThemeMode extends BytesTaper<ThemeMode> {
   }
 }
 
+extension TaperForInsertion on TaperNamespace {
+  _VersionedTapersForInsertion forInsertion() => _VersionedTapersForInsertion();
+}
+
+class _VersionedTapersForInsertion {
+  Taper<Insertion> get v0 => _TaperForV0Insertion();
+}
+
+class _TaperForV0Insertion extends BytesTaper<Insertion> {
+  @override
+  List<int> toBytes(Insertion insertion) {
+    final index =
+        [Insertion.atTheBeginning, Insertion.atTheEnd].indexOf(insertion);
+    return [index];
+  }
+
+  @override
+  Insertion fromBytes(List<int> bytes) {
+    return [Insertion.atTheBeginning, Insertion.atTheEnd][bytes.first];
+  }
+}
+
 extension TaperForSettings on TaperNamespace {
   _VersionedTapersForSettings forSettings() => _VersionedTapersForSettings();
 }
@@ -65,4 +87,8 @@ class _TaperForV0Settings extends MapTaper<Settings> {
 
 extension ReferenceToSettings on Reference<Settings> {
   Reference<ThemeMode> get theme => child('theme');
+  Reference<bool> get showSuggestions => child('showSuggestions');
+  Reference<bool> get showSmartCompose => child('showSmartCompose');
+  Reference<bool> get useSmartInsertion => child('useSmartInsertion');
+  Reference<Insertion> get defaultInsertion => child('defaultInsertion');
 }

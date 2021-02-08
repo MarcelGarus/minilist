@@ -24,17 +24,45 @@ class SettingsPage extends StatelessWidget {
               ),
             ),
           ),
+          SettingsToggleListTile(
+            reference: settings.showSuggestions,
+            title: 'Show suggestions',
+            subtitle: 'At the bottom of the list',
+          ),
+          SettingsToggleListTile(
+            reference: settings.showSmartCompose,
+            title: 'Smart Compose',
+            subtitle: 'Autocomplete while typing',
+          ),
+          SettingsToggleListTile(
+            reference: settings.useSmartInsertion,
+            title: 'Smart Insertion',
+            subtitle:
+                'Insert items based on how they were completed in the past',
+          ),
+          ReferenceBuilder(
+            reference: settings.defaultInsertion,
+            builder: (context) => SettingsListTile(
+              title: 'Default insertion',
+              subtitle: settings.value.defaultInsertion.toBeautifulString(),
+              onTap: () => settings.defaultInsertion.value =
+                  settings.value.defaultInsertion.opposite,
+            ),
+          ),
+          Divider(color: context.color.secondary),
           ReferenceBuilder(
             reference: suggestionEngine.state,
             builder: (context) => SettingsListTile(
               title: 'Suggestions',
-              subtitle: '${suggestionEngine.items.length} items',
+              subtitle: '${suggestionEngine.allSuggestions.length} items',
               onTap: () => context.navigator.push(MaterialPageRoute(
                 builder: (_) => SuggestionsPage(),
               )),
             ),
           ),
+          SettingsListTile(title: 'History', subtitle: 'Some data'),
           SettingsListTile(title: 'Reset', subtitle: 'Removes all items'),
+          Divider(color: context.color.secondary),
           SettingsListTile(title: 'Analytics', subtitle: 'Disabled'),
           SettingsListTile(
             title: 'Privacy Policy',
@@ -97,7 +125,7 @@ class SuggestionsPage extends StatelessWidget {
       body: ReferenceBuilder(
         reference: suggestionEngine.state,
         builder: (context) {
-          final suggestions = suggestionEngine.items.toList();
+          final suggestions = suggestionEngine.allSuggestions.toList();
           return ListView.builder(
             itemCount: suggestions.length + 1,
             itemBuilder: (context, index) {
@@ -160,6 +188,47 @@ class SettingsAppBar extends StatelessWidget implements PreferredSizeWidget {
       iconTheme: IconThemeData(color: context.color.onBackground),
       backgroundColor: context.color.canvas,
       title: Text(title, style: context.accentStyle.copyWith(fontSize: 20)),
+    );
+  }
+}
+
+class SettingsToggleListTile extends StatelessWidget {
+  const SettingsToggleListTile({
+    required this.reference,
+    required this.title,
+    this.subtitle,
+  });
+
+  final Reference<bool> reference;
+  final String title;
+  final String? subtitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(title, style: context.accentStyle),
+      subtitle: subtitle == null
+          ? null
+          : Text(subtitle!, style: context.secondaryStyle),
+      onTap: reference.toggle,
+      trailing: ReferenceSwitch(reference),
+    );
+  }
+}
+
+class ReferenceSwitch extends StatelessWidget {
+  const ReferenceSwitch(this.reference);
+
+  final Reference<bool> reference;
+
+  @override
+  Widget build(BuildContext context) {
+    return ReferenceBuilder(
+      reference: reference,
+      builder: (_) => Switch(
+        value: reference.value ?? false,
+        onChanged: (_) => reference.toggle(),
+      ),
     );
   }
 }

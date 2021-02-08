@@ -3,6 +3,7 @@ import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:chest_flutter/chest_flutter.dart' hide TaperForThemeMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:reorderables/reorderables.dart';
 
 import 'app_bar.dart';
@@ -154,12 +155,10 @@ class TodoList extends StatelessWidget {
           )
         else
           ReorderableSliverList(
-            onReorder: (oldIndex, newIndex) {
-              final items = list.items.value;
+            onReorder: (oldIndex, newIndex) => list.items.mutate((items) {
               final item = items.removeAt(oldIndex);
               items.insert(newIndex, item);
-              list.items.value = items;
-            },
+            }),
             buildDraggableFeedback: (context, constraints, child) {
               return Material(
                 elevation: 2,
@@ -171,15 +170,13 @@ class TodoList extends StatelessWidget {
               );
             },
             delegate: ReorderableSliverChildBuilderDelegate(
-              (_, i) {
-                final item = list.items[i].value;
+              (_, index) {
+                final item = list.items[index].value;
                 return TodoItem(
                   item: item,
                   onTap: () => context.showEditItemSheet(item),
                   onPrimarySwipe: () {
-                    final items = list.items.value;
-                    final index = items.indexOf(item);
-                    list.items.value = items..removeAt(index);
+                    list.items.mutate((it) => it.removeAt(index));
                     list.inTheCart.add(item);
                     onboarding.swipeToPutInCart.used();
                     history.checkedItem(item);
@@ -189,19 +186,15 @@ class TodoList extends StatelessWidget {
                         action: SnackBarAction(
                           label: 'Undo',
                           onPressed: () {
-                            list.inTheCart.value = list.inTheCart.value
-                              ..removeLast();
-                            list.items.value = list.items.value
-                              ..insert(index, item);
+                            list.inTheCart.mutate((it) => it.removeLast());
+                            list.items.mutate((it) => it.insert(index, item));
                           },
                         ),
                       ),
                     );
                   },
                   onSecondarySwipe: () {
-                    final items = list.items.value;
-                    final index = items.indexOf(item);
-                    list.items.value = items..removeAt(index);
+                    list.items.mutate((it) => it.removeAt(index));
                     list.notAvailable.add(item);
                     context.scaffoldMessenger.showSnackBar(
                       SnackBar(
@@ -209,17 +202,15 @@ class TodoList extends StatelessWidget {
                         action: SnackBarAction(
                           label: 'Undo',
                           onPressed: () {
-                            list.notAvailable.value = list.notAvailable.value
-                              ..removeLast();
-                            list.items.value = list.items.value
-                              ..insert(index, item);
+                            list.notAvailable.mutate((it) => it.removeLast());
+                            list.items.mutate((it) => it.insert(index, item));
                           },
                         ),
                       ),
                     );
                   },
                   showSwipeIndicator:
-                      onboarding.swipeToPutInCart.showExplanation && i == 0,
+                      onboarding.swipeToPutInCart.showExplanation && index == 0,
                 );
               },
               childCount: list.items.length,
@@ -240,7 +231,8 @@ class TodoList extends StatelessWidget {
                 Wrap(
                   alignment: WrapAlignment.center,
                   children: [
-                    for (final item in suggestionEngine.items.take(6))
+                    for (final item
+                        in suggestionEngine.suggestionsNotInList.take(6))
                       SuggestionChip(
                         item: item,
                         onPressed: () {

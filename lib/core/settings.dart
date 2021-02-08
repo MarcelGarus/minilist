@@ -10,9 +10,17 @@ final settings = Chest<Settings>('settings', ifNew: () => Settings());
 class Settings {
   Settings({
     this.theme = ThemeMode.systemLightBlack,
+    this.showSuggestions = true,
+    this.showSmartCompose = true,
+    this.useSmartInsertion = false,
+    this.defaultInsertion = Insertion.atTheEnd,
   });
 
   final ThemeMode theme;
+  final bool showSuggestions;
+  final bool showSmartCompose;
+  final bool useSmartInsertion;
+  final Insertion defaultInsertion;
 }
 
 @tape({
@@ -41,4 +49,24 @@ extension BeautifulThemeMode on ThemeMode {
         return 'System (light/black)';
     }
   }
+}
+
+@tape({
+  v0: {#atTheBeginning, #atTheEnd},
+})
+enum Insertion { atTheBeginning, atTheEnd }
+
+extension BeautifulInsertion on Insertion {
+  String toBeautifulString() {
+    switch (this) {
+      case Insertion.atTheBeginning:
+        return 'Top';
+      case Insertion.atTheEnd:
+        return 'Bottom';
+    }
+  }
+
+  Insertion get opposite => this == Insertion.atTheBeginning
+      ? Insertion.atTheEnd
+      : Insertion.atTheBeginning;
 }

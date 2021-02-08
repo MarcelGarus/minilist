@@ -94,15 +94,15 @@ class InTheCartPage extends StatelessWidget {
         backgroundColor: context.color.inTheCartTint,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
+          iconTheme: IconThemeData(color: context.color.onBackground),
           elevation: 0,
-          title: Text('In the cart'),
+          title: Text('In the cart', style: context.appBarStyle),
         ),
         body: ListView.builder(
           itemCount: list.inTheCart.length,
-          itemBuilder: (context, index) {
-            final item = list.inTheCart[index].value;
-            return TodoItem(item: item);
-          },
+          itemBuilder: (context, index) => TodoItem(
+            item: list.inTheCart[index].value,
+          ),
         ),
       ),
     );
@@ -118,15 +118,15 @@ class NotAvailablePage extends StatelessWidget {
         backgroundColor: context.color.notAvailableTint,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
+          iconTheme: IconThemeData(color: context.color.onBackground),
           elevation: 0,
-          title: Text('Not available'),
+          title: Text('Not available', style: context.appBarStyle),
         ),
         body: ListView.builder(
           itemCount: list.notAvailable.length,
-          itemBuilder: (context, index) {
-            final item = list.notAvailable[index].value;
-            return TodoItem(item: item);
-          },
+          itemBuilder: (context, index) => TodoItem(
+            item: list.notAvailable[index].value,
+          ),
         ),
       ),
     );
