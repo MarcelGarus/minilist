@@ -8,7 +8,7 @@ import 'package:reorderables/reorderables.dart';
 
 import 'app_bar.dart';
 import 'completed_section.dart';
-import 'core/core.dart';
+import 'core/core.dart' hide ThemeMode;
 import 'item_sheet.dart';
 import 'settings.dart';
 import 'suggestions.dart';
@@ -17,7 +17,21 @@ import 'todo_item.dart';
 import 'utils.dart';
 
 void main() async {
+  runApp(Container(color: Colors.teal));
   await initializeChest();
+  registerTapers();
+  await Future.wait([
+    history.open(),
+    list.open(),
+    onboarding.open(),
+    settings.open(),
+    suggestionEngine.initialize(),
+  ]);
+  runApp(ShoppingListApp());
+}
+
+@visibleForTesting
+void registerTapers() {
   tape.register({
     ...tapers.forDartCore,
     0: taper.forList<String>(),
@@ -33,14 +47,6 @@ void main() async {
     9: taper.forList<HistoryItem>(),
     11: taper.forInsertion().v0,
   });
-  await Future.wait([
-    history.open(),
-    list.open(),
-    onboarding.open(),
-    settings.open(),
-    suggestionEngine.initialize(),
-  ]);
-  runApp(ShoppingListApp());
 }
 
 class ShoppingListApp extends StatelessWidget {
@@ -51,22 +57,22 @@ class ShoppingListApp extends StatelessWidget {
       builder: (_) => AppTheme(
         data: AppThemeData.fromThemeMode(settings.theme.value),
         child: Builder(
-          builder: (context) {
-            // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-            //   statusBarColor: Colors.grey,
-            //   // statusBarIconBrightness: Brightness.light,
-            //   // statusBarBrightness: Brightness.light,
-            // ));
-            print('Set system UI overlay style.');
-            return MaterialApp(
-              title: 'Shopping List',
-              theme: ThemeData(accentColor: context.color.primary),
-              home: MainPage(),
-            );
-          },
+          builder: (context) => MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Shopping List',
+            theme: context.appTheme.toDefaultMaterialTheme(),
+            home: SplashScreen(),
+          ),
         ),
       ),
     );
+  }
+}
+
+class SplashScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(color: Colors.teal);
   }
 }
 
@@ -74,11 +80,9 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: context.color.background,
       body: TodoList(),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: context.color.primary,
-        icon: Icon(Icons.add, color: context.color.onPrimary),
+        icon: Icon(Icons.add),
         label: Text(
           'Add item',
           style: context.accentStyle.copyWith(color: context.color.onPrimary),
@@ -187,7 +191,6 @@ class _SliverMainList extends StatelessWidget {
         buildDraggableFeedback: (context, constraints, child) {
           return Material(
             elevation: 2,
-            color: context.color.canvas,
             child: SizedBox.fromSize(size: constraints.biggest, child: child),
           );
         },

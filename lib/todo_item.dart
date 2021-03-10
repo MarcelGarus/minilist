@@ -19,10 +19,19 @@ class TodoItem extends StatelessWidget {
   final VoidCallback? onSecondarySwipe;
   final bool showSwipeIndicator;
 
+  DismissDirection get _effectiveDismissDirection {
+    if (onPrimarySwipe == null && onSecondarySwipe == null)
+      return DismissDirection.none;
+    if (onPrimarySwipe != null) return DismissDirection.startToEnd;
+    if (onSecondarySwipe != null) return DismissDirection.endToStart;
+    return DismissDirection.horizontal;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dismissible(
       key: Key(item),
+      direction: _effectiveDismissDirection,
       background: Container(
         color: context.color.inTheCart,
         padding: EdgeInsets.symmetric(horizontal: context.padding.outer),

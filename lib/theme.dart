@@ -27,7 +27,8 @@ extension GetAppTheme on BuildContext {
       _style.standard.copyWith(color: color.onBackground);
   TextStyle get accentStyle =>
       _style.accent.copyWith(color: color.onBackground);
-  TextStyle get itemStyle => _style.item.copyWith(color: color.onBackground);
+  TextStyle get itemStyle =>
+      _style.item.copyWith(color: color.onBackground, fontSize: 20);
   TextStyle get appBarStyle =>
       _style.accent.copyWith(color: color.onBackground, fontSize: 20);
   TextStyle get secondaryStyle =>
@@ -152,6 +153,9 @@ class TextStyleThemeData {
   });
   factory TextStyleThemeData.standard() {
     return TextStyleThemeData(
+      // standard: TextStyle(),
+      // accent: TextStyle(),
+      // item: TextStyle(),
       standard: GoogleFonts.roboto(fontSize: 16),
       accent: GoogleFonts.didactGothic(
         fontSize: 16,
@@ -186,7 +190,7 @@ class ColorThemeData {
 
   final Color background;
   final Color onBackground;
-  final Color primary; // Used by FABs, buttons, and action texts.
+  final MaterialColor primary; // Used by FABs, buttons, and action texts.
   final Color secondary; // Used by secondary elements like suggestions.
   final Color onPrimary; // Color readable on the primary color (used on FABs).
   final Color canvas; // Used by sheets, dialogs, popups.
@@ -198,4 +202,25 @@ class ColorThemeData {
   final Color notAvailable;
   final Color onNotAvailable;
   final Color notAvailableTint;
+}
+
+extension ToMaterialTheme on AppThemeData {
+  ThemeData toDefaultMaterialTheme() {
+    return ThemeData(
+      brightness: brightness,
+      scaffoldBackgroundColor: color.background,
+      primaryColor: color.primary,
+      primarySwatch: color.primary,
+      accentColor: color.primary,
+      canvasColor: color.canvas,
+      appBarTheme: AppBarTheme(
+        brightness: brightness,
+        backgroundColor: color.canvas,
+        foregroundColor: color.onBackground,
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        foregroundColor: color.onPrimary,
+      ),
+    );
+  }
 }

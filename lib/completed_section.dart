@@ -88,22 +88,31 @@ class CompletedBucket extends StatelessWidget {
 class InTheCartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: context.color.background,
-      child: Scaffold(
-        backgroundColor: context.color.inTheCartTint,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          iconTheme: IconThemeData(color: context.color.onBackground),
-          elevation: 0,
-          title: Text('In the cart', style: context.appBarStyle),
-        ),
-        body: ListView.builder(
-          itemCount: list.inTheCart.length,
-          itemBuilder: (context, index) => TodoItem(
-            item: list.inTheCart[index].value,
+    return Scaffold(
+      backgroundColor:
+          context.color.inTheCartTint.alphaBlendOn(context.color.background),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: context.color.onBackground),
+        elevation: 0,
+        title: Text('In the cart', style: context.appBarStyle),
+        actions: [
+          TextButton(
+            child: Text('Clear all'),
+            onPressed: () => list.inTheCart.value = [],
           ),
-        ),
+        ],
+      ),
+      body: ReferenceBuilder(
+        reference: list.inTheCart,
+        builder: (context) {
+          return ListView.builder(
+            itemCount: list.inTheCart.length,
+            itemBuilder: (context, index) => TodoItem(
+              item: list.inTheCart[index].value,
+            ),
+          );
+        },
       ),
     );
   }
@@ -112,22 +121,31 @@ class InTheCartPage extends StatelessWidget {
 class NotAvailablePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: context.color.background,
-      child: Scaffold(
-        backgroundColor: context.color.notAvailableTint,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          iconTheme: IconThemeData(color: context.color.onBackground),
-          elevation: 0,
-          title: Text('Not available', style: context.appBarStyle),
-        ),
-        body: ListView.builder(
-          itemCount: list.notAvailable.length,
-          itemBuilder: (context, index) => TodoItem(
-            item: list.notAvailable[index].value,
+    return Scaffold(
+      backgroundColor:
+          context.color.notAvailableTint.alphaBlendOn(context.color.background),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: context.color.onBackground),
+        elevation: 0,
+        title: Text('Not available', style: context.appBarStyle),
+        actions: [
+          TextButton(
+            child: Text('Clear all'),
+            onPressed: () => list.notAvailable.value = [],
           ),
-        ),
+        ],
+      ),
+      body: ReferenceBuilder(
+        reference: list.notAvailable,
+        builder: (context) {
+          return ListView.builder(
+            itemCount: list.notAvailable.length,
+            itemBuilder: (context, index) => TodoItem(
+              item: list.notAvailable[index].value,
+            ),
+          );
+        },
       ),
     );
   }

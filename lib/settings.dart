@@ -1,6 +1,7 @@
 import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:chest_flutter/chest_flutter.dart';
 import 'package:flutter/material.dart' hide ThemeMode;
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'core/core.dart';
@@ -13,7 +14,6 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: context.color.background,
       appBar: SettingsAppBar(title: 'Settings'),
       body: ListView(
         children: [
@@ -190,8 +190,7 @@ class SettingsAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      iconTheme: IconThemeData(color: context.color.onBackground),
-      backgroundColor: context.color.canvas,
+      backwardsCompatibility: false,
       title: Text(title, style: context.accentStyle.copyWith(fontSize: 20)),
     );
   }

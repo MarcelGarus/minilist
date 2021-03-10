@@ -1,4 +1,4 @@
-package dev.marcelgarus.shopping_list
+package dev.marcelgarus.minilist
 
 import io.flutter.embedding.android.FlutterActivity
 
