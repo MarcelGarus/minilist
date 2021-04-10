@@ -42,14 +42,14 @@ packages:
       name: basics
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.0+1"
+    version: "0.6.0"
   black_hole_flutter:
     dependency: "direct main"
     description:
       name: black_hole_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.16"
+    version: "0.3.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -140,14 +140,14 @@ packages:
       name: chest
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.0-0"
+    version: "0.1.1"
   chest_flutter:
     dependency: "direct main"
     description:
       path: "../chestdb/chest_flutter"
       relative: true
     source: path
-    version: "0.1.0-0"
+    version: "0.1.1"
   cli_util:
     dependency: transitive
     description:
@@ -211,13 +211,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.6"
-  dartx:
-    dependency: transitive
-    description:
-      name: dartx
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.0"
   fake_async:
     dependency: transitive
     description:
@@ -271,7 +264,7 @@ packages:
       name: flutter_tapers
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.0-0"
+    version: "0.1.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -393,7 +386,7 @@ packages:
       name: more
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0-nullsafety.6"
+    version: "3.0.1"
   node_interop:
     dependency: transitive
     description:
@@ -644,13 +637,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  supercharged:
+    dependency: transitive
+    description:
+      name: supercharged
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  supercharged_dart:
+    dependency: transitive
+    description:
+      name: supercharged_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   tapegen:
     dependency: "direct dev"
     description:
       path: "../chestdb/tapegen"
       relative: true
     source: path
-    version: "0.0.2"
+    version: "0.0.3"
   term_glyph:
     dependency: transitive
     description:
@@ -679,13 +686,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.12-nullsafety.17"
-  time:
-    dependency: transitive
-    description:
-      name: time
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.4.0"
   timing:
     dependency: transitive
     description:
@@ -720,42 +720,42 @@ packages:
       name: url_launcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.7.10"
+    version: "6.0.3"
   url_launcher_linux:
     dependency: transitive
     description:
       name: url_launcher_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1+4"
+    version: "2.0.0"
   url_launcher_macos:
     dependency: transitive
     description:
       name: url_launcher_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1+9"
+    version: "2.0.0"
   url_launcher_platform_interface:
     dependency: transitive
     description:
       name: url_launcher_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.9"
+    version: "2.0.1"
   url_launcher_web:
     dependency: transitive
     description:
       name: url_launcher_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.5+3"
+    version: "2.0.0"
   url_launcher_windows:
     dependency: transitive
     description:
       name: url_launcher_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.1+3"
+    version: "2.0.0"
   vector_math:
     dependency: transitive
     description:
@@ -820,5 +820,5 @@ packages:
     source: hosted
     version: "2.2.1"
 sdks:
-  dart: ">=2.12.0-0.0 <3.0.0"
+  dart: ">=2.12.0 <3.0.0"
   flutter: ">=1.24.0-7.0.pre"
