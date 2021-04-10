@@ -3,6 +3,7 @@ import 'package:chest_flutter/chest_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'core/core.dart';
+import 'i18n.dart';
 import 'theme.dart';
 import 'todo_item.dart';
 
@@ -17,7 +18,7 @@ class CompletedSection extends StatelessWidget {
             Expanded(
               child: CompletedBucket(
                 primaryText: list.inTheCart.length.toString(),
-                secondaryText: 'in the cart',
+                secondaryText: context.t.mainInTheCart,
                 color: context.color.inTheCartTint,
                 onTap: () {
                   context.navigator.push(MaterialPageRoute(
@@ -30,7 +31,7 @@ class CompletedSection extends StatelessWidget {
             Expanded(
               child: CompletedBucket(
                 primaryText: list.notAvailable.length.toString(),
-                secondaryText: 'not available',
+                secondaryText: context.t.mainNotAvailable,
                 color: context.color.notAvailableTint,
                 onTap: () {
                   context.navigator.push(MaterialPageRoute(
@@ -95,10 +96,10 @@ class InTheCartPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         iconTheme: IconThemeData(color: context.color.onBackground),
         elevation: 0,
-        title: Text('In the cart', style: context.appBarStyle),
+        title: Text(context.t.inTheCartTitle, style: context.appBarStyle),
         actions: [
           TextButton(
-            child: Text('Clear all'),
+            child: Text(context.t.inTheCartClearAll),
             onPressed: () => list.inTheCart.value = [],
           ),
         ],
@@ -128,10 +129,10 @@ class NotAvailablePage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         iconTheme: IconThemeData(color: context.color.onBackground),
         elevation: 0,
-        title: Text('Not available', style: context.appBarStyle),
+        title: Text(context.t.notAvailableTitle, style: context.appBarStyle),
         actions: [
           TextButton(
-            child: Text('Clear all'),
+            child: Text(context.t.notAvailableClearAll),
             onPressed: () => list.notAvailable.value = [],
           ),
         ],

@@ -1,27 +1,24 @@
 import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:chest_flutter/chest_flutter.dart';
 import 'package:flutter/material.dart' hide ThemeMode;
-import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'core/core.dart';
+import 'i18n.dart';
 import 'theme.dart';
-
-const privacyPolicy =
-    'https://docs.google.com/document/d/1oIG3r8gZex-23seHeXSGrk0cC4eptV8vf96-_UqSM4Y';
 
 class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SettingsAppBar(title: 'Settings'),
+      appBar: SettingsAppBar(title: context.t.settingsTitle),
       body: ListView(
         children: [
           ReferenceBuilder(
             reference: settings.theme,
             builder: (context) => SettingsListTile(
-              title: 'Theme',
-              subtitle: settings.theme.value.toBeautifulString(),
+              title: context.t.settingsTheme,
+              subtitle: settings.theme.value.toBeautifulString(context.t),
               onTap: () => showDialog(
                 context: context,
                 builder: (_) => ThemeModeChooserDialog(),
@@ -30,25 +27,25 @@ class SettingsPage extends StatelessWidget {
           ),
           SettingsToggleListTile(
             reference: settings.showSuggestions,
-            title: 'Show suggestions',
-            subtitle: 'At the bottom of the list',
+            title: context.t.settingsShowSuggestions,
+            subtitle: context.t.settingsShowSuggestionsDetails,
           ),
           SettingsToggleListTile(
             reference: settings.showSmartCompose,
-            title: 'Smart Compose',
-            subtitle: 'Autocomplete while typing',
+            title: context.t.settingsSmartCompose,
+            subtitle: context.t.settingsSmartComposeDetails,
           ),
           SettingsToggleListTile(
             reference: settings.useSmartInsertion,
-            title: 'Smart Insertion',
-            subtitle:
-                'Insert items based on how they were completed in the past',
+            title: context.t.settingsSmartInsertion,
+            subtitle: context.t.settingsSmartInsertionDetails,
           ),
           ReferenceBuilder(
             reference: settings.defaultInsertion,
             builder: (context) => SettingsListTile(
-              title: 'Default insertion',
-              subtitle: settings.value.defaultInsertion.toBeautifulString(),
+              title: context.t.settingsDefaultInsertion,
+              subtitle:
+                  settings.value.defaultInsertion.toBeautifulString(context.t),
               onTap: () => settings.defaultInsertion.value =
                   settings.value.defaultInsertion.opposite,
             ),
@@ -57,8 +54,9 @@ class SettingsPage extends StatelessWidget {
           ReferenceBuilder(
             reference: suggestionEngine.state,
             builder: (context) => SettingsListTile(
-              title: 'Suggestions',
-              subtitle: '${suggestionEngine.allSuggestions.length} items',
+              title: context.t.settingsSuggestions,
+              subtitle: context.t.settingsSuggestionsNItems(
+                  suggestionEngine.allSuggestions.length),
               onTap: () => context.navigator.push(MaterialPageRoute(
                 builder: (_) => SuggestionsPage(),
               )),
@@ -69,16 +67,20 @@ class SettingsPage extends StatelessWidget {
           Divider(color: context.color.secondary),
           SettingsListTile(title: 'Analytics', subtitle: 'Disabled'),
           SettingsListTile(
-            title: 'Privacy Policy',
-            subtitle: "An easy-to-read Google Doc",
-            trailing: Icon(Icons.open_in_new, color: context.color.secondary),
-            onTap: () => launch(privacyPolicy),
+            title: 'Debug information',
+            subtitle: 'Information that helps with developing the app.',
           ),
           SettingsListTile(
-            title: 'Open Source Licenses',
+            title: context.t.settingsPrivacyPolicy,
+            subtitle: context.t.settingsPrivacyPolicyDetails,
+            trailing: Icon(Icons.open_in_new, color: context.color.secondary),
+            onTap: () => launch(context.t.settingsPrivacyPolicyUrl),
+          ),
+          SettingsListTile(
+            title: context.t.settingsOpenSourceLicenses,
             onTap: () => showLicensePage(
               context: context,
-              applicationName: 'MiniList',
+              applicationName: context.t.title,
               applicationVersion: '0.0.1',
             ),
           ),
@@ -99,13 +101,18 @@ class ThemeModeChooserDialog extends StatelessWidget {
       ),
       child: SimpleDialog(
         backgroundColor: context.color.canvas,
-        title: Text('Choose theme', style: context.accentStyle),
+        title: Text(
+          context.t.settingsThemeDialogTitle,
+          style: context.accentStyle,
+        ),
         children: [
           for (final mode in ThemeMode.values)
             RadioListTile(
               activeColor: context.color.primary,
-              title:
-                  Text(mode.toBeautifulString(), style: context.standardStyle),
+              title: Text(
+                mode.toBeautifulString(context.t),
+                style: context.standardStyle,
+              ),
               value: mode,
               groupValue: settings.theme.value,
               selected: settings.theme.value == mode,
@@ -126,7 +133,7 @@ class SuggestionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.color.background,
-      appBar: SettingsAppBar(title: 'Suggestions'),
+      appBar: SettingsAppBar(title: context.t.suggestionsTitle),
       body: ReferenceBuilder(
         reference: suggestionEngine.state,
         builder: (context) {
@@ -167,11 +174,7 @@ class SuggestionsPage extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(16),
         child: Text(
-          'Items you add to the list are recorded here. '
-          'Each item has a score. '
-          'Items with higher scores are suggested more frequently. '
-          'If you use an item, its score increases by 1. '
-          'Over time, the scores automatically decrease exponentially.',
+          context.t.suggestionsExplanation,
           style: context.standardStyle,
         ),
       ),

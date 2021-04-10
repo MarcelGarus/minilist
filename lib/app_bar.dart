@@ -8,12 +8,13 @@ import 'package:flutter/material.dart';
 import 'core/core.dart';
 import 'settings.dart';
 import 'theme.dart';
+import 'i18n.dart';
 
 class ListAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlexibleAppBar(
-      title: 'MiniList',
+      title: context.t.title,
       subtitle: ReferenceBuilder(
         reference: list.items,
         builder: (context) {
@@ -21,8 +22,8 @@ class ListAppBar extends StatelessWidget {
           if (!hasManyItems) return Container();
           return Text(
             list.areAllItemsInMainList
-                ? '${list.items.length} items'
-                : '${list.items.length} items left',
+                ? context.t.mainNItems(list.items.length)
+                : context.t.mainNItemsLeft(list.items.length),
             style: context.standardStyle,
           );
         },
@@ -42,7 +43,10 @@ class ListAppBar extends StatelessWidget {
           itemBuilder: (context) => [
             PopupMenuItem(
               value: 'settings',
-              child: Text('Settings', style: context.standardStyle),
+              child: Text(
+                context.t.mainMenuSettings,
+                style: context.standardStyle,
+              ),
             ),
           ],
           onSelected: (String value) {

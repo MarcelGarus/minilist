@@ -9,6 +9,7 @@ import 'package:reorderables/reorderables.dart';
 import 'app_bar.dart';
 import 'completed_section.dart';
 import 'core/core.dart' hide ThemeMode;
+import 'i18n.dart';
 import 'item_sheet.dart';
 import 'settings.dart';
 import 'suggestions.dart';
@@ -59,7 +60,7 @@ class ShoppingListApp extends StatelessWidget {
         child: Builder(
           builder: (context) => MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'Shopping List',
+            title: context.t.title,
             theme: context.appTheme.toDefaultMaterialTheme(),
             home: SplashScreen(),
           ),
@@ -84,7 +85,7 @@ class MainPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.add),
         label: Text(
-          'Add item',
+          context.t.mainAddItem,
           style: context.accentStyle.copyWith(color: context.color.onPrimary),
         ),
         onPressed: context.showCreateItemSheet,
@@ -144,7 +145,7 @@ class _EmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        'A fresh start',
+        context.t.mainEmptyStateTitle,
         textAlign: TextAlign.center,
         style: context.accentStyle,
       ),
@@ -166,7 +167,7 @@ class _SliverMainList extends StatelessWidget {
     list.inTheCart.add(item);
     onboarding.swipeToPutInCart.used();
     history.checkedItem(item);
-    context.showSnackBarWithUndo('Put $item in the cart.', () {
+    context.showSnackBarWithUndo(context.t.mainSnackbarPutItemInCart(item), () {
       list.inTheCart.mutate((it) => it.removeLast());
       list.items.mutate((it) => it.insert(index, item));
     });
@@ -176,10 +177,13 @@ class _SliverMainList extends StatelessWidget {
     final index = list.items.value.indexOf(item);
     list.items.mutate((it) => it.removeAt(index));
     list.notAvailable.add(item);
-    context.showSnackBarWithUndo('Marked $item as not available.', () {
-      list.notAvailable.mutate((it) => it.removeLast());
-      list.items.mutate((it) => it.insert(index, item));
-    });
+    context.showSnackBarWithUndo(
+      context.t.mainSnackbarMarkedItemAsNotAvailable(item),
+      () {
+        list.notAvailable.mutate((it) => it.removeLast());
+        list.items.mutate((it) => it.insert(index, item));
+      },
+    );
   }
 
   @override

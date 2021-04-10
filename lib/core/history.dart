@@ -31,17 +31,15 @@ extension HistoryFunctionality on Reference<List<HistoryItem>> {
 
   int whereToInsert(String item) {
     final other = _otherItems;
-    return 0.to(other.length + 1).minBy((index) {
+    var index = 0.to(other.length + 1).minBy((index) {
       final itemsBefore = other.sublist(0, index).toSet();
       final itemsAfter = other.sublist(index).toSet();
-      print(
-          'Inserting at $index would have score ${_errorScoreIfInsertedBetween(item, itemsBefore, itemsAfter)}.');
       return _errorScoreIfInsertedBetween(item, itemsBefore, itemsAfter);
-    }).or(
-      settings.defaultInsertion.value == Insertion.atTheBeginning
-          ? 0
-          : list.items.length,
-    );
+    });
+    index ??= settings.defaultInsertion.value == Insertion.atTheBeginning
+        ? 0
+        : list.items.length;
+    return index;
   }
 
   double _errorScoreIfInsertedBetween(
@@ -51,8 +49,8 @@ extension HistoryFunctionality on Reference<List<HistoryItem>> {
   ) {
     var score = 0.0;
     for (var i = 0; i < history.length; i++) {
-      final importance =
-          pow(0.95, i); // Events that date back longer are not as important.
+      // Events that date back longer are not as important.
+      final importance = pow(0.95, i);
       final historyItem = history[i].value;
       if (after.contains(historyItem.item) &&
               historyItem.otherItems.contains(item) ||

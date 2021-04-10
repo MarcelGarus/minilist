@@ -2,6 +2,7 @@ import 'package:chest_flutter/chest_flutter.dart';
 
 part 'onboarding.g.dart';
 
+/// This chest contains information about the onboarding experience.
 final onboarding = Chest<OnboardingState>(
   'onboarding',
   ifNew: () => OnboardingState(),

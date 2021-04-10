@@ -1,5 +1,7 @@
 import 'package:chest_flutter/chest_flutter.dart';
 
+import '../i18n.dart';
+
 part 'settings.g.dart';
 
 final settings = Chest<Settings>('settings', ifNew: () => Settings());
@@ -42,18 +44,18 @@ enum ThemeMode {
 }
 
 extension BeautifulThemeMode on ThemeMode {
-  String toBeautifulString() {
+  String toBeautifulString(Translation t) {
     switch (this) {
       case ThemeMode.light:
-        return 'Light';
+        return t.settingsThemeLight;
       case ThemeMode.dark:
-        return 'Dark';
+        return t.settingsThemeDark;
       case ThemeMode.black:
-        return 'Black';
+        return t.settingsThemeBlack;
       case ThemeMode.systemLightDark:
-        return 'System (light/dark)';
+        return t.settingsThemeSystemLightDark;
       case ThemeMode.systemLightBlack:
-        return 'System (light/black)';
+        return t.settingsThemeSystemLightBlack;
     }
   }
 }
@@ -64,12 +66,12 @@ extension BeautifulThemeMode on ThemeMode {
 enum Insertion { atTheBeginning, atTheEnd }
 
 extension BeautifulInsertion on Insertion {
-  String toBeautifulString() {
+  String toBeautifulString(Translation t) {
     switch (this) {
       case Insertion.atTheBeginning:
-        return 'Top';
+        return t.settingsDefaultInsertionTop;
       case Insertion.atTheEnd:
-        return 'Bottom';
+        return t.settingsDefaultInsertionBottom;
     }
   }
 

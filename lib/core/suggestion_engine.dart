@@ -62,7 +62,8 @@ class _SuggestionEngine {
       final scores = state.scores.value;
       if (scores.length > 100) {
         state.scores.mutate((it) {
-          it.remove(scores.entries.minBy((entry) => entry.value).orNull.key);
+          // The bang succeeds because we know the `scores` are not empty.
+          it.remove(scores.entries.minBy((entry) => entry.value)!.key);
         });
       }
     }

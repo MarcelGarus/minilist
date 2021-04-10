@@ -6,6 +6,7 @@ import 'settings.dart';
 
 part 'list.g.dart';
 
+/// The actual list displayed in the app.
 final list = Chest<ShoppingList>('list', ifNew: () => ShoppingList.empty());
 
 @sealed

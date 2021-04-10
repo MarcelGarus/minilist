@@ -3,6 +3,7 @@ import 'package:chest_flutter/chest_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'core/core.dart';
+import 'i18n.dart';
 import 'theme.dart';
 import 'utils.dart';
 
@@ -63,7 +64,9 @@ class _ItemSheetState extends State<_ItemSheet> {
             Expanded(
               child: SmartComposingTextField(
                 controller: _controller,
-                hintText: _isEditingExisting ? widget.editedItem : 'New item',
+                hintText: _isEditingExisting
+                    ? widget.editedItem
+                    : context.t.inputHint,
                 smartComposer: (prefix) {
                   return settings.showSmartCompose.value
                       ? suggestionEngine.suggestionFor(prefix)
@@ -84,14 +87,14 @@ class _ItemSheetState extends State<_ItemSheet> {
         mainAxisSize: MainAxisSize.min,
         children: [
           MyTextButton(
-            text: 'Delete',
+            text: context.t.inputDelete,
             onPressed: () {
               list.items.mutate((items) => items.remove(_editedItem));
               context.navigator.pop();
             },
           ),
           MyTextButton(
-            text: 'Save',
+            text: context.t.inputSave,
             onPressed: _alreadyExists
                 ? null
                 : () {
@@ -108,13 +111,13 @@ class _ItemSheetState extends State<_ItemSheet> {
 
     if (_alreadyExists) {
       return MyTextButton(
-        text: 'Edit existing',
+        text: context.t.inputEditExisting,
         onPressed: () => setState(() => _editedItem = _item),
       );
     }
 
     return MyTextButton(
-      text: 'Add',
+      text: context.t.inputAdd,
       onPressed: () {
         list.add(_item);
         suggestionEngine.add(_item);
@@ -173,7 +176,7 @@ class SmartComposingTextField extends StatelessWidget {
                               alignment: PlaceholderAlignment.bottom,
                               baseline: TextBaseline.alphabetic,
                               child: SwipeRightIndicator(
-                                text: 'swipe',
+                                text: context.t.inputSmartComposeSwipe,
                                 color: context.color.secondary,
                               ),
                             ),
