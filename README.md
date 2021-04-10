@@ -1,16 +1,9 @@
-# shopping_list
+# MiniList
 
-A new Flutter project.
+Enjoy a thoughtful, straightforward approach to shopping lists. MiniList focuses on three key aspects that make shopping lists great: Minimalism, Smartness, and Privacy.
 
-## Getting Started
+Minimalism: MiniList keeps your shopping as simple as possible. While other apps clutter your shopping experience with categories, recipe recommendations, and thousands of icons, MiniList is as non-intrusive as possible.
 
-This project is a starting point for a Flutter application.
+Smartness: MiniList remembers your habits to offer several intelligent features. Below the list, it provides a few suggestions of your typically bought items. MiniList autocompletes new things you enter. Over time, MiniList learns the order in which you check off items and automatically inserts new items at the correct place in the list.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Privacy: By default, no data leaves your device. And if you enable analytics, your information is heavily anonymized before being sent.
