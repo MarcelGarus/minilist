@@ -111,9 +111,69 @@ class _EnglishTranslation extends Translation {
       'Items you add to the list are recorded here. Each item has a score. Items with higher scores are more likely to be suggested. If you use an item, its score increases by 1. Over time, the scores automatically decrease exponentially.';
 }
 
+class _GermanTranslation extends Translation {
+  String _nItems(int n) => _singularOrPlural(n, 'Eintrag', 'Einträge');
+  String mainNItems(int n) => '${_nItems(n)}';
+  String mainNItemsLeft(int n) => '${_nItems(n)} übrig';
+  String get mainEmptyStateTitle => 'Ein neuer Start';
+  String get mainInTheCart => 'im Wagen';
+  String get mainNotAvailable => 'nicht da';
+  String get mainAddItem => 'Eintrag hinzufügen';
+  String get mainSwipeGotIt => 'Ist im Wagen';
+  String get mainSwipeNotAvailable => 'Ist nicht da';
+  String get mainHowAboutSomeOfThese => "Wie wär's mit diesen?";
+  String mainSnackbarPutItemInCart(String item) => '$item ist nicht da.';
+  String mainSnackbarMarkedItemAsNotAvailable(String item) =>
+      '$item ist im Wagen.';
+  String get inputHint => 'Neuer Eintrag';
+  String get inputDelete => 'Löschen';
+  String get inputSave => 'Speichern';
+  String get inputEditExisting => 'Bearbeiten';
+  String get inputAdd => 'Hinzufügen';
+  String get inputSmartComposeSwipe => 'wischen';
+  String get inTheCartTitle => 'Im Wagen';
+  String get inTheCartClearAll => 'Alle löschen';
+  String get notAvailableTitle => 'Nicht da';
+  String get notAvailableClearAll => 'Alle löschen';
+  String get settingsTitle => 'Einstellungen';
+  String get settingsTheme => 'Theme';
+  String get settingsThemeDialogTitle => 'Wähle ein Theme';
+  String get settingsThemeLight => 'Hell';
+  String get settingsThemeDark => 'Dunkel';
+  String get settingsThemeBlack => 'Schwarz';
+  String get settingsThemeSystemLightDark => 'System (hell/dunkel)';
+  String get settingsThemeSystemLightBlack => 'System (hell/schwarz)';
+  String get settingsShowSuggestions => 'Vorschläge anzeigen';
+  String get settingsShowSuggestionsDetails => 'Am Ende der Liste';
+  String get settingsSmartCompose => 'Smart Compose';
+  String get settingsSmartComposeDetails => 'Autovervollständigungen anzeigen';
+  String get settingsSmartInsertion => 'Smart Insertion';
+  String get settingsSmartInsertionDetails =>
+      'Einträge an der richtigen Stelle hinfügen abhängig davon, in welcher '
+      'Reihenfolge sie vorher abgehakt wurden';
+  String get settingsDefaultInsertion => 'Standard-Einfügeort';
+  String get settingsDefaultInsertionTop => 'Oben';
+  String get settingsDefaultInsertionBottom => 'Unten';
+  String settingsSuggestionsNItems(int n) => '${_nItems(n)}';
+  String get settingsPrivacyPolicy => 'Datenschutzerklärung';
+  String get settingsPrivacyPolicyDetails =>
+      'Ein leicht verständliches englisches Google Doc';
+  String get settingsOpenSourceLicenses => 'Open-Source-Lizenzen';
+  String get suggestionsTitle => 'Vorschläge';
+  String get suggestionsExplanation =>
+      'Wenn du Einträge hinzufügst, werden sie hier notiert. Jeder Eintrag hat '
+      'einen Score, der angibt, wie wahrscheinlich es ist, dass er '
+      'vorgeschlagen wird. Wenn du einen Eintrag hinzufügst, steigt der Score '
+      'um 1. Mit der Zeit reduzieren sich die Scores exponentiell – heißt, '
+      'weiter zurückliegende Aktionen haben weniger Einfluss auf die '
+      'Reihenfolge der Vorschläge';
+}
+
 extension TranslationFromContext on BuildContext {
   Translation get t {
     switch (Localizations.localeOf(this).languageCode) {
+      case 'de':
+        return _GermanTranslation();
       case 'en':
         return _EnglishTranslation();
       default:
