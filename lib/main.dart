@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:basics/basics.dart';
 import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:chest_flutter/chest_flutter.dart' hide TaperForThemeMode;
@@ -60,7 +62,7 @@ class ShoppingListApp extends StatelessWidget {
         child: Builder(
           builder: (context) => MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: context.t.title,
+            title: 'MiniList',
             theme: context.appTheme.toDefaultMaterialTheme(),
             home: SplashScreen(),
           ),
@@ -70,10 +72,30 @@ class ShoppingListApp extends StatelessWidget {
   }
 }
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    scheduleMicrotask(() {
+      context.navigator.pushReplacement(MaterialPageRoute(
+        builder: (_) => MainPage(),
+      ));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(color: Colors.teal);
+    return Center(
+      child: Hero(
+        tag: 'fab',
+        child: Material(color: Colors.teal),
+      ),
+    );
   }
 }
 
@@ -89,6 +111,7 @@ class MainPage extends StatelessWidget {
           style: context.accentStyle.copyWith(color: context.color.onPrimary),
         ),
         onPressed: context.showCreateItemSheet,
+        heroTag: 'fab',
       ),
     );
   }
