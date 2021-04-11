@@ -14,6 +14,7 @@ class SettingsPage extends StatelessWidget {
       appBar: SettingsAppBar(title: context.t.settingsTitle),
       body: ListView(
         children: [
+          // Usage settings.
           ReferenceBuilder(
             reference: settings.theme,
             builder: (context) => SettingsListTile(
@@ -51,6 +52,7 @@ class SettingsPage extends StatelessWidget {
             ),
           ),
           Divider(color: context.color.secondary),
+          // See data.
           ReferenceBuilder(
             reference: suggestionEngine.state,
             builder: (context) => SettingsListTile(
@@ -62,14 +64,15 @@ class SettingsPage extends StatelessWidget {
               )),
             ),
           ),
-          SettingsListTile(title: 'History', subtitle: 'Some data'),
-          SettingsListTile(title: 'Reset', subtitle: 'Removes all items'),
+          // SettingsListTile(title: 'History', subtitle: 'Some data'),
+          // SettingsListTile(title: 'Reset', subtitle: 'Removes all items'),
           Divider(color: context.color.secondary),
-          SettingsListTile(title: 'Analytics', subtitle: 'Disabled'),
-          SettingsListTile(
-            title: 'Debug information',
-            subtitle: 'Information that helps with developing the app.',
-          ),
+          // SettingsListTile(title: 'Analytics', subtitle: 'Disabled'),
+          // SettingsListTile(
+          //   title: 'Debug information',
+          //   subtitle: 'Information that helps with developing the app.',
+          // ),
+          // Legal stuff.
           SettingsListTile(
             title: context.t.settingsPrivacyPolicy,
             subtitle: context.t.settingsPrivacyPolicyDetails,
