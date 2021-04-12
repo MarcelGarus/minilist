@@ -1,6 +1,8 @@
 import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:chest_flutter/chest_flutter.dart';
 import 'package:flutter/material.dart' hide ThemeMode;
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'core/core.dart';
@@ -22,7 +24,7 @@ class SettingsPage extends StatelessWidget {
               subtitle: settings.theme.value.toBeautifulString(context.t),
               onTap: () => showDialog(
                 context: context,
-                builder: (_) => ThemeModeChooserDialog(),
+                builder: (_) => _ThemeModeChooserDialog(),
               ),
             ),
           ),
@@ -60,19 +62,32 @@ class SettingsPage extends StatelessWidget {
               subtitle: context.t.settingsSuggestionsNItems(
                   suggestionEngine.allSuggestions.length),
               onTap: () => context.navigator.push(MaterialPageRoute(
-                builder: (_) => SuggestionsPage(),
+                builder: (_) => _SuggestionsPage(),
               )),
             ),
           ),
-          // SettingsListTile(title: 'History', subtitle: 'Some data'),
-          // SettingsListTile(title: 'Reset', subtitle: 'Removes all items'),
+          SettingsListTile(title: 'History', subtitle: 'Some data'),
+          SettingsListTile(
+            title: context.t.settingsDebugInfo,
+            subtitle: context.t.settingsDebugInfoDetails,
+            onTap: () => context.navigator.push(MaterialPageRoute(
+              builder: (_) => _DebugInfoPage(),
+            )),
+          ),
           Divider(color: context.color.secondary),
-          // SettingsListTile(title: 'Analytics', subtitle: 'Disabled'),
-          // SettingsListTile(
-          //   title: 'Debug information',
-          //   subtitle: 'Information that helps with developing the app.',
-          // ),
-          // Legal stuff.
+          // Less important stuff.
+          SettingsListTile(
+            title: context.t.settingsFeedback,
+            subtitle: context.t.settingsFeedbackDetails,
+            trailing: Icon(Icons.open_in_new, color: context.color.secondary),
+            onTap: () => launch(context.t.settingsFeedbackUrl),
+          ),
+          SettingsListTile(
+            title: context.t.settingsRateTheApp,
+            subtitle: context.t.settingsRateTheAppDetails,
+            trailing: Icon(Icons.open_in_new, color: context.color.secondary),
+            onTap: () => launch(context.t.settingsRateTheAppUrl),
+          ),
           SettingsListTile(
             title: context.t.settingsPrivacyPolicy,
             subtitle: context.t.settingsPrivacyPolicyDetails,
@@ -93,7 +108,7 @@ class SettingsPage extends StatelessWidget {
   }
 }
 
-class ThemeModeChooserDialog extends StatelessWidget {
+class _ThemeModeChooserDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -131,7 +146,7 @@ class ThemeModeChooserDialog extends StatelessWidget {
   }
 }
 
-class SuggestionsPage extends StatelessWidget {
+class _SuggestionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -185,10 +200,54 @@ class SuggestionsPage extends StatelessWidget {
   }
 }
 
+class _DebugInfoPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final text = [
+      'list = ' + list.value.toDebugString(),
+      'history = ' + history.value.toDebugString(),
+      'suggestions = ' + suggestionEngine.state.value.toDebugString(),
+      'settings = ' + settings.value.toDebugString(),
+      'onboarding = ' + onboarding.value.toDebugString(),
+    ].joinLines();
+    return Scaffold(
+      backgroundColor: context.color.background,
+      appBar: SettingsAppBar(
+        title: context.t.debugInfoTitle,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.copy_outlined),
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: text));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(context.t.debugInfoCopyConfirmation),
+              ));
+            },
+          ),
+        ],
+      ),
+      body: ListView(
+        padding: EdgeInsets.all(16),
+        children: [
+          ReferenceBuilder(
+            reference: list,
+            builder: (_) {
+              return SelectableText(text, style: GoogleFonts.robotoMono());
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Helper widgets.
+
 class SettingsAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const SettingsAppBar({required this.title});
+  const SettingsAppBar({required this.title, this.actions = const []});
 
   final String title;
+  final List<Widget> actions;
 
   @override
   Size get preferredSize => AppBar().preferredSize;
@@ -198,6 +257,7 @@ class SettingsAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backwardsCompatibility: false,
       title: Text(title, style: context.accentStyle.copyWith(fontSize: 20)),
+      actions: actions,
     );
   }
 }

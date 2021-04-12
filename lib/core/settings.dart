@@ -30,6 +30,17 @@ class Settings {
   final bool showSmartCompose;
   final bool useSmartInsertion;
   final Insertion defaultInsertion;
+
+  String toDebugString() {
+    final buffer = StringBuffer('Settings(\n')
+      ..write('  theme: ${theme.toDebugString()},\n')
+      ..write('  showSuggestions: $showSuggestions,\n')
+      ..write('  showSmartCompose: $showSmartCompose,\n')
+      ..write('  useSmartInsertion: $useSmartInsertion,\n')
+      ..write('  defaultInsertion: ${defaultInsertion.toDebugString()},\n')
+      ..write(')');
+    return buffer.toString();
+  }
 }
 
 @tape({
@@ -58,6 +69,8 @@ extension BeautifulThemeMode on ThemeMode {
         return t.settingsThemeSystemLightBlack;
     }
   }
+
+  String toDebugString() => toBeautifulString(Translation.default_);
 }
 
 @tape({
@@ -74,6 +87,8 @@ extension BeautifulInsertion on Insertion {
         return t.settingsDefaultInsertionBottom;
     }
   }
+
+  String toDebugString() => toBeautifulString(Translation.default_);
 
   Insertion get opposite => this == Insertion.atTheBeginning
       ? Insertion.atTheEnd

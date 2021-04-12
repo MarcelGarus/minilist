@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 abstract class Translation {
+  static final default_ = _EnglishTranslation();
+
   // The first word of the translation strings indicates which page they're on.
 
   String get title => 'MiniList';
@@ -45,7 +47,15 @@ abstract class Translation {
   String get settingsDefaultInsertionBottom;
   String get settingsSuggestions => suggestionsTitle;
   String settingsSuggestionsNItems(int n);
-  // TODO: Translate rest of the settings.
+  String get settingsDebugInfo => debugInfoTitle;
+  String get settingsDebugInfoDetails;
+  String get settingsFeedback;
+  String get settingsFeedbackDetails;
+  String get settingsFeedbackUrl => 'mailto:marcel.garus@gmail.com';
+  String get settingsRateTheApp;
+  String get settingsRateTheAppDetails;
+  String get settingsRateTheAppUrl =>
+      'https://play.google.com/store/apps/details?id=dev.marcelgarus.minilist';
   String get settingsPrivacyPolicy;
   String get settingsPrivacyPolicyDetails;
   String get settingsPrivacyPolicyUrl =>
@@ -53,6 +63,8 @@ abstract class Translation {
   String get settingsOpenSourceLicenses;
   String get suggestionsTitle;
   String get suggestionsExplanation;
+  String get debugInfoTitle;
+  String get debugInfoCopyConfirmation;
 }
 
 String _singularOrPlural(int n, String singular, String plural) {
@@ -103,12 +115,19 @@ class _EnglishTranslation extends Translation {
   String get settingsDefaultInsertionTop => 'Top';
   String get settingsDefaultInsertionBottom => 'Bottom';
   String settingsSuggestionsNItems(int n) => '${_nItems(n)}';
+  String get settingsDebugInfoDetails => 'Useful while developing the app';
+  String get settingsFeedback => 'Feedback';
+  String get settingsFeedbackDetails => 'Report bugs or ideas';
+  String get settingsRateTheApp => 'Rate the app';
+  String get settingsRateTheAppDetails => 'On the Google Play Store';
   String get settingsPrivacyPolicy => 'Privacy Policy';
   String get settingsPrivacyPolicyDetails => 'An easy-to-read Google Doc';
   String get settingsOpenSourceLicenses => 'Open Source Licenses';
   String get suggestionsTitle => 'Suggestions';
   String get suggestionsExplanation =>
       'Items you add to the list are recorded here. Each item has a score. Items with higher scores are more likely to be suggested. If you use an item, its score increases by 1. Over time, the scores automatically decrease exponentially.';
+  String get debugInfoTitle => 'Debug information';
+  String get debugInfoCopyConfirmation => 'Copied to clipboard.';
 }
 
 class _GermanTranslation extends Translation {
@@ -155,6 +174,12 @@ class _GermanTranslation extends Translation {
   String get settingsDefaultInsertionTop => 'Oben';
   String get settingsDefaultInsertionBottom => 'Unten';
   String settingsSuggestionsNItems(int n) => '${_nItems(n)}';
+  String get settingsDebugInfoDetails => 'Nützlich während der App-Entwicklung';
+  String get settingsFeedback => 'Feedback';
+  String get settingsFeedbackDetails =>
+      'Reporte Bugs oder Verbesserungsvorschläge';
+  String get settingsRateTheApp => 'App bewerten';
+  String get settingsRateTheAppDetails => 'Auf dem Google Play Store';
   String get settingsPrivacyPolicy => 'Datenschutzerklärung';
   String get settingsPrivacyPolicyDetails =>
       'Ein leicht verständliches englisches Google Doc';
@@ -167,6 +192,8 @@ class _GermanTranslation extends Translation {
       'um 1. Mit der Zeit reduzieren sich die Scores exponentiell – heißt, '
       'weiter zurückliegende Aktionen haben weniger Einfluss auf die '
       'Reihenfolge der Vorschläge';
+  String get debugInfoTitle => 'Debug-Informationen';
+  String get debugInfoCopyConfirmation => 'Infos wurden kopiert.';
 }
 
 extension TranslationFromContext on BuildContext {

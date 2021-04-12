@@ -4,6 +4,7 @@ import 'package:basics/basics.dart';
 import 'package:chest_flutter/chest_flutter.dart';
 
 import 'list.dart';
+import 'utils.dart';
 
 part 'suggestion_engine.g.dart';
 
@@ -26,6 +27,15 @@ class RememberState {
           },
           lastDecay: DateTime.now(),
         );
+
+  String toDebugString() {
+    final buffer = StringBuffer('RememberState(\n');
+    for (final entry in scores.entries) {
+      buffer.write('  ${entry.key.toDebugString()}: ${entry.value},\n');
+    }
+    buffer.write(')');
+    return buffer.toString();
+  }
 }
 
 final suggestionEngine = _SuggestionEngine();

@@ -19,6 +19,15 @@ class OnboardingState {
 
   final OnboardingCountdown swipeToPutInCart;
   final OnboardingCountdown swipeToSmartCompose;
+
+  String toDebugString() {
+    final buffer = StringBuffer('OnboardingState(\n')
+      ..write('  swipeToPutInCart: ${swipeToPutInCart.toDebugString()},\n')
+      ..write(
+          '  swipeToSmartCompose: ${swipeToSmartCompose.toDebugString()},\n')
+      ..write(')');
+    return buffer.toString();
+  }
 }
 
 // A class that counts down the number of times that an explanatory widget is
@@ -30,6 +39,8 @@ class OnboardingCountdown {
   const OnboardingCountdown(this.counter);
 
   final int counter;
+
+  String toDebugString() => 'Countdown($counter)';
 }
 
 extension FancyOnboardingCountdown on Reference<OnboardingCountdown> {

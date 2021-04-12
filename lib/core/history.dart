@@ -5,6 +5,7 @@ import 'package:chest_flutter/chest_flutter.dart';
 
 import 'list.dart';
 import 'settings.dart';
+import 'utils.dart';
 
 part 'history.g.dart';
 
@@ -20,6 +21,19 @@ class HistoryItem {
 
   final String item;
   final List<String> otherItems;
+
+  String toDebugString() {
+    return [
+      'HistoryItem(',
+      '  item: ${item.toDebugString()},',
+      '  otherItems: ${otherItems.toDebugString().indent()},',
+      ')',
+    ].joinLines();
+  }
+}
+
+extension HistoryItemListX on List<HistoryItem> {
+  String toDebugString() => map((it) => it.toDebugString()).toDebugString();
 }
 
 extension HistoryFunctionality on Reference<List<HistoryItem>> {

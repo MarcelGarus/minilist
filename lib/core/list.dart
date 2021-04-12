@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 
 import 'history.dart';
 import 'settings.dart';
+import 'utils.dart';
 
 part 'list.g.dart';
 
@@ -24,6 +25,16 @@ class ShoppingList {
   final List<String> items;
   final List<String> inTheCart;
   final List<String> notAvailable;
+
+  String toDebugString() {
+    return [
+      'ShoppingList(',
+      'items: ${items.toDebugString()},'.indent(),
+      'inTheCart: ${inTheCart.toDebugString()},'.indent(),
+      'notAvailable: ${notAvailable.toDebugString()},'.indent(),
+      ')',
+    ].joinLines();
+  }
 }
 
 extension ListHelpers on Reference<ShoppingList> {
