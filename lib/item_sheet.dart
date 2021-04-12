@@ -21,10 +21,7 @@ extension ShowItemSheet on BuildContext {
           topRight: Radius.circular(16),
         ),
       ),
-      builder: (context) => Padding(
-        padding: context.mediaQuery.viewInsets,
-        child: sheet,
-      ),
+      builder: (context) => sheet,
     );
   }
 }
