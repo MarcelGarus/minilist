@@ -25,15 +25,15 @@ class HistoryItem {
   String toDebugString() {
     return [
       'HistoryItem(',
-      '  item: ${item.toDebugString()},',
-      '  otherItems: ${otherItems.toDebugString().indent()},',
+      'item: ${item.toDebugString()},'.indent(),
+      'otherItems: ${otherItems.toDebugString()},'.indent(),
       ')',
     ].joinLines();
   }
 }
 
 extension HistoryItemListX on List<HistoryItem> {
-  String toDebugString() => map((it) => it.toDebugString()).toDebugString();
+  String toDebugString() => toDebugStringUsing((it) => it.toDebugString());
 }
 
 extension HistoryFunctionality on Reference<List<HistoryItem>> {
