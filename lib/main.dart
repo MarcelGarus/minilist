@@ -8,7 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:reorderables/reorderables.dart';
 
 import 'app_bar.dart';
-import 'completed_section.dart';
+import 'completed.dart';
 import 'core/core.dart' hide ThemeMode;
 import 'i18n.dart';
 import 'item_sheet.dart';
