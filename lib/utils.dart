@@ -9,6 +9,7 @@ extension UndoAction on BuildContext {
       SnackBar(
         content: Text(text),
         action: SnackBarAction(label: 'Undo', onPressed: undo),
+        behavior: SnackBarBehavior.floating,
       ),
     );
   }
