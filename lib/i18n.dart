@@ -5,25 +5,37 @@ abstract class Translation {
 
   // The first word of the translation strings indicates which page they're on.
 
-  String get title => 'MiniList';
+  String get generalTitle => 'MiniList';
+  String get generalUndo;
+  List<String> get defaultItems;
   String get mainEmptyStateTitle;
   String mainNItems(int n);
   String mainNItemsLeft(int n);
   String get mainInTheCart;
   String get mainNotAvailable;
   String get mainAddItem;
+  String get mainSwipeHint;
   String get mainSwipeGotIt;
   String get mainSwipeNotAvailable;
   String get mainHowAboutSomeOfThese;
   String get mainMenuSettings => settingsTitle;
   String mainSnackbarPutItemInCart(String item);
   String mainSnackbarMarkedItemAsNotAvailable(String item);
+  String mainSuggestionsTitle(int n);
+  String get mainSuggestionRemovalTitle;
+  String mainSuggestionRemovalDetails(String suggestion);
+  String get mainSuggestionRemovalYes;
+  String get mainSuggestionRemovalNo;
   String get inputHint;
   String get inputDelete;
   String get inputSave;
   String get inputEditExisting;
   String get inputAdd;
   String get inputSmartComposeSwipe;
+  String get completedSwipeDelete;
+  String get completedSwipePutBackOnList;
+  String completedDeleteConfirmation(String item);
+  String completedPutBackOnListConfirmation(String item);
   String get inTheCartTitle;
   String get inTheCartClearAll;
   String get notAvailableTitle;
@@ -72,6 +84,23 @@ String _singularOrPlural(int n, String singular, String plural) {
 }
 
 class _EnglishTranslation extends Translation {
+  String get generalUndo => 'Undo';
+  List<String> get defaultItems => [
+        // Some food.
+        'Water', 'Potatoes', 'Bananas', 'Milk', 'Bread', 'Tomatoes', 'Cheese',
+        'Apple', 'Onions', 'Toast', 'Melon', 'Orange', 'Cucumber', 'Grapes',
+        'Peaches', 'Grapefruit', 'Lemon', 'Strawberries', 'Carrots', 'Pizza',
+        'Pineapple', 'Pepper', 'Lettuce', 'Honey', 'Cabbage', 'Blueberries',
+        'Kiwis', 'Raspberries', 'Butter', 'Mushrooms', 'Cherries', 'Broccoli',
+        'Cranberries', 'Garlic', 'Tangerines', 'Spinach', 'Flour', 'Beans',
+        'Celery', 'Limes', 'Olives', 'Pumpkin', 'Sweet potatoes', 'Mangos',
+        'Avocados', 'Sweet corn', 'Plums', 'Eggplant', 'Salad', 'Wheat',
+        'Artichokes', 'Rice', 'Radishes', 'Chicken', 'Papayas', 'Peanuts',
+        'Hazelnuts', 'Peas', 'Pears', 'Squash', 'Ice cream', 'Salt',
+        'Apricots', 'Corn', 'Walnuts', 'Beef', 'Macadamias', 'Pork', 'Fish',
+        'Margarine', 'Turkey', 'Syrup', 'Almonds', 'Pistachios', 'Lamb',
+        'Corn Syrup', 'Pecans', 'Maple syrup', 'Fries',
+      ];
   String _nItems(int n) => _singularOrPlural(n, 'item', 'items');
   String mainNItems(int n) => '${_nItems(n)}';
   String mainNItemsLeft(int n) => '${_nItems(n)} left';
@@ -79,6 +108,7 @@ class _EnglishTranslation extends Translation {
   String get mainInTheCart => 'in the cart';
   String get mainNotAvailable => 'not available';
   String get mainAddItem => 'Add item';
+  String get mainSwipeHint => 'swipe';
   String get mainSwipeGotIt => 'Got it';
   String get mainSwipeNotAvailable => 'Not available';
   String get mainHowAboutSomeOfThese => 'How about some of these?';
@@ -86,12 +116,24 @@ class _EnglishTranslation extends Translation {
       'Marked $item as not available.';
   String mainSnackbarMarkedItemAsNotAvailable(String item) =>
       'Marked $item as not available.';
+  String mainSuggestionsTitle(int n) =>
+      _singularOrPlural(n, 'How about this one?', 'How about some of these?');
+  String get mainSuggestionRemovalTitle => 'Remove suggestion?';
+  String mainSuggestionRemovalDetails(String suggestion) =>
+      'This will cause "$suggestion" to no longer appear in suggestion chips or Smart Compose.';
+  String get mainSuggestionRemovalYes => 'Remove';
+  String get mainSuggestionRemovalNo => 'Cancel';
   String get inputHint => 'New item';
   String get inputDelete => 'Delete';
   String get inputSave => 'Save';
   String get inputEditExisting => 'Edit existing';
   String get inputAdd => 'Add';
   String get inputSmartComposeSwipe => 'swipe';
+  String get completedSwipeDelete => 'Delete';
+  String get completedSwipePutBackOnList => 'Put back on the list';
+  String completedDeleteConfirmation(String item) => 'Deleted $item.';
+  String completedPutBackOnListConfirmation(String item) =>
+      'Put $item back on the list.';
   String get inTheCartTitle => 'In the cart';
   String get inTheCartClearAll => 'Clear all';
   String get notAvailableTitle => 'Not available';
@@ -131,6 +173,22 @@ class _EnglishTranslation extends Translation {
 }
 
 class _GermanTranslation extends Translation {
+  String get generalUndo => 'Rückgängig machen';
+  List<String> get defaultItems => [
+        // Popular food in the US.
+        'Wasser', 'Kartoffeln', 'Bananen', 'Milch', 'Brot', 'Tomaten', 'Käse',
+        'Apfel', 'Zwiebeln', 'Toast', 'Melone', 'Orange', 'Gurke',
+        'Weintrauben', 'Pflaumen', 'Grapefruit', 'Zitrone', 'Erdbeeren',
+        'Möhren', 'Pizza', 'Ananas', 'Pfeffer', 'Salat', 'Honig', 'Kohl',
+        'Blaubeeren', 'Kiwis', 'Himbeeren', 'Butter', 'Pilze', 'Kirschen',
+        'Brokkoli', 'Cranberries', 'Knoblauch', 'Mandarinen', 'Spinat', 'Mehl',
+        'Bohnen', 'Sellerie', 'Limetten', 'Oliven', 'Kürbis', 'Süßkartoffeln',
+        'Mango', 'Avocado', 'Aubergine', 'Müsli', 'Artischocken', 'Reis',
+        'Radieschen', 'Huhn', 'Papayas', 'Erdnüsse', 'Haselnüsse', 'Erbsen',
+        'Birnen', 'Eis', 'Aprikosen', 'Mais', 'Walnuss', 'Steak',
+        'Macadamianüsse', 'Fisch', 'Margarine', 'Zuckerrübensirup', 'Mandeln',
+        'Pistazien', 'Lamm', 'Pekanüsse', 'Pommes', 'Salz',
+      ];
   String _nItems(int n) => _singularOrPlural(n, 'Eintrag', 'Einträge');
   String mainNItems(int n) => '${_nItems(n)}';
   String mainNItemsLeft(int n) => '${_nItems(n)} übrig';
@@ -138,18 +196,31 @@ class _GermanTranslation extends Translation {
   String get mainInTheCart => 'im Wagen';
   String get mainNotAvailable => 'nicht da';
   String get mainAddItem => 'Eintrag hinzufügen';
+  String get mainSwipeHint => 'wischen';
   String get mainSwipeGotIt => 'Ist im Wagen';
   String get mainSwipeNotAvailable => 'Ist nicht da';
   String get mainHowAboutSomeOfThese => "Wie wär's mit diesen?";
   String mainSnackbarPutItemInCart(String item) => '$item ist nicht da.';
   String mainSnackbarMarkedItemAsNotAvailable(String item) =>
       '$item ist im Wagen.';
+  String mainSuggestionsTitle(int n) => "Wie wär's hiermit?";
+  String get mainSuggestionRemovalTitle => 'Vorschlag entfernen?';
+  String mainSuggestionRemovalDetails(String suggestion) =>
+      '$suggestion wird dann nicht mit als Vorschlag oder bei Smart Compose '
+      'angezeigt.';
+  String get mainSuggestionRemovalYes => 'Entfernen';
+  String get mainSuggestionRemovalNo => 'Abbrechen';
   String get inputHint => 'Neuer Eintrag';
   String get inputDelete => 'Löschen';
   String get inputSave => 'Speichern';
   String get inputEditExisting => 'Bearbeiten';
   String get inputAdd => 'Hinzufügen';
   String get inputSmartComposeSwipe => 'wischen';
+  String get completedSwipeDelete => 'Löschen';
+  String get completedSwipePutBackOnList => 'Wieder auf die Liste setzen';
+  String completedDeleteConfirmation(String item) => '$item gelöscht.';
+  String completedPutBackOnListConfirmation(String item) =>
+      '$item wieder auf die Liste gesetzt.';
   String get inTheCartTitle => 'Im Wagen';
   String get inTheCartClearAll => 'Alle löschen';
   String get notAvailableTitle => 'Nicht da';
@@ -198,6 +269,7 @@ class _GermanTranslation extends Translation {
 
 extension TranslationFromContext on BuildContext {
   Translation get t {
+    print('Getting translations for ${Localizations.localeOf(this)}');
     switch (Localizations.localeOf(this).languageCode) {
       case 'de':
         return _GermanTranslation();

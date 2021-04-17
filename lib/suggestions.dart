@@ -3,6 +3,7 @@ import 'package:chest_flutter/chest_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'core/core.dart';
+import 'i18n.dart';
 import 'theme.dart';
 import 'utils.dart';
 
@@ -51,9 +52,7 @@ class Suggestions extends StatelessWidget {
   Widget _buildIntroductoryText(BuildContext context, int numberOfSuggestions) {
     if (numberOfSuggestions == 0) return Container();
     return Text(
-      numberOfSuggestions == 1
-          ? 'How about this one?'
-          : 'How about some of these?',
+      context.t.mainSuggestionsTitle(numberOfSuggestions),
       textAlign: TextAlign.center,
       style: context.suggestionStyle,
     );
@@ -65,20 +64,20 @@ class Suggestions extends StatelessWidget {
       builder: (context) => AlertDialog(
         backgroundColor: context.color.canvas,
         title: Text(
-          'Remove suggestion?',
+          context.t.mainSuggestionRemovalTitle,
           style: context.accentStyle,
         ),
         content: Text(
-          'This will cause "$item" to no longer appear in suggestion chips or Smart Compose.',
+          context.t.mainSuggestionRemovalDetails(item),
           style: context.standardStyle,
         ),
         actions: <Widget>[
           MyTextButton(
-            text: 'No',
+            text: context.t.mainSuggestionRemovalNo,
             onPressed: () => context.navigator.pop(),
           ),
           MyTextButton(
-            text: 'Yes',
+            text: context.t.mainSuggestionRemovalYes,
             onPressed: () {
               suggestionEngine.remove(item);
               context.navigator.pop();

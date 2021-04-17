@@ -1,6 +1,7 @@
 import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:flutter/material.dart';
 
+import 'i18n.dart';
 import 'theme.dart';
 import 'utils.dart';
 
@@ -38,7 +39,7 @@ class TodoItem extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.only(left: context.padding.inner),
                         child: SwipeRightIndicator(
-                          text: 'swipe',
+                          text: context.t.mainSwipeHint,
                           color: context.color.inTheCart,
                         ),
                       ),

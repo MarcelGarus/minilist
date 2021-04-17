@@ -1,6 +1,7 @@
 import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:flutter/material.dart';
 
+import 'i18n.dart';
 import 'theme.dart';
 
 extension UndoAction on BuildContext {
@@ -8,7 +9,7 @@ extension UndoAction on BuildContext {
     scaffoldMessenger.showSnackBar(
       SnackBar(
         content: Text(text),
-        action: SnackBarAction(label: 'Undo', onPressed: undo),
+        action: SnackBarAction(label: t.generalUndo, onPressed: undo),
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -57,7 +58,7 @@ class SwipeRightIndicator extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           // Note: There's a thin space after the text.
-          Text('$text ', style: TextStyle(fontSize: 12, color: color)),
+          Text(text, style: TextStyle(fontSize: 12, color: color)),
           Icon(Icons.arrow_right_alt, size: 12, color: color),
         ],
       ),

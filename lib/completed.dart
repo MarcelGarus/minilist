@@ -152,29 +152,35 @@ class CompletedList extends StatelessWidget {
               onDismissed: (direction) {
                 if (direction == DismissDirection.startToEnd) {
                   completedList.mutate((it) => it.remove(item));
-                  context.offerUndo('Deleted $item', () {
-                    completedList.mutate((it) => it.insert(index, item));
-                  });
+                  context.offerUndo(
+                    context.t.completedDeleteConfirmation(item),
+                    () {
+                      completedList.mutate((it) => it.insert(index, item));
+                    },
+                  );
                 } else {
                   completedList.mutate((it) => it.remove(item));
                   list.add(item);
-                  context.offerUndo('Put $item back on the list.', () {
-                    completedList.mutate((it) => it.insert(index, item));
-                    list.items.mutate((it) => it.remove(item));
-                  });
+                  context.offerUndo(
+                    context.t.completedPutBackOnListConfirmation(item),
+                    () {
+                      completedList.mutate((it) => it.insert(index, item));
+                      list.items.mutate((it) => it.remove(item));
+                    },
+                  );
                 }
               },
               background: DismissBackground.primary(
                 backgroundColor: context.color.delete,
                 foregroundColor: context.color.onDelete,
                 icon: Icons.check,
-                text: 'Delete',
+                text: context.t.completedSwipeDelete,
               ),
               secondaryBackground: DismissBackground.secondary(
                 backgroundColor: context.color.primary,
                 foregroundColor: context.color.onPrimary,
                 icon: Icons.undo_outlined,
-                text: 'Put back on the list',
+                text: context.t.completedSwipePutBackOnList,
               ),
               child: TodoItem(item: item),
             );

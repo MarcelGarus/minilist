@@ -235,13 +235,13 @@ class _SliverMainList extends StatelessWidget {
                 backgroundColor: context.color.inTheCart,
                 foregroundColor: context.color.onInTheCart,
                 icon: Icons.check,
-                text: 'Got it',
+                text: context.t.mainSwipeGotIt,
               ),
               secondaryBackground: DismissBackground.secondary(
                 backgroundColor: context.color.notAvailable,
                 foregroundColor: context.color.onNotAvailable,
                 icon: Icons.not_interested,
-                text: 'Not available',
+                text: context.t.mainSwipeNotAvailable,
               ),
               child: TodoItem(
                 item: item,
