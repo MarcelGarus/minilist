@@ -224,13 +224,58 @@ class _SliverMainList extends StatelessWidget {
         delegate: ReorderableSliverChildBuilderDelegate(
           (_, index) {
             final item = list.items[index].value;
-            return TodoItem(
-              item: item,
-              onTap: () => context.showEditItemSheet(item),
-              onPrimarySwipe: () => _putInCart(context, item),
-              onSecondarySwipe: () => _markAsNotAvailable(context, item),
-              showSwipeIndicator:
-                  onboarding.swipeToPutInCart.showExplanation && index == 0,
+            return Dismissible(
+              key: Key(item),
+              onDismissed: (direction) {
+                if (direction == DismissDirection.startToEnd) {
+                  _putInCart(context, item);
+                } else {
+                  _markAsNotAvailable(context, item);
+                }
+              },
+              background: Container(
+                color: context.color.inTheCart,
+                padding:
+                    EdgeInsets.symmetric(horizontal: context.padding.outer),
+                child: Row(
+                  children: [
+                    Icon(Icons.check, color: context.color.onInTheCart),
+                    SizedBox(width: context.padding.inner),
+                    Text(
+                      'Got it',
+                      style: context.standardStyle.copyWith(
+                        color: context.color.onInTheCart,
+                      ),
+                    ),
+                    Spacer(),
+                  ],
+                ),
+              ),
+              secondaryBackground: Container(
+                color: context.color.notAvailable,
+                padding:
+                    EdgeInsets.symmetric(horizontal: context.padding.outer),
+                child: Row(
+                  children: [
+                    Spacer(),
+                    Text(
+                      'Not available',
+                      style: context.standardStyle.copyWith(
+                        color: context.color.onNotAvailable,
+                      ),
+                    ),
+                    SizedBox(width: context.padding.inner),
+                    Icon(Icons.not_interested,
+                        color: context.color.onNotAvailable),
+                  ],
+                ),
+              ),
+              child: TodoItem(
+                item: item,
+                onTap: () => context.showEditItemSheet(item),
+                showSwipeIndicator:
+                    onboarding.swipeToPutInCart.showExplanation && index == 0,
+              ),
             );
           },
           childCount: list.items.length,
