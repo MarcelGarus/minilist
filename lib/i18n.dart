@@ -117,7 +117,7 @@ class _EnglishTranslation extends Translation {
   String mainSnackbarMarkedItemAsNotAvailable(String item) =>
       'Marked $item as not available.';
   String mainSuggestionsTitle(int n) =>
-      _singularOrPlural(n, 'How about this one?', 'How about some of these?');
+      n == 1 ? 'How about this one?' : 'How about some of these?';
   String get mainSuggestionRemovalTitle => 'Remove suggestion?';
   String mainSuggestionRemovalDetails(String suggestion) =>
       'This will cause "$suggestion" to no longer appear in suggestion chips or Smart Compose.';

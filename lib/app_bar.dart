@@ -14,7 +14,7 @@ class ListAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlexibleAppBar(
-      title: context.t.title,
+      title: context.t.generalTitle,
       subtitle: ReferenceBuilder(
         reference: list.items,
         builder: (context) {

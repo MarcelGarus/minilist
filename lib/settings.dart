@@ -98,7 +98,7 @@ class SettingsPage extends StatelessWidget {
             title: context.t.settingsOpenSourceLicenses,
             onTap: () => showLicensePage(
               context: context,
-              applicationName: context.t.title,
+              applicationName: context.t.generalTitle,
               applicationVersion: '0.0.1',
             ),
           ),
