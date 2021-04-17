@@ -84,6 +84,8 @@ class AppThemeData {
             notAvailable: Colors.grey,
             onNotAvailable: Colors.white,
             notAvailableTint: Colors.grey.withOpacity(0.2),
+            delete: Colors.red,
+            onDelete: Colors.white,
           ),
         );
   AppThemeData.dark()
@@ -106,6 +108,8 @@ class AppThemeData {
             notAvailable: Colors.grey.shade900,
             onNotAvailable: Colors.white,
             notAvailableTint: Colors.grey.shade900,
+            delete: Colors.red,
+            onDelete: Colors.white,
           ),
         );
   AppThemeData.black()
@@ -128,6 +132,8 @@ class AppThemeData {
             notAvailable: Colors.grey.shade900,
             onNotAvailable: Colors.white,
             notAvailableTint: Colors.grey.shade900,
+            delete: Colors.red,
+            onDelete: Colors.white,
           ),
         );
 
@@ -186,6 +192,8 @@ class ColorThemeData {
     required this.notAvailable,
     required this.onNotAvailable,
     required this.notAvailableTint,
+    required this.delete,
+    required this.onDelete,
   });
 
   final Color background;
@@ -202,6 +210,8 @@ class ColorThemeData {
   final Color notAvailable;
   final Color onNotAvailable;
   final Color notAvailableTint;
+  final Color delete;
+  final Color onDelete;
 }
 
 extension ToMaterialTheme on AppThemeData {
