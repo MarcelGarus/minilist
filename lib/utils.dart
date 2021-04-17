@@ -63,3 +63,67 @@ class SwipeRightIndicator extends StatelessWidget {
     );
   }
 }
+
+class DismissBackground extends StatelessWidget {
+  const DismissBackground({
+    required this.backgroundColor,
+    required this.foregroundColor,
+    required this.icon,
+    required this.text,
+    required this.isPrimary,
+  });
+
+  DismissBackground.primary({
+    required Color backgroundColor,
+    required Color foregroundColor,
+    required IconData icon,
+    required String text,
+  }) : this(
+          backgroundColor: backgroundColor,
+          foregroundColor: foregroundColor,
+          icon: icon,
+          text: text,
+          isPrimary: true,
+        );
+
+  DismissBackground.secondary({
+    required Color backgroundColor,
+    required Color foregroundColor,
+    required IconData icon,
+    required String text,
+  }) : this(
+          backgroundColor: backgroundColor,
+          foregroundColor: foregroundColor,
+          icon: icon,
+          text: text,
+          isPrimary: false,
+        );
+
+  final Color backgroundColor;
+  final Color foregroundColor;
+  final IconData icon;
+  final String text;
+  final bool isPrimary;
+
+  @override
+  Widget build(BuildContext context) {
+    var children = [
+      Icon(icon, color: foregroundColor),
+      SizedBox(width: context.padding.inner),
+      Text(
+        text,
+        style: context.standardStyle.copyWith(color: foregroundColor),
+      ),
+      Spacer(),
+    ];
+    if (!isPrimary) {
+      children = children.reversed.toList();
+    }
+
+    return Container(
+      color: backgroundColor,
+      padding: EdgeInsets.symmetric(horizontal: context.padding.outer),
+      child: Row(children: children),
+    );
+  }
+}

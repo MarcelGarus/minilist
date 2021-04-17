@@ -231,42 +231,17 @@ class _SliverMainList extends StatelessWidget {
                   _markAsNotAvailable(context, item);
                 }
               },
-              background: Container(
-                color: context.color.inTheCart,
-                padding:
-                    EdgeInsets.symmetric(horizontal: context.padding.outer),
-                child: Row(
-                  children: [
-                    Icon(Icons.check, color: context.color.onInTheCart),
-                    SizedBox(width: context.padding.inner),
-                    Text(
-                      'Got it',
-                      style: context.standardStyle.copyWith(
-                        color: context.color.onInTheCart,
-                      ),
-                    ),
-                    Spacer(),
-                  ],
-                ),
+              background: DismissBackground.primary(
+                backgroundColor: context.color.inTheCart,
+                foregroundColor: context.color.onInTheCart,
+                icon: Icons.check,
+                text: 'Got it',
               ),
-              secondaryBackground: Container(
-                color: context.color.notAvailable,
-                padding:
-                    EdgeInsets.symmetric(horizontal: context.padding.outer),
-                child: Row(
-                  children: [
-                    Spacer(),
-                    Text(
-                      'Not available',
-                      style: context.standardStyle.copyWith(
-                        color: context.color.onNotAvailable,
-                      ),
-                    ),
-                    SizedBox(width: context.padding.inner),
-                    Icon(Icons.not_interested,
-                        color: context.color.onNotAvailable),
-                  ],
-                ),
+              secondaryBackground: DismissBackground.secondary(
+                backgroundColor: context.color.notAvailable,
+                foregroundColor: context.color.onNotAvailable,
+                icon: Icons.not_interested,
+                text: 'Not available',
               ),
               child: TodoItem(
                 item: item,
