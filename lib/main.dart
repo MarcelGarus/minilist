@@ -190,7 +190,7 @@ class _SliverMainList extends StatelessWidget {
     list.inTheCart.add(item);
     onboarding.swipeToPutInCart.used();
     history.checkedItem(item);
-    context.showSnackBarWithUndo(context.t.mainSnackbarPutItemInCart(item), () {
+    context.offerUndo(context.t.mainSnackbarPutItemInCart(item), () {
       list.inTheCart.mutate((it) => it.removeLast());
       list.items.mutate((it) => it.insert(index, item));
     });
@@ -200,7 +200,7 @@ class _SliverMainList extends StatelessWidget {
     final index = list.items.value.indexOf(item);
     list.items.mutate((it) => it.removeAt(index));
     list.notAvailable.add(item);
-    context.showSnackBarWithUndo(
+    context.offerUndo(
       context.t.mainSnackbarMarkedItemAsNotAvailable(item),
       () {
         list.notAvailable.mutate((it) => it.removeLast());

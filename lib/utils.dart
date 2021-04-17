@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'theme.dart';
 
 extension UndoAction on BuildContext {
-  void showSnackBarWithUndo(String text, VoidCallback undo) {
+  void offerUndo(String text, VoidCallback undo) {
     scaffoldMessenger.showSnackBar(
       SnackBar(
         content: Text(text),
