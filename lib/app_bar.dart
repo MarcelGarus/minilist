@@ -29,14 +29,13 @@ class ListAppBar extends StatelessWidget {
         },
       ),
       actions: [
-        ReferenceBuilder(
-          reference: list.items,
-          builder: (context) {
-            if (list.items.length < 5) return Container();
-            return IconButton(icon: Icon(Icons.search), onPressed: () {});
-          },
-        ),
-        // IconButton(icon: Icon(Icons.view_agenda_outlined)),
+        // ReferenceBuilder(
+        //   reference: list.items,
+        //   builder: (context) {
+        //     if (list.items.length < 5) return Container();
+        //     return IconButton(icon: Icon(Icons.search), onPressed: () {});
+        //   },
+        // ),
         PopupMenuButton<String>(
           icon: Icon(Icons.more_vert, color: context.color.onBackground),
           color: context.color.canvas,
