@@ -105,41 +105,7 @@ class InTheCartPage extends StatelessWidget {
           ),
         ],
       ),
-      body: ReferenceBuilder(
-        reference: list.inTheCart,
-        builder: (context) {
-          return ListView.builder(
-            itemCount: list.inTheCart.length,
-            itemBuilder: (context, index) {
-              final item = list.inTheCart[index].value;
-              return Dismissible(
-                key: Key(item),
-                onDismissed: (direction) {
-                  if (direction == DismissDirection.startToEnd) {
-                    list.inTheCart.mutate((list) => list.remove(item));
-                  } else {
-                    list.inTheCart.mutate((list) => list.remove(item));
-                    list.add(item);
-                  }
-                },
-                background: DismissBackground.primary(
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
-                  icon: Icons.check,
-                  text: 'Delete',
-                ),
-                secondaryBackground: DismissBackground.secondary(
-                  backgroundColor: context.color.notAvailableTint,
-                  foregroundColor: context.color.onInTheCart,
-                  icon: Icons.check,
-                  text: 'Put back on the list',
-                ),
-                child: TodoItem(item: item),
-              );
-            },
-          );
-        },
-      ),
+      body: CompletedList(list.inTheCart),
     );
   }
 }
@@ -162,17 +128,59 @@ class NotAvailablePage extends StatelessWidget {
           ),
         ],
       ),
-      body: ReferenceBuilder(
-        reference: list.notAvailable,
-        builder: (context) {
-          return ListView.builder(
-            itemCount: list.notAvailable.length,
-            itemBuilder: (context, index) => TodoItem(
-              item: list.notAvailable[index].value,
-            ),
-          );
-        },
-      ),
+      body: CompletedList(list.notAvailable),
+    );
+  }
+}
+
+class CompletedList extends StatelessWidget {
+  const CompletedList(this.completedList);
+
+  final Reference<List<String>> completedList;
+
+  @override
+  Widget build(BuildContext context) {
+    return ReferenceBuilder(
+      reference: completedList,
+      builder: (context) {
+        return ListView.builder(
+          itemCount: completedList.length,
+          itemBuilder: (context, index) {
+            final item = completedList[index].value;
+            return Dismissible(
+              key: Key(item),
+              onDismissed: (direction) {
+                if (direction == DismissDirection.startToEnd) {
+                  completedList.mutate((it) => it.remove(item));
+                  context.offerUndo('Deleted $item', () {
+                    completedList.mutate((it) => it.insert(index, item));
+                  });
+                } else {
+                  completedList.mutate((it) => it.remove(item));
+                  list.add(item);
+                  context.offerUndo('Put $item back on the list.', () {
+                    completedList.mutate((it) => it.insert(index, item));
+                    list.items.mutate((it) => it.remove(item));
+                  });
+                }
+              },
+              background: DismissBackground.primary(
+                backgroundColor: context.color.delete,
+                foregroundColor: context.color.onDelete,
+                icon: Icons.check,
+                text: 'Delete',
+              ),
+              secondaryBackground: DismissBackground.secondary(
+                backgroundColor: context.color.primary,
+                foregroundColor: context.color.onPrimary,
+                icon: Icons.undo_outlined,
+                text: 'Put back on the list',
+              ),
+              child: TodoItem(item: item),
+            );
+          },
+        );
+      },
     );
   }
 }
