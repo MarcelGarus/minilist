@@ -180,7 +180,6 @@ class SmartComposingTextField extends StatelessWidget {
                         ],
                       ),
                     ),
-                    //Text('Some text.', style: context.appTheme.hintStyle),
                   ),
                 ),
               Padding(

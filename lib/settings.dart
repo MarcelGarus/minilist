@@ -66,7 +66,7 @@ class SettingsPage extends StatelessWidget {
               )),
             ),
           ),
-          SettingsListTile(title: 'History', subtitle: 'Some data'),
+          // SettingsListTile(title: 'History', subtitle: 'Some data'),
           SettingsListTile(
             title: context.t.settingsDebugInfo,
             subtitle: context.t.settingsDebugInfoDetails,
