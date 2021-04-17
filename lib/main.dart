@@ -5,7 +5,6 @@ import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:chest_flutter/chest_flutter.dart' hide TaperForThemeMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:reorderables/reorderables.dart';
 
 import 'app_bar.dart';
@@ -13,7 +12,6 @@ import 'completed_section.dart';
 import 'core/core.dart' hide ThemeMode;
 import 'i18n.dart';
 import 'item_sheet.dart';
-import 'settings.dart';
 import 'suggestions.dart';
 import 'theme.dart';
 import 'todo_item.dart';
