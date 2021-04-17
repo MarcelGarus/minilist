@@ -22,9 +22,11 @@ class TodoItem extends StatelessWidget {
   DismissDirection get _effectiveDismissDirection {
     if (onPrimarySwipe == null && onSecondarySwipe == null)
       return DismissDirection.none;
+    if (onPrimarySwipe != null && onSecondarySwipe != null)
+      return DismissDirection.horizontal;
     if (onPrimarySwipe != null) return DismissDirection.startToEnd;
     if (onSecondarySwipe != null) return DismissDirection.endToStart;
-    return DismissDirection.horizontal;
+    throw 'Impossible to reach.';
   }
 
   @override
