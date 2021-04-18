@@ -1,8 +1,10 @@
 import 'dart:math';
+import 'dart:ui' as ui;
 
 import 'package:basics/basics.dart';
 import 'package:chest_flutter/chest_flutter.dart';
 
+import '../i18n.dart';
 import 'list.dart';
 import 'utils.dart';
 
@@ -16,17 +18,15 @@ class RememberState {
   final DateTime lastDecay;
 
   RememberState({required this.scores, required this.lastDecay});
-  RememberState.reset()
-      : this(
-          scores: <String, double>{
-            'Milk': 0.9,
-            'Bread': 0.9,
-            'Cheese': 0.9,
-            'Honey': 0.9,
-            'Beer': 0.9,
-          },
-          lastDecay: DateTime.now(),
-        );
+  factory RememberState.reset() {
+    final itemsList = Translation.forLocale(ui.window.locale).defaultItems;
+    final itemsToScore = <String, double>{};
+    for (var i = 0; i < itemsList.length; i++) {
+      itemsToScore[itemsList[i]] = pow(0.9, i).toDouble();
+    }
+
+    return RememberState(scores: itemsToScore, lastDecay: DateTime.now());
+  }
 
   String toDebugString() {
     final buffer = StringBuffer('RememberState(\n');

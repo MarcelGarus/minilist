@@ -5,6 +5,7 @@ import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:chest_flutter/chest_flutter.dart' hide TaperForThemeMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:reorderables/reorderables.dart';
 
 import 'app_bar.dart';
@@ -28,10 +29,9 @@ void main() async {
     settings.open(),
     suggestionEngine.initialize(),
   ]);
-  runApp(ShoppingListApp());
+  runApp(MiniListApp());
 }
 
-@visibleForTesting
 void registerTapers() {
   tape.register({
     ...tapers.forDartCore,
@@ -50,7 +50,7 @@ void registerTapers() {
   });
 }
 
-class ShoppingListApp extends StatelessWidget {
+class MiniListApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ReferenceBuilder(
@@ -62,6 +62,16 @@ class ShoppingListApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'MiniList',
             theme: context.appTheme.toDefaultMaterialTheme(),
+            supportedLocales: [
+              const Locale('de', ''),
+              const Locale('en', ''),
+              const Locale('es', ''),
+            ],
+            localizationsDelegates: [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
             home: SplashScreen(),
           ),
         ),

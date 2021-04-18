@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
 
+extension TranslationFromContext on BuildContext {
+  Translation get t => Translation.forLocale(Localizations.localeOf(this));
+}
+
 abstract class Translation {
-  static final default_ = _EnglishTranslation();
+  const Translation();
+  factory Translation.forLocale(Locale locale) {
+    switch (locale.languageCode) {
+      case 'de':
+        return _GermanTranslation();
+      case 'en':
+        return _EnglishTranslation();
+      default:
+        return default_;
+    }
+  }
+
+  static const default_ = _EnglishTranslation();
 
   // The first word of the translation strings indicates which page they're on.
 
@@ -84,6 +100,8 @@ String _singularOrPlural(int n, String singular, String plural) {
 }
 
 class _EnglishTranslation extends Translation {
+  const _EnglishTranslation();
+
   String get generalUndo => 'Undo';
   List<String> get defaultItems => [
         // Some food.
@@ -173,6 +191,8 @@ class _EnglishTranslation extends Translation {
 }
 
 class _GermanTranslation extends Translation {
+  const _GermanTranslation();
+
   String get generalUndo => 'Rückgängig machen';
   List<String> get defaultItems => [
         // Popular food in the US.
@@ -200,9 +220,9 @@ class _GermanTranslation extends Translation {
   String get mainSwipeGotIt => 'Ist im Wagen';
   String get mainSwipeNotAvailable => 'Ist nicht da';
   String get mainHowAboutSomeOfThese => "Wie wär's mit diesen?";
-  String mainSnackbarPutItemInCart(String item) => '$item ist nicht da.';
+  String mainSnackbarPutItemInCart(String item) => '$item ist im Wagen.';
   String mainSnackbarMarkedItemAsNotAvailable(String item) =>
-      '$item ist im Wagen.';
+      '$item ist nicht da.';
   String mainSuggestionsTitle(int n) => "Wie wär's hiermit?";
   String get mainSuggestionRemovalTitle => 'Vorschlag entfernen?';
   String mainSuggestionRemovalDetails(String suggestion) =>
@@ -226,8 +246,8 @@ class _GermanTranslation extends Translation {
   String get notAvailableTitle => 'Nicht da';
   String get notAvailableClearAll => 'Alle löschen';
   String get settingsTitle => 'Einstellungen';
-  String get settingsTheme => 'Theme';
-  String get settingsThemeDialogTitle => 'Wähle ein Theme';
+  String get settingsTheme => 'Farbschema';
+  String get settingsThemeDialogTitle => 'Wähle ein Farbschema';
   String get settingsThemeLight => 'Hell';
   String get settingsThemeDark => 'Dunkel';
   String get settingsThemeBlack => 'Schwarz';
@@ -236,7 +256,8 @@ class _GermanTranslation extends Translation {
   String get settingsShowSuggestions => 'Vorschläge anzeigen';
   String get settingsShowSuggestionsDetails => 'Am Ende der Liste';
   String get settingsSmartCompose => 'Smart Compose';
-  String get settingsSmartComposeDetails => 'Autovervollständigungen anzeigen';
+  String get settingsSmartComposeDetails => 'Autovervollständigungen bein '
+      'Hinzufügen von neuen Einträgen anzeigen';
   String get settingsSmartInsertion => 'Smart Insertion';
   String get settingsSmartInsertionDetails =>
       'Einträge an der richtigen Stelle hinfügen abhängig davon, in welcher '
@@ -248,7 +269,7 @@ class _GermanTranslation extends Translation {
   String get settingsDebugInfoDetails => 'Nützlich während der App-Entwicklung';
   String get settingsFeedback => 'Feedback';
   String get settingsFeedbackDetails =>
-      'Reporte Bugs oder Verbesserungsvorschläge';
+      'Melde Bugs oder schlage Verbesserungen vor';
   String get settingsRateTheApp => 'App bewerten';
   String get settingsRateTheAppDetails => 'Auf dem Google Play Store';
   String get settingsPrivacyPolicy => 'Datenschutzerklärung';
@@ -265,18 +286,4 @@ class _GermanTranslation extends Translation {
       'Reihenfolge der Vorschläge';
   String get debugInfoTitle => 'Debug-Informationen';
   String get debugInfoCopyConfirmation => 'Infos wurden kopiert.';
-}
-
-extension TranslationFromContext on BuildContext {
-  Translation get t {
-    print('Getting translations for ${Localizations.localeOf(this)}');
-    switch (Localizations.localeOf(this).languageCode) {
-      case 'de':
-        return _GermanTranslation();
-      case 'en':
-        return _EnglishTranslation();
-      default:
-        return _EnglishTranslation();
-    }
-  }
 }
