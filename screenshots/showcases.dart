@@ -211,7 +211,7 @@ class PrivacyShowcase extends Showcase {
       appTheme: AppThemeData.dark(),
       children: [
         Text(
-          'No ads.\nNo tracking.\nOpen source.\nEverything stays on your device.',
+          'No ads.\nNo tracking.\nEverything stays on your device.',
         ),
         Positioned(
           bottom: 0,
