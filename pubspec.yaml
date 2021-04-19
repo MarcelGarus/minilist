@@ -1,7 +1,7 @@
 name: minilist
 description: A thoughtful, minimalistic shopping list.
 publish_to: "none"
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -38,4 +38,4 @@ flutter:
 
 flutter_icons:
   android: "launcher_icon"
-  image_path: "icon.png"
+  image_path: "icon_round.png"
