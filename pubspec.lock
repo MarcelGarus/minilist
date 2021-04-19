@@ -504,6 +504,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.0"
+  screenshot:
+    dependency: "direct main"
+    description:
+      name: screenshot
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.0"
   shelf:
     dependency: transitive
     description:

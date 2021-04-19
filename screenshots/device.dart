@@ -3,15 +3,20 @@ import 'package:flutter/material.dart';
 import 'utils.dart';
 
 class Device extends StatelessWidget {
-  const Device({this.color = Colors.black, required this.screen});
+  const Device({
+    this.color = Colors.black,
+    this.brightness = Brightness.light,
+    required this.screen,
+  });
 
   final Color color;
+  final Brightness brightness;
   final Widget screen;
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      elevation: 16,
+      elevation: 12,
       shape: DeviceShape(),
       color: color,
       child: Padding(
@@ -34,12 +39,13 @@ class Device extends StatelessWidget {
           child: MediaQuery(
             data: MediaQueryData(
               size: smartphoneSize,
-              padding: EdgeInsets.only(top: 16),
+              viewPadding: EdgeInsets.only(top: StatusBar.height),
+              padding: EdgeInsets.only(top: StatusBar.height),
             ),
             child: screen,
           ),
         ),
-        StatusBar(),
+        StatusBar(brightness: brightness),
       ],
     );
   }
@@ -76,11 +82,17 @@ class DeviceShape extends ShapeBorder {
 }
 
 class StatusBar extends StatelessWidget {
+  static const height = 32.0;
+
+  const StatusBar({required this.brightness});
+
+  final Brightness brightness;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black12,
-      height: 32,
+      color: brightness == Brightness.light ? Colors.black12 : Colors.white10,
+      height: height,
       child: Row(
         children: [
           Spacer(),
