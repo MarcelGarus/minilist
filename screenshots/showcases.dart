@@ -184,7 +184,7 @@ class DarkModeShowcase extends Showcase {
   @override
   Widget build(BuildContext context) {
     return Studio(
-      color: Color(0xff111111),
+      color: Color(0xff121212),
       foregroundColor: Colors.white,
       appTheme: AppThemeData.dark(),
       children: [
@@ -192,10 +192,7 @@ class DarkModeShowcase extends Showcase {
         Transform.translate(
           offset: Offset(0, 200),
           child: FittedBox(
-            child: Device(
-              color: Colors.teal,
-              screen: MiniListApp(),
-            ),
+            child: Device(color: Colors.teal, screen: MiniListApp()),
           ),
         ),
       ],
@@ -209,7 +206,7 @@ class PrivacyShowcase extends Showcase {
   @override
   Widget build(BuildContext context) {
     return Studio(
-      color: Color(0xff111111),
+      color: Color(0xff121212),
       foregroundColor: Colors.white,
       appTheme: AppThemeData.dark(),
       children: [
