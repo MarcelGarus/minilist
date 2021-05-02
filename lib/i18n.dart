@@ -75,6 +75,8 @@ abstract class Translation {
   String get settingsDefaultInsertionBottom;
   String get settingsSuggestions => suggestionsTitle;
   String settingsSuggestionsNItems(int n);
+  String get settingsTransfer => transferTitle;
+  String get settingsTransferDetails;
   String get settingsDebugInfo => debugInfoTitle;
   String get settingsDebugInfoDetails;
   String get settingsFeedback;
@@ -91,6 +93,7 @@ abstract class Translation {
   String get settingsOpenSourceLicenses;
   String get suggestionsTitle;
   String get suggestionsExplanation;
+  String get transferTitle;
   String get debugInfoTitle;
   String get debugInfoCopyConfirmation;
 }
@@ -175,6 +178,8 @@ class _EnglishTranslation extends Translation {
   String get settingsDefaultInsertionTop => 'Top';
   String get settingsDefaultInsertionBottom => 'Bottom';
   String settingsSuggestionsNItems(int n) => '${_nItems(n)}';
+  String get settingsTransferDetails =>
+      'Export or import data to transfer them to another device or to save them as a file';
   String get settingsDebugInfoDetails => 'Useful while developing the app';
   String get settingsFeedback => 'Feedback';
   String get settingsFeedbackDetails => 'Report bugs or ideas';
@@ -186,6 +191,7 @@ class _EnglishTranslation extends Translation {
   String get suggestionsTitle => 'Suggestions';
   String get suggestionsExplanation =>
       'Items you add to the list are recorded here. Each item has a score. Items with higher scores are more likely to be suggested. If you use an item, its score increases by 1. Over time, the scores automatically decrease exponentially.';
+  String get transferTitle => 'Transfer data';
   String get debugInfoTitle => 'Debug information';
   String get debugInfoCopyConfirmation => 'Copied to clipboard.';
 }
@@ -266,6 +272,8 @@ class _GermanTranslation extends Translation {
   String get settingsDefaultInsertionTop => 'Oben';
   String get settingsDefaultInsertionBottom => 'Unten';
   String settingsSuggestionsNItems(int n) => '${_nItems(n)}';
+  String get settingsTransferDetails =>
+      'Exportiere oder importiere Daten, um sie auf ein anderes Gerät zu übertragen oder langfristig zu speichern';
   String get settingsDebugInfoDetails => 'Nützlich während der App-Entwicklung';
   String get settingsFeedback => 'Feedback';
   String get settingsFeedbackDetails =>
@@ -284,6 +292,7 @@ class _GermanTranslation extends Translation {
       'um 1. Mit der Zeit reduzieren sich die Scores exponentiell – heißt, '
       'weiter zurückliegende Aktionen haben weniger Einfluss auf die '
       'Reihenfolge der Vorschläge';
+  String get transferTitle => 'Daten transferieren';
   String get debugInfoTitle => 'Debug-Informationen';
   String get debugInfoCopyConfirmation => 'Infos wurden kopiert.';
 }
