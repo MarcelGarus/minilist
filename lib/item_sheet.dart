@@ -187,6 +187,8 @@ class SmartComposingTextField extends StatelessWidget {
                 child: TextField(
                   autofocus: true,
                   maxLines: null,
+                  keyboardType: TextInputType.text,
+                  textCapitalization: TextCapitalization.words,
                   controller: controller,
                   style: context.itemStyle,
                   cursorColor: context.color.primary,
