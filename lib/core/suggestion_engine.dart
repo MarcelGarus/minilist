@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 import 'dart:ui' as ui;
 
@@ -35,6 +36,20 @@ class RememberState {
     }
     buffer.write(')');
     return buffer.toString();
+  }
+
+  dynamic toJson() {
+    return {
+      'scores': scores,
+      'lastDecay': lastDecay.millisecondsSinceEpoch,
+    };
+  }
+
+  static RememberState fromJson(dynamic data) {
+    return RememberState(
+      scores: (data['scores'] as Map<dynamic, dynamic>).cast<String, double>(),
+      lastDecay: DateTime.fromMillisecondsSinceEpoch(data['lastDecay']),
+    );
   }
 }
 
@@ -102,4 +117,13 @@ class _SuggestionEngine {
         .cast<String?>()
         .firstWhere((_) => true, orElse: () => null);
   }
+
+  String export() {
+    return json.encode({
+      'state': state.value.scores,
+      'lastDecay': state.value.lastDecay.millisecondsSinceEpoch,
+    });
+  }
+
+  void import(RememberState state) => this.state.value = state;
 }

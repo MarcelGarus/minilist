@@ -84,7 +84,6 @@ class SettingsPage extends StatelessWidget {
               builder: (_) => DebugInfoPage(),
             )),
           ),
-
           Divider(color: context.color.secondary),
           // Less important stuff.
           SettingsListTile(

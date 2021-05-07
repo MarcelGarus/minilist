@@ -2,6 +2,10 @@
     package="dev.marcelgarus.minilist">
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <meta-data
+        android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+        android:value="barcode" />
+
     <application
         android:label="MiniList"
         android:icon="@mipmap/launcher_icon">

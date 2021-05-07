@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 
 import 'history.dart';
 import 'settings.dart';
+import 'transfer.dart';
 import 'utils.dart';
 
 part 'list.g.dart';
@@ -49,4 +50,9 @@ extension ListHelpers on Reference<ShoppingList> {
       items.insert(whereToInsert, item);
     });
   }
+}
+
+extension TransferableList on Reference<List<String>> {
+  dynamic export() => value.toJson();
+  void import(List<String> data) => value = data;
 }
