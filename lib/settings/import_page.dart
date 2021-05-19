@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:file_picker/file_picker.dart';
@@ -17,18 +18,18 @@ class ImportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.color.background,
-      appBar: SettingsAppBar(title: 'Daten importieren'),
+      appBar: SettingsAppBar(title: context.t.transferImportTitle),
       body: ListView(
         children: [
           Padding(
             padding: EdgeInsets.all(16),
             child: Text(
-              'Wie sollen die Daten importiert werden?',
+              context.t.transferImportHow,
               style: context.accentStyle,
             ),
           ),
           SettingsListTile(
-            title: 'Über die Zwischenablage',
+            title: context.t.transferImportClipboard,
             leading: Icon(Icons.paste_outlined),
             onTap: () async {
               final data = await Clipboard.getData('text/plain');
@@ -39,15 +40,16 @@ class ImportPage extends StatelessWidget {
             },
           ),
           SettingsListTile(
-            title: 'Von einer JSON-Datei',
+            title: context.t.transferImportJson,
             leading: Icon(Icons.code_outlined),
             onTap: () async {
               final result = await FilePicker.platform.pickFiles();
               if (result == null) return;
               final files = result.files;
               if (files.length != 1) return;
-              final bytes = files.single.bytes;
-              if (bytes == null) return;
+              final filePath = files.single.path;
+              if (filePath == null) return;
+              final bytes = await File(filePath).readAsBytes();
               final string = utf8.decode(bytes);
               _proceed(context, prepareImport(DataType.json, string));
             },

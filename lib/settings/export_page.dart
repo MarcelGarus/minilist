@@ -56,9 +56,10 @@ class _ExportPageState extends State<ExportPage> {
               if (txtContent == null) return;
               Clipboard.setData(ClipboardData(text: txtContent));
               context.scaffoldMessenger.showSnackBar(SnackBar(
-                content: Text(context.t.transferExportClipboardDetails),
+                content: Text(context.t.transferExportClipboardConfirmation),
                 behavior: SnackBarBehavior.floating,
               ));
+              context.navigator..pop()..pop()..pop();
             },
           ),
           // TODO: Display file size
@@ -66,7 +67,10 @@ class _ExportPageState extends State<ExportPage> {
             title: context.t.transferExportJson,
             subtitle: context.t.transferExportJsonDetails,
             leading: Icon(Icons.code_outlined),
-            onTap: () => _shareFile(jsonContent, 'json'),
+            onTap: () {
+              _shareFile(jsonContent, 'json');
+              context.navigator..pop()..pop()..pop();
+            },
           ),
           SizedBox(height: 32),
         ],
