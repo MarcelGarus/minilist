@@ -21,7 +21,7 @@ class Settings {
     this.theme = ThemeMode.systemLightBlack,
     this.showSuggestions = true,
     this.showSmartCompose = true,
-    this.useSmartInsertion = false,
+    this.useSmartInsertion = true,
     this.defaultInsertion = Insertion.atTheEnd,
   });
 
