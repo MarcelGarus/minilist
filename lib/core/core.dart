@@ -5,4 +5,5 @@ export 'list.dart';
 export 'onboarding.dart';
 export 'settings.dart';
 export 'suggestion_engine.dart';
+export 'transfer.dart';
 export 'utils.dart';

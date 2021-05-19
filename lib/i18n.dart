@@ -94,6 +94,24 @@ abstract class Translation {
   String get suggestionsTitle;
   String get suggestionsExplanation;
   String get transferTitle;
+  String get transferExport;
+  String get transferImport;
+  String get transferExportTitle;
+  String get transferExportHow;
+  String get transferExportClipboard;
+  String get transferExportClipboardDetails;
+  String get transferExportClipboardConfirmation;
+  String get transferExportJson;
+  String get transferExportJsonDetails;
+  String get transferExportJsonSubject;
+  String get transferExportJsonText;
+  String get transferImportTitle;
+  String get transferImportHow;
+  String get transferImportClipboard;
+  String get transferImportJson;
+  String get transferImportWhat;
+  String get transferImportItemIsAlreadyOnYourList;
+  String get transferImportFab;
   String get debugInfoTitle;
   String get debugInfoCopyConfirmation;
 }
@@ -133,8 +151,7 @@ class _EnglishTranslation extends Translation {
   String get mainSwipeGotIt => 'Got it';
   String get mainSwipeNotAvailable => 'Not available';
   String get mainHowAboutSomeOfThese => 'How about some of these?';
-  String mainSnackbarPutItemInCart(String item) =>
-      'Marked $item as not available.';
+  String mainSnackbarPutItemInCart(String item) => 'Put $item in the cart.';
   String mainSnackbarMarkedItemAsNotAvailable(String item) =>
       'Marked $item as not available.';
   String mainSuggestionsTitle(int n) =>
@@ -178,8 +195,7 @@ class _EnglishTranslation extends Translation {
   String get settingsDefaultInsertionTop => 'Top';
   String get settingsDefaultInsertionBottom => 'Bottom';
   String settingsSuggestionsNItems(int n) => '${_nItems(n)}';
-  String get settingsTransferDetails =>
-      'Export or import data to transfer them to another device or to save them as a file';
+  String get settingsTransferDetails => 'Export or import items';
   String get settingsDebugInfoDetails => 'Useful while developing the app';
   String get settingsFeedback => 'Feedback';
   String get settingsFeedbackDetails => 'Report bugs or ideas';
@@ -191,7 +207,27 @@ class _EnglishTranslation extends Translation {
   String get suggestionsTitle => 'Suggestions';
   String get suggestionsExplanation =>
       'Items you add to the list are recorded here. Each item has a score. Items with higher scores are more likely to be suggested. If you use an item, its score increases by 1. Over time, the scores automatically decrease exponentially.';
-  String get transferTitle => 'Transfer data';
+  String get transferTitle => 'Transfer items';
+  String get transferExport => 'Export';
+  String get transferImport => 'Import';
+  String get transferExportTitle => 'Export items';
+  String get transferExportHow => 'How should the items be exported?';
+  String get transferExportClipboard => 'Using the clipboard';
+  String get transferExportClipboardDetails => 'Copy one item per line';
+  String get transferExportClipboardConfirmation =>
+      'Items copied to the clipboard.';
+  String get transferExportJson => 'As a JSON file';
+  String get transferExportJsonDetails =>
+      'More complex, machine-readable format, useful for backups';
+  String get transferExportJsonSubject => 'My shopping list';
+  String get transferExportJsonText => 'This is my shopping list.';
+  String get transferImportTitle => 'Import items';
+  String get transferImportHow => 'How should the items be imported?';
+  String get transferImportClipboard => 'Using the clipboard';
+  String get transferImportJson => 'From a JSON file';
+  String get transferImportWhat => 'Which items should be imported?';
+  String get transferImportItemIsAlreadyOnYourList => 'is already on your list';
+  String get transferImportFab => 'Import';
   String get debugInfoTitle => 'Debug information';
   String get debugInfoCopyConfirmation => 'Copied to clipboard.';
 }
@@ -199,7 +235,7 @@ class _EnglishTranslation extends Translation {
 class _GermanTranslation extends Translation {
   const _GermanTranslation();
 
-  String get generalUndo => 'Rückgängig machen';
+  String get generalUndo => 'Rückgängig';
   List<String> get defaultItems => [
         // Popular food in the US.
         'Wasser', 'Kartoffeln', 'Bananen', 'Milch', 'Brot', 'Tomaten', 'Käse',
@@ -293,6 +329,28 @@ class _GermanTranslation extends Translation {
       'weiter zurückliegende Aktionen haben weniger Einfluss auf die '
       'Reihenfolge der Vorschläge';
   String get transferTitle => 'Daten transferieren';
+  String get transferExport => 'Exportieren';
+  String get transferImport => 'Importieren';
+  String get transferExportTitle => 'Einträge exportieren';
+  String get transferExportHow => 'Wie sollen die Einträge exportiert werden?';
+  String get transferExportClipboard => 'Über die Zwischenablage';
+  String get transferExportClipboardDetails =>
+      'Kopiert einen Eintrag pro Zeile';
+  String get transferExportClipboardConfirmation =>
+      'Einträge wurden in die Zwischenablage kopiert.';
+  String get transferExportJson => 'Als JSON-Datei';
+  String get transferExportJsonDetails =>
+      'Komplexeres, maschinenlesbares Format, praktisch für Backups';
+  String get transferExportJsonSubject => 'Meine Einkaufsliste';
+  String get transferExportJsonText => 'Das ist meine Einkaufsliste.';
+  String get transferImportTitle => 'Einträge importieren';
+  String get transferImportHow => 'Wie sollen die Einträge importiert werden?';
+  String get transferImportClipboard => 'Über die Zwischenablage';
+  String get transferImportJson => 'Von einer JSON-Datei';
+  String get transferImportWhat => 'Was soll importiert werden?';
+  String get transferImportItemIsAlreadyOnYourList =>
+      'ist bereits auf deiner Liste';
+  String get transferImportFab => 'Importieren';
   String get debugInfoTitle => 'Debug-Informationen';
   String get debugInfoCopyConfirmation => 'Infos wurden kopiert.';
 }

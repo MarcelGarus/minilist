@@ -1,99 +1,70 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'list.dart';
-import 'suggestion_engine.dart';
 
 class ExportSettings {
   ExportSettings({
-    required this.mainList,
-    required this.inTheCartList,
-    required this.notAvailableList,
-    required this.suggestions,
     required this.type,
+    required this.items,
   });
 
-  final bool mainList;
-  final bool inTheCartList;
-  final bool notAvailableList;
-  final bool suggestions;
   final DataType type;
-
-  bool get anySelected =>
-      mainList || inTheCartList || notAvailableList || suggestions;
-  int get selectedLists =>
-      (mainList ? 1 : 0) + (inTheCartList ? 1 : 0) + (notAvailableList ? 1 : 0);
+  final Set<String> items;
 
   ExportSettings withType(DataType type) {
-    return ExportSettings(
-      mainList: mainList,
-      inTheCartList: inTheCartList,
-      notAvailableList: notAvailableList,
-      suggestions: suggestions,
-      type: type,
-    );
+    return ExportSettings(items: items, type: type);
   }
 }
 
-enum DataType { qr, txt, json }
+enum DataType { txt, json }
 
 String exportData(ExportSettings settings) {
+  final items = settings.items.toList()..sort();
+
   if (settings.type == DataType.txt) {
-    if (settings.mainList) return list.items.value.join('\n');
-    if (settings.inTheCartList) return list.inTheCart.value.join('\n');
-    if (settings.notAvailableList) return list.notAvailable.value.join('\n');
-    throw 'Cannot export suggestions using txt.';
+    return items.join('\n');
   }
 
-  final jsonData = {
-    if (settings.mainList) 'mainList': list.items.export(),
-    if (settings.inTheCartList) 'inTheCartList': list.inTheCart.export(),
-    if (settings.notAvailableList)
-      'notAvailableList': list.notAvailable.export(),
-    if (settings.suggestions) 'suggestions': suggestionEngine.export(),
-  };
-  final string = json.encode(jsonData);
+  final jsonData = json.encode({
+    'mainList': items,
+  });
 
   if (settings.type == DataType.json) {
-    return string;
+    return jsonData;
   }
 
-  assert(settings.type == DataType.qr);
-  return base64.encode(zlib.encode(utf8.encode(string)));
+  throw 'Unhandled type ${settings.type}.';
 }
 
 ImportBundle prepareImport(DataType type, String source) {
   if (type == DataType.txt) {
-    return ImportBundle(mainList: source.split('\n'));
-  }
-
-  if (type == DataType.qr) {
-    source = utf8.decode(zlib.decode(base64.decode(source)));
+    return ImportBundle(
+      items: source
+          .split('\n')
+          .map((line) => line.trim())
+          .where((line) => line.isNotEmpty)
+          .toSet(),
+    );
   }
 
   assert(type == DataType.json);
 
   final data = json.decode(source) as Map<String, dynamic>;
   return ImportBundle(
-    mainList: StringList.fromJson(data['mainList']),
-    inTheCartList: StringList.fromJson(data['inTheCartList']),
-    notAvailableList: StringList.fromJson(data['notAvailableList']),
-    suggestions: RememberState.fromJson(data['suggestions']),
+    items: StringList.fromJson(data['mainList'] ?? []).toSet(),
   );
 }
 
 class ImportBundle {
-  ImportBundle({
-    this.mainList,
-    this.inTheCartList,
-    this.notAvailableList,
-    this.suggestions,
-  });
+  ImportBundle({required this.items});
 
-  final List<String>? mainList;
-  final List<String>? inTheCartList;
-  final List<String>? notAvailableList;
-  final RememberState? suggestions;
+  final Set<String> items;
+
+  ImportBundle clone() {
+    return ImportBundle(
+      items: Set.from(items),
+    );
+  }
 }
 
 extension StringList on List<String> {
@@ -102,25 +73,8 @@ extension StringList on List<String> {
       (source as List<dynamic>).cast<String>();
 }
 
-class ImportSettings {
-  ImportSettings({
-    required this.mainList,
-    required this.inTheCartList,
-    required this.notAvailableList,
-    required this.suggestions,
-  });
-
-  final bool mainList;
-  final bool inTheCartList;
-  final bool notAvailableList;
-  final bool suggestions;
-}
-
 extension ActuallyImport on ImportBundle {
-  void import(ImportSettings settings) {
-    if (mainList != null) list.items.import(mainList!);
-    if (inTheCartList != null) list.inTheCart.import(inTheCartList!);
-    if (notAvailableList != null) list.notAvailable.import(notAvailableList!);
-    if (suggestions != null) suggestionEngine.import(suggestions!);
+  void import() {
+    list.items.mutate((mainList) => mainList.addAll(items));
   }
 }
