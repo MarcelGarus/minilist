@@ -16,6 +16,7 @@ Privacy: By default, no data leaves your device. And if you enable analytics, yo
 * [ ] import
   * [x] txt (clipboard)
   * [ ] json
+* [x] auto-upper-case
 * [ ] screen size on debug page
 * [ ] enable smart insertion by default
 
