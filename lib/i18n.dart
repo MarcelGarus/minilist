@@ -143,7 +143,7 @@ class _EnglishTranslation extends Translation {
   String _nItems(int n) => _singularOrPlural(n, 'item', 'items');
   String mainNItems(int n) => '${_nItems(n)}';
   String mainNItemsLeft(int n) => '${_nItems(n)} left';
-  String get mainEmptyStateTitle => 'A fresh start';
+  String get mainEmptyStateTitle => 'Pretty empty here, right?';
   String get mainInTheCart => 'in the cart';
   String get mainNotAvailable => 'not available';
   String get mainAddItem => 'Add item';
@@ -254,7 +254,7 @@ class _GermanTranslation extends Translation {
   String _nItems(int n) => _singularOrPlural(n, 'Eintrag', 'Einträge');
   String mainNItems(int n) => '${_nItems(n)}';
   String mainNItemsLeft(int n) => '${_nItems(n)} übrig';
-  String get mainEmptyStateTitle => 'Ein neuer Start';
+  String get mainEmptyStateTitle => 'Ziemlich leer hier, oder?';
   String get mainInTheCart => 'im Wagen';
   String get mainNotAvailable => 'nicht da';
   String get mainAddItem => 'Eintrag hinzufügen';
