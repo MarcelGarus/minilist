@@ -2,8 +2,6 @@
 
 * catch chest errors
 * show intro thingy above list
-* customizable left/right swipe
-* sheet not visible on small displays (!)
 * case insensitive complete
 * less actionable swipe indicator
 * adding item marked as "in the cart"/"not available": do you want to get that out of there?
@@ -16,13 +14,18 @@
 * Homescreen widget
 * Watch
 
+## 1.2.0 – Anyone left handed in the audience?
+
+* Add setting for optimizing for left-handed use. This will invert the swiping gestures.
+* Fix bug that the item sheet is not visible on small displays.
+
 ## 1.1.0 – Share it all!
 
 * Add export/import functionality using either:
   * Clipboard (one item per line)
-  * JSON
+  * JSON (machine-readable)
 * Set keyboard to auto-upper-case when adding a new item.
-* Show screen size in debug information page.
+* Show media query information in debug information page.
 * Enable smart insertion by default.
 
 ## 1.0.1 – Bug fix
