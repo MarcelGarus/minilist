@@ -58,8 +58,8 @@ class SettingsPage extends StatelessWidget {
           ),
           SettingsToggleListTile(
             reference: settings.optimizeForLeftHandedUse,
-            title: "Für Linkshänder optimieren",
-            subtitle: "Vertauscht Wischgesten",
+            title: context.t.settingsOptimizeForLeftHandedUse,
+            subtitle: context.t.settingsOptimizeForLeftHandedUseDetails,
           ),
           Divider(color: context.color.secondary),
           // See data.
