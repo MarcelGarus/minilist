@@ -1,4 +1,3 @@
-import 'package:black_hole_flutter/black_hole_flutter.dart';
 import 'package:flutter/material.dart' hide ThemeMode;
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
