@@ -40,7 +40,7 @@ android {
 
     defaultConfig {
         applicationId "dev.marcelgarus.minilist"
-        minSdkVersion 21
+        minSdkVersion 16
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
