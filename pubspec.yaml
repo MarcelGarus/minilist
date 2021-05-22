@@ -14,6 +14,7 @@ dependencies:
   archive: ^3.1.2
   basics: ^0.6.0
   black_hole_flutter: ^0.3.0
+  chest: ^0.1.2
   chest_flutter: ^0.1.2
   cupertino_icons: ^1.0.1
   file_picker: ^3.0.1

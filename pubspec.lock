@@ -135,12 +135,12 @@ packages:
     source: hosted
     version: "1.0.4"
   chest:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: chest
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.1"
+    version: "0.1.2"
   chest_flutter:
     dependency: "direct main"
     description:
