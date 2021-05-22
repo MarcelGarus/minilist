@@ -1,5 +1,4 @@
 import 'package:black_hole_flutter/black_hole_flutter.dart';
-import 'package:chest_flutter/chest_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'core/core.dart';
@@ -15,6 +14,7 @@ extension ShowItemSheet on BuildContext {
   Future<void> _showRoundedSheet(Widget sheet) {
     return this.showModalBottomSheet(
       backgroundColor: color.canvas,
+      isScrollControlled: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16),
