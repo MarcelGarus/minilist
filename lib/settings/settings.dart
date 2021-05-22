@@ -50,8 +50,9 @@ class SettingsPage extends StatelessWidget {
             reference: settings.defaultInsertion,
             builder: (context) => SettingsListTile(
               title: context.t.settingsDefaultInsertion,
-              subtitle:
-                  settings.value.defaultInsertion.toBeautifulString(context.t),
+              trailing: Text(
+                settings.value.defaultInsertion.toBeautifulString(context.t),
+              ),
               onTap: () => settings.defaultInsertion.value =
                   settings.value.defaultInsertion.opposite,
             ),
