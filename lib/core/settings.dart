@@ -15,6 +15,14 @@ final settings = Chest<Settings>('settings', ifNew: () => Settings());
     #useSmartInsertion,
     #defaultInsertion
   },
+  v2: {
+    #theme,
+    #showSuggestions,
+    #showSmartCompose,
+    #useSmartInsertion,
+    #defaultInsertion,
+    #optimizeForLeftHandedUse
+  },
 })
 class Settings {
   Settings({
@@ -23,6 +31,7 @@ class Settings {
     this.showSmartCompose = true,
     this.useSmartInsertion = true,
     this.defaultInsertion = Insertion.atTheEnd,
+    this.optimizeForLeftHandedUse = false,
   });
 
   final ThemeMode theme;
@@ -30,6 +39,7 @@ class Settings {
   final bool showSmartCompose;
   final bool useSmartInsertion;
   final Insertion defaultInsertion;
+  final bool optimizeForLeftHandedUse;
 
   String toDebugString() {
     final buffer = StringBuffer('Settings(\n')
@@ -38,6 +48,7 @@ class Settings {
       ..write('  showSmartCompose: $showSmartCompose,\n')
       ..write('  useSmartInsertion: $useSmartInsertion,\n')
       ..write('  defaultInsertion: ${defaultInsertion.toDebugString()},\n')
+      ..write('  optimizeForLeftHandedUse: $optimizeForLeftHandedUse,\n')
       ..write(')');
     return buffer.toString();
   }

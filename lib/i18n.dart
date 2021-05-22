@@ -73,6 +73,8 @@ abstract class Translation {
   String get settingsDefaultInsertion;
   String get settingsDefaultInsertionTop;
   String get settingsDefaultInsertionBottom;
+  String get settingsOptimizeForLeftHandedUse;
+  String get settingsOptimizeForLeftHandedUseDetails;
   String get settingsSuggestions => suggestionsTitle;
   String settingsSuggestionsNItems(int n);
   String get settingsTransfer => transferTitle;
@@ -194,6 +196,8 @@ class _EnglishTranslation extends Translation {
   String get settingsDefaultInsertion => 'Default insertion';
   String get settingsDefaultInsertionTop => 'Top';
   String get settingsDefaultInsertionBottom => 'Bottom';
+  String get settingsOptimizeForLeftHandedUse => 'Optimize for left-handed use';
+  String get settingsOptimizeForLeftHandedUseDetails => 'Swap swipe gestures';
   String settingsSuggestionsNItems(int n) => '${_nItems(n)}';
   String get settingsTransferDetails => 'Export or import items';
   String get settingsDebugInfoDetails => 'Useful while developing the app';
@@ -307,6 +311,9 @@ class _GermanTranslation extends Translation {
   String get settingsDefaultInsertion => 'Standard-Einfügeort';
   String get settingsDefaultInsertionTop => 'Oben';
   String get settingsDefaultInsertionBottom => 'Unten';
+  String get settingsOptimizeForLeftHandedUse => 'Für Linkshänder optimieren';
+  String get settingsOptimizeForLeftHandedUseDetails =>
+      'Vertauscht Wischgesten';
   String settingsSuggestionsNItems(int n) => '${_nItems(n)}';
   String get settingsTransferDetails =>
       'Exportiere oder importiere Daten, um sie auf ein anderes Gerät zu übertragen oder langfristig zu speichern';

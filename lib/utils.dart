@@ -72,40 +72,26 @@ class DismissBackground extends StatelessWidget {
     required this.foregroundColor,
     required this.icon,
     required this.text,
-    required this.isPrimary,
+    this.isPrimary = true,
   });
-
-  DismissBackground.primary({
-    required Color backgroundColor,
-    required Color foregroundColor,
-    required IconData icon,
-    required String text,
-  }) : this(
-          backgroundColor: backgroundColor,
-          foregroundColor: foregroundColor,
-          icon: icon,
-          text: text,
-          isPrimary: true,
-        );
-
-  DismissBackground.secondary({
-    required Color backgroundColor,
-    required Color foregroundColor,
-    required IconData icon,
-    required String text,
-  }) : this(
-          backgroundColor: backgroundColor,
-          foregroundColor: foregroundColor,
-          icon: icon,
-          text: text,
-          isPrimary: false,
-        );
 
   final Color backgroundColor;
   final Color foregroundColor;
   final IconData icon;
   final String text;
   final bool isPrimary;
+
+  DismissBackground primary() => _copyWith(true);
+  DismissBackground secondary() => _copyWith(false);
+  DismissBackground _copyWith(bool isPrimary) {
+    return DismissBackground(
+      backgroundColor: backgroundColor,
+      foregroundColor: foregroundColor,
+      icon: icon,
+      text: text,
+      isPrimary: isPrimary,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

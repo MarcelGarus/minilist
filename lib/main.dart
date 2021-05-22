@@ -41,6 +41,7 @@ void registerTapers() {
     3: taper.forMap<String, double>(),
     4: taper.forSettings().v0,
     10: taper.forSettings().v1,
+    12: taper.forSettings().v2,
     5: taper.forThemeMode().v0,
     6: taper.forOnboardingState().v0,
     7: taper.forOnboardingCountdown().v0,
@@ -232,27 +233,38 @@ class _SliverMainList extends StatelessWidget {
         delegate: ReorderableSliverChildBuilderDelegate(
           (_, index) {
             final item = list.items[index].value;
+            final putInCartBackground = DismissBackground(
+              backgroundColor: context.color.inTheCart,
+              foregroundColor: context.color.onInTheCart,
+              icon: Icons.check,
+              text: context.t.mainSwipeGotIt,
+            );
+            final notAvailableBackground = DismissBackground(
+              backgroundColor: context.color.notAvailable,
+              foregroundColor: context.color.onNotAvailable,
+              icon: Icons.not_interested,
+              text: context.t.mainSwipeNotAvailable,
+            );
             return Dismissible(
               key: Key(item),
               onDismissed: (direction) {
-                if (direction == DismissDirection.startToEnd) {
+                final isPutInCartGesture =
+                    (direction == DismissDirection.startToEnd) !=
+                        settings.optimizeForLeftHandedUse.value;
+                if (isPutInCartGesture) {
                   _putInCart(context, item);
                 } else {
                   _markAsNotAvailable(context, item);
                 }
               },
-              background: DismissBackground.primary(
-                backgroundColor: context.color.inTheCart,
-                foregroundColor: context.color.onInTheCart,
-                icon: Icons.check,
-                text: context.t.mainSwipeGotIt,
-              ),
-              secondaryBackground: DismissBackground.secondary(
-                backgroundColor: context.color.notAvailable,
-                foregroundColor: context.color.onNotAvailable,
-                icon: Icons.not_interested,
-                text: context.t.mainSwipeNotAvailable,
-              ),
+              background: (settings.optimizeForLeftHandedUse.value
+                      ? notAvailableBackground
+                      : putInCartBackground)
+                  .primary(),
+              secondaryBackground: (settings.optimizeForLeftHandedUse.value
+                      ? putInCartBackground
+                      : notAvailableBackground)
+                  .secondary(),
               child: TodoItem(
                 item: item,
                 onTap: () => context.showEditItemSheet(item),

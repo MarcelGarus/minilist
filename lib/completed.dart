@@ -14,35 +14,37 @@ class CompletedSection extends StatelessWidget {
     return ReferencesBuilder(
       references: [list.inTheCart, list.notAvailable],
       builder: (context) {
-        return Row(
-          children: [
-            Expanded(
-              child: CompletedBucket(
-                primaryText: list.inTheCart.length.toString(),
-                secondaryText: context.t.mainInTheCart,
-                color: context.color.inTheCartTint,
-                onTap: () {
-                  context.navigator.push(MaterialPageRoute(
-                    builder: (_) => InTheCartPage(),
-                  ));
-                },
-              ),
+        var buckets = [
+          Expanded(
+            child: CompletedBucket(
+              primaryText: list.inTheCart.length.toString(),
+              secondaryText: context.t.mainInTheCart,
+              color: context.color.inTheCartTint,
+              onTap: () {
+                context.navigator.push(MaterialPageRoute(
+                  builder: (_) => InTheCartPage(),
+                ));
+              },
             ),
-            SizedBox(width: 16),
-            Expanded(
-              child: CompletedBucket(
-                primaryText: list.notAvailable.length.toString(),
-                secondaryText: context.t.mainNotAvailable,
-                color: context.color.notAvailableTint,
-                onTap: () {
-                  context.navigator.push(MaterialPageRoute(
-                    builder: (_) => NotAvailablePage(),
-                  ));
-                },
-              ),
+          ),
+          SizedBox(width: 16),
+          Expanded(
+            child: CompletedBucket(
+              primaryText: list.notAvailable.length.toString(),
+              secondaryText: context.t.mainNotAvailable,
+              color: context.color.notAvailableTint,
+              onTap: () {
+                context.navigator.push(MaterialPageRoute(
+                  builder: (_) => NotAvailablePage(),
+                ));
+              },
             ),
-          ],
-        );
+          ),
+        ];
+        if (settings.optimizeForLeftHandedUse.value) {
+          buckets = buckets.reversed.toList();
+        }
+        return Row(children: buckets);
       },
     );
   }
@@ -170,18 +172,18 @@ class CompletedList extends StatelessWidget {
                   );
                 }
               },
-              background: DismissBackground.primary(
+              background: DismissBackground(
                 backgroundColor: context.color.delete,
                 foregroundColor: context.color.onDelete,
                 icon: Icons.check,
                 text: context.t.completedSwipeDelete,
-              ),
-              secondaryBackground: DismissBackground.secondary(
+              ).primary(),
+              secondaryBackground: DismissBackground(
                 backgroundColor: context.color.primary,
                 foregroundColor: context.color.onPrimary,
                 icon: Icons.undo_outlined,
                 text: context.t.completedSwipePutBackOnList,
-              ),
+              ).secondary(),
               child: TodoItem(item: item),
             );
           },
